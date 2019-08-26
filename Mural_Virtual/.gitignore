@@ -125,7 +125,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-Mural_Virtual.pyproj
-Mural_Virtual.pyproj.user
-Mural_Virtual.sln
+Mural_Virtual.*
 
