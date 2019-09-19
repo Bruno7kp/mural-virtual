@@ -1,7 +1,11 @@
-- UNIPLAC
-- Sistemas de Informação – 4º Semestre
-- Engenharia de Software
-- Bruno, Elias, Érico.
+UNIPLAC
+
+Sistemas de Informação – 4º Semestre
+
+Engenharia de Software
+
+Bruno, Elias, Érico.
+
 
 ### Projeto Integrador - Mural Virtual UNIPLAC
 #### Histórias de usuário
