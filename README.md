@@ -1,4 +1,9 @@
-# Instalação
+### Mural Virtual
+
+- [Instalação](#instalação)
+- [Documentação](#documentação)
+
+### Instalação
 ```
 git clone https://github.com/bruno7kp/mural-virtual.git
 cd mural
@@ -9,3 +14,5 @@ set FLASK_ENV='development'
 set FLASK_DEBUG=1
 python -m flask run
 ```
+
+### Documentação
