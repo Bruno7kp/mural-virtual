@@ -1,0 +1,1 @@
+# Diretório para arquivos relacionados a User Experience (UX)
