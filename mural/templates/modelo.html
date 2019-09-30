@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    {% block head %}
+    <title>Mural Virtual</title>
+    <link rel="stylesheet" href="static/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700">
+    <link rel="stylesheet" href="static/assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="static/assets/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="static/assets/css/styles.min.css">
+    {% endblock %}
+</head>
+
+<body>
+{% block menu %}
+<nav class="navbar navbar-light navbar-expand fixed-top text-dark navigation-clean-button" style="width: 100%;height: 65px;">
+        <div class="container"><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1" style="width: auto;height: auto;">
+                <ul class="nav navbar-nav mr-auto">
+                    <li class="nav-item dropdown"><a class="dropdown-toggle nav-link text-dark" data-toggle="dropdown" href="#">Dropdown </a>
+                        <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="#">Noticias</a><a class="dropdown-item" role="presentation" href="#">Avisos</a><a class="dropdown-item" role="presentation" href="#">Anúncios</a><a class="dropdown-item" role="presentation"
+                                href="#">Dashboard</a></div>
+                    </li>
+                </ul><img style="width: 50px;height: 50px;margin: 35%;" src="static/assets/img/logo-uniplac.png" width="50px" height="50px"><span class="navbar-text actions"> <a class="text-dark login" href="#">Log In</a><a class="btn btn-light action-button" role="button" href="#">Sign Up</a></span></div>
+        </div>
+    </nav>
+{% endblock %}
+{% block content %}{% endblock %}
+{% block footer %}
+    <div class="footer-clean">
+        <footer>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-sm-4 col-md-3 item">
+                        <h3>Telefone:</h3>
+                        <ul>
+                            <li><a href="#">(49) 99999-9999</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-4 col-md-3 item">
+                        <h3>E-mail</h3>
+                        <ul>
+                            <li><a href="#">uniplac@uniplaclages.edu.br</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 item social"><a href="#"><i class="icon ion-social-facebook"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-instagram"></i></a>
+                        <p class="copyright">Company Name © 2017</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+{% endblock %}
+{% block scripts %}
+<script src="static/assets/js/jquery.min.js"></script>
+    <script src="static/assets/bootstrap/js/bootstrap.min.js"></script>
+{% endblock %}
+</body>
+</html>
