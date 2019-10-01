@@ -1,11 +1,11 @@
 # coding: utf-8
 
 from flask import Flask, redirect, url_for, render_template
-from mod_home.home import bp_home
-from mod_noticias.noticias import bp_noticias
-from mod_avisos.avisos import bp_avisos
-from mod_anuncios.anuncios import bp_anuncios
-from mod_dashboard.dashboard import bp_dashboard
+from .mod_home.home import bp_home
+from .mod_noticias.noticias import bp_noticias
+from .mod_avisos.avisos import bp_avisos
+from .mod_anuncios.anuncios import bp_anuncios
+from .mod_dashboard.dashboard import bp_dashboard
 
 app = Flask(__name__)
 
