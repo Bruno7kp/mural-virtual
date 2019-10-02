@@ -25,9 +25,42 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-Copie o conteúdo do arquivo ```.env.example``` e cole dentro de um arquivo ```.env```
+**IMPORTANTE:**
 
-Depois altere os valores dentro do arquivo ```.env``` para configurar o acesso ao banco de dados
+Copie o conteúdo do arquivo ```.env.example``` e cole dentro de um novo arquivo ```.env```
+
+Depois altere os valores dentro do arquivo ```.env``` com os dados de acesso ao banco de dados
+
+Caso ainda não tenha criado, você pode criar o banco de dados através do comando abaixo, basta colocar um nome de banco válido em ```DB_NAME``` no arquivo ```.env```
+
+```
+python run.py create-database
+```
+
+Após o banco estar criado, execute o seguinte comando para criar as tabelas
+
+```
+python run.py create-tables
+```
+
+@todo: Execute o seguinte comando para cadastrar um usuário de nível 1 padrão
+
+Dados de acesso do usuário:
+
+cpf: 
+
+senha: 
+
+```
+python run.py insert-default-user
+```
+
+@todo: Caso queira ver a aplicação já com alguns dados cadastrados, execute o comando abaixo para cadastrar algumas notícias, anúncios e etc.
+
+
+```
+python run.py insert-dummy
+```
 
 Por fim, execute os comandos abaixo para rodar o projeto
 
