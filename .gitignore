@@ -4,3 +4,4 @@ venv
 .vs
 .idea
 .idea/.gitignore
+.env

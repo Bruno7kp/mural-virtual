@@ -10,11 +10,28 @@ Trabalho integrador da 4ª fase do curso de Sistemas de Informação da UNIPLAC 
 - [Documentação](#documentação)
 
 ### Instalação
+
+Clone o repositório
+
 ```
 git clone https://github.com/bruno7kp/mural-virtual.git
+```
+
+No diretório raiz do projeto, execute os seguintes comandos para criar o ambiente virtual e instalar as bibliotecas utilizadas
+
+```
 python -m venv venv
 venv\Scripts\activate
 pip install -r requirements.txt
+```
+
+Copie o conteúdo do arquivo ```.env.example``` e cole dentro de um arquivo ```.env```
+
+Depois altere os valores dentro do arquivo ```.env``` para configurar o acesso ao banco de dados
+
+Por fim, execute os comandos abaixo para rodar o projeto
+
+```
 set FLASK_ENV='development'
 set FLASK_DEBUG=1
 python -m flask run
