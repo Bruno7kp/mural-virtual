@@ -1,13 +1,9 @@
 # coding: utf-8
 
 from flask import Flask, redirect, url_for, render_template
-from mural.mod_home.home import bp_home
-from mural.mod_noticias.noticias import bp_noticias
-from mural.mod_avisos.avisos import bp_avisos
-from mural.mod_anuncios.anuncios import bp_anuncios
-from mural.mod_dashboard.dashboard import bp_dashboard
+from mural import bp_home, bp_avisos, bp_noticias, bp_anuncios, bp_dashboard
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='mural/templates', static_url_path='/static', static_folder='mural/static')
 
 app.register_blueprint(bp_home)
 app.register_blueprint(bp_noticias)
