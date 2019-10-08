@@ -2,8 +2,80 @@ from mural.models.base import BaseModel, DataBase
 
 
 class Banner(BaseModel):
-    def __init__(self):
+    def __init__(self, identifier=0, usuario_id=0, redireciona_url="", imagem="", ordem=0, data_cadastro="",
+                 data_atualizacao=""):
         super().__init__()
+        self.identifier = identifier
+        self.usuario_id = usuario_id
+        self.redireciona_url = redireciona_url
+        self.imagem = imagem
+        self.ordem = ordem
+        self.data_cadastro = data_cadastro
+        self.data_atualizacao = data_atualizacao
+
+    def insert(self):
+        c = self.db.con.cursor()
+        c.execute("""INSERT INTO banner 
+                (usuario_id, redireciona_url, imagem, ordem, data_cadastro, data_atualizacao)
+                VALUES 
+                (%s, %s, %s, %s, %s, %s)""", (self.usuario_id, self.redireciona_url, self.imagem, self.ordem,
+                                              self.data_cadastro, self.data_atualizacao))
+        self.db.con.commit()
+        new_id = c.lastrowid
+        c.close()
+        return new_id
+
+    def update(self):
+        c = self.db.con.cursor()
+        c.execute("""UPDATE banner 
+                    SET usuario_id = %s, redireciona_url = %s, imagem = %s, ordem = %s, data_cadastro = %s, 
+                    data_atualizacao = %s WHERE id = %s""", (self.usuario_id, self.redireciona_url, self.imagem,
+                                                             self.ordem, self.data_cadastro, self.data_atualizacao,
+                                                             self.identifier))
+        self.db.con.commit()
+        rows = c.rowcount
+        c.close()
+        return rows
+
+    def delete(self):
+        c = self.db.con.cursor()
+        c.execute("""DELETE FROM banner WHERE id = %s""", self.identifier)
+        self.db.con.commit()
+        rows = c.rowcount
+        c.close()
+        return rows
+
+    def select(self, identifier):
+        c = self.db.con.cursor()
+        c.execute("""SELECT id, usuario_id, redireciona_url, imagem, ordem, data_cadastro, data_atualizacao 
+                    FROM banner WHERE id = %s""", identifier)
+        for row in c:
+            self.identifier = row[0]
+            self.usuario_id = row[1]
+            self.redireciona_url = row[2]
+            self.imagem = row[3]
+            self.ordem = row[4]
+            self.data_cadastro = row[5]
+            self.data_atualizacao = row[6]
+        c.close()
+        return self
+
+    def all(self):
+        c = self.db.con.cursor()
+        c.execute("""SELECT id, usuario_id, redireciona_url, imagem, ordem, data_cadastro, data_atualizacao
+                                FROM banner ORDER BY ordem""")
+        list_all = []
+        for (row, key) in c:
+            list_all[key] = Banner()
+            list_all[key].identifier = row[0]
+            list_all[key].usuario_id = row[1]
+            list_all[key].redireciona_url = row[2]
+            list_all[key].imagem = row[3]
+            list_all[key].ordem = row[4]
+            list_all[key].data_cadastro = row[5]
+            list_all[key].data_atualizacao = row[6]
+        c.close()
+        return list_all
 
     @staticmethod
     def create_table():
