@@ -1,9 +1,10 @@
-from mural.models.base import BaseModel, DataBase
+from mural.auth import Roles
+from mural.models import BaseModel, DataBase
 
 
 class Usuario(BaseModel):
-    def __init__(self, identifier=0, nome="", email="", telefone="", cpf="", senha="", nivel=None, data_cadastro="",
-                 data_atualizacao=""):
+    def __init__(self, identifier=0, nome="", email="", telefone="", cpf="", senha="", nivel=Roles.usuario,
+                 data_cadastro="", data_atualizacao=""):
         super().__init__()
         self.identifier = identifier
         self.nome = nome
@@ -15,7 +16,7 @@ class Usuario(BaseModel):
         self.data_cadastro = data_cadastro
         self.data_atualizacao = data_atualizacao
 
-    def insert(self):
+    def insert(self) -> int:
         c = self.db.con.cursor()
         c.execute("""INSERT INTO usuario 
                     (nome, email, telefone, cpf, senha, nivel, data_cadastro, data_atualizacao)
@@ -27,19 +28,27 @@ class Usuario(BaseModel):
         c.close()
         return new_id
 
-    def update(self):
+    def update(self) -> int:
         c = self.db.con.cursor()
         c.execute("""UPDATE usuario 
-                SET nome = %s, email = %s, telefone = %s, cpf = %s, senha = %s, nivel = %s, data_cadastro = %s, 
-                data_atualizacao = %s WHERE id = %s""", (self.nome, self.email, self.telefone, self.cpf, self.senha,
-                                                         self.nivel, self.data_cadastro, self.data_atualizacao,
-                                                         self.identifier))
+                SET nome = %s, email = %s, telefone = %s, cpf = %s, nivel = %s, data_cadastro = %s, 
+                data_atualizacao = %s WHERE id = %s""", (self.nome, self.email, self.telefone, self.cpf, self.nivel,
+                                                         self.data_cadastro, self.data_atualizacao, self.identifier))
         self.db.con.commit()
         rows = c.rowcount
         c.close()
         return rows
 
-    def delete(self):
+    def update_password(self) -> int:
+        c = self.db.con.cursor()
+        c.execute("""UPDATE usuario
+                SET senha = %s WHERE id = %s""", (self.senha, self.identifier))
+        self.db.con.commit()
+        rows = c.rowcount
+        c.close()
+        return rows
+
+    def delete(self) -> int:
         c = self.db.con.cursor()
         c.execute("""DELETE FROM usuario WHERE id = %s""", self.identifier)
         self.db.con.commit()
@@ -84,6 +93,16 @@ class Usuario(BaseModel):
         return list_all
 
     @staticmethod
+    def has_ownership() -> bool:
+        return True
+
+    def get_owner_id(self) -> int:
+        return self.identifier
+
+    def get_owner(self):
+        return self
+
+    @staticmethod
     def create_table():
         db = DataBase()
         c = db.con.cursor()
@@ -105,6 +124,6 @@ class Usuario(BaseModel):
     def insert_dummy():
         db = DataBase()
         c = db.con.cursor()
-        # Inserir na tabela
+        usuario = Usuario(0, "Fulano da Silva", "fulano@gmail.com", "49 988776655", "000.000.000-00", "1234", )
         db.con.commit()
         c.close()

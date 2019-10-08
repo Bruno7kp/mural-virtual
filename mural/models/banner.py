@@ -1,3 +1,4 @@
+from mural.models import Usuario
 from mural.models.base import BaseModel, DataBase
 
 
@@ -13,7 +14,7 @@ class Banner(BaseModel):
         self.data_cadastro = data_cadastro
         self.data_atualizacao = data_atualizacao
 
-    def insert(self):
+    def insert(self) -> int:
         c = self.db.con.cursor()
         c.execute("""INSERT INTO banner 
                 (usuario_id, redireciona_url, imagem, ordem, data_cadastro, data_atualizacao)
@@ -25,7 +26,7 @@ class Banner(BaseModel):
         c.close()
         return new_id
 
-    def update(self):
+    def update(self) -> int:
         c = self.db.con.cursor()
         c.execute("""UPDATE banner 
                     SET usuario_id = %s, redireciona_url = %s, imagem = %s, ordem = %s, data_cadastro = %s, 
@@ -37,7 +38,7 @@ class Banner(BaseModel):
         c.close()
         return rows
 
-    def delete(self):
+    def delete(self) -> int:
         c = self.db.con.cursor()
         c.execute("""DELETE FROM banner WHERE id = %s""", self.identifier)
         self.db.con.commit()
@@ -76,6 +77,18 @@ class Banner(BaseModel):
             list_all[key].data_atualizacao = row[6]
         c.close()
         return list_all
+
+    @staticmethod
+    def has_ownership() -> bool:
+        return True
+
+    def get_owner_id(self) -> int:
+        return self.usuario_id
+
+    def get_owner(self) -> Usuario:
+        usuario = Usuario()
+        usuario.select(self.get_owner_id())
+        return usuario
 
     @staticmethod
     def create_table():

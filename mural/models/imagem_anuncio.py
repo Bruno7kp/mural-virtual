@@ -1,3 +1,4 @@
+from mural.models import Anuncio, Usuario
 from mural.models.base import BaseModel, DataBase
 
 
@@ -13,7 +14,7 @@ class ImagemAnuncio(BaseModel):
         self.data_cadastro = data_cadastro
         self.data_atualizacao = data_atualizacao
 
-    def insert(self):
+    def insert(self) -> int:
         c = self.db.con.cursor()
         c.execute("""INSERT INTO imagem_anuncio 
                         (anuncioid, lengenda, imagem, ordem, data_cadastro, data_atualizacao)
@@ -25,7 +26,7 @@ class ImagemAnuncio(BaseModel):
         c.close()
         return new_id
 
-    def update(self):
+    def update(self) -> int:
         c = self.db.con.cursor()
         c.execute("""UPDATE imagem_anuncio 
                             SET anuncioid = %s, lengenda = %s, imagem = %s, ordem = %s, data_cadastro = %s, 
@@ -38,7 +39,7 @@ class ImagemAnuncio(BaseModel):
         c.close()
         return rows
 
-    def delete(self):
+    def delete(self) -> int:
         c = self.db.con.cursor()
         c.execute("""DELETE FROM imagem_anuncio WHERE id = %s""", self.identifier)
         self.db.con.commit()
@@ -77,6 +78,23 @@ class ImagemAnuncio(BaseModel):
             list_all[key].data_atualizacao = row[6]
         c.close()
         return list_all
+
+    def get_parent(self) -> Anuncio:
+        noticia = Anuncio()
+        noticia.select(self.anuncio_id)
+        return noticia
+
+    @staticmethod
+    def has_ownership() -> bool:
+        return True
+
+    def get_owner_id(self) -> int:
+        return self.get_parent().usuario_id
+
+    def get_owner(self) -> Usuario:
+        usuario = Usuario()
+        usuario.select(self.get_owner_id())
+        return usuario
 
     @staticmethod
     def create_table():

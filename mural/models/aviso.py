@@ -1,3 +1,4 @@
+from mural.models import Usuario
 from mural.models.base import BaseModel, DataBase
 
 
@@ -14,7 +15,7 @@ class Aviso(BaseModel):
         self.data_cadastro = data_cadastro
         self.data_atualizacao = data_atualizacao
 
-    def insert(self):
+    def insert(self) -> int:
         c = self.db.con.cursor()
         c.execute("""INSERT INTO aviso 
                 (usuario_id, titulo, conteudo, data_entrada, data_saida, data_cadastro, data_atualizacao)
@@ -26,7 +27,7 @@ class Aviso(BaseModel):
         c.close()
         return new_id
 
-    def update(self):
+    def update(self) -> int:
         c = self.db.con.cursor()
         c.execute("""UPDATE aviso 
             SET usuario_id = %s, titulo = %s, conteudo = %s, data_entrada = %s, data_saida = %s, data_cadastro = %s, 
@@ -38,7 +39,7 @@ class Aviso(BaseModel):
         c.close()
         return rows
 
-    def delete(self):
+    def delete(self) -> int:
         c = self.db.con.cursor()
         c.execute("""DELETE FROM aviso WHERE id = %s""", self.identifier)
         self.db.con.commit()
@@ -79,6 +80,18 @@ class Aviso(BaseModel):
             list_all[key].data_atualizacao = row[7]
         c.close()
         return list_all
+
+    @staticmethod
+    def has_ownership() -> bool:
+        return True
+
+    def get_owner_id(self) -> int:
+        return self.usuario_id
+
+    def get_owner(self) -> Usuario:
+        usuario = Usuario()
+        usuario.select(self.get_owner_id())
+        return usuario
 
     @staticmethod
     def create_table():

@@ -13,26 +13,54 @@ class BaseModel:
         self.db = DataBase()
 
     @abc.abstractmethod
-    def insert(self):
-        """Método para inserir de uma linha no banco de dados"""
-        return
+    def insert(self) -> int:
+        """Insere de uma linha no banco de dados, retorna o id cadastrado"""
+        return 0
 
     @abc.abstractmethod
-    def update(self):
-        """Método para atualizar uma linha no banco de dados"""
-        return
+    def update(self) -> int:
+        """Atualiza uma linha no banco de dados, retorna a quantidade de linhas atualizadas"""
+        return 0
 
     @abc.abstractmethod
-    def delete(self):
-        """Método para remover uma linha no banco de dados"""
-        return
+    def delete(self) -> int:
+        """Remove uma linha no banco de dados, retorna a quantidade de linhas removidas"""
+        return 0
 
     @abc.abstractmethod
     def select(self, identifier):
-        """Método para busca uma linha pelo id"""
+        """Busca uma linha pelo id"""
         return
 
     @abc.abstractmethod
     def all(self):
-        """Método para busca todas as linhas do tabela"""
+        """Busca todas as linhas do tabela"""
         return
+
+    @staticmethod
+    @abc.abstractmethod
+    def create_table():
+        """Cria tabela no banco de dados"""
+        return
+
+    @staticmethod
+    @abc.abstractmethod
+    def insert_dummy():
+        """Insere valores padrão no banco de dados"""
+        return
+
+    @staticmethod
+    @abc.abstractmethod
+    def has_ownership() -> bool:
+        """Identifica entidades que estão relacionadas a algum usuário"""
+        return False
+
+    @abc.abstractmethod
+    def get_owner_id(self) -> int:
+        """Retorna o id do usuário relacionado"""
+        return 0
+
+    @abc.abstractmethod
+    def get_owner(self):
+        """Retorna o usuário relacionado"""
+        return None
