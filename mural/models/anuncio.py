@@ -25,9 +25,9 @@ class Anuncio(BaseModel):
                                                   self.data_entrada, self.data_saida, self.data_cadastro,
                                                   self.data_atualizacao))
         self.db.con.commit()
-        new_id = c.lastrowid
+        self.identifier = c.lastrowid
         c.close()
-        return new_id
+        return self.identifier
 
     def update(self) -> int:
         c = self.db.con.cursor()
