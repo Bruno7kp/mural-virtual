@@ -72,6 +72,9 @@ class Usuario(BaseModel):
         c.close()
         return self
 
+    def get_role(self):
+        return self.nivel
+
     def all(self):
         c = self.db.con.cursor()
         c.execute("""SELECT id, nome, email, telefone, cpf, senha, nivel, data_cadastro, data_atualizacao 
