@@ -1,8 +1,8 @@
-from mural.models import BaseModel, DataBase
+from mural.mod_base import BaseModel, DataBase
 
 
 class Usuario(BaseModel):
-    def __init__(self, identifier=0, nome="", email="", telefone="", cpf="", senha="", nivel=Roles.usuario,
+    def __init__(self, identifier=0, nome="", email="", telefone="", cpf="", senha="", nivel=4,
                  data_cadastro="", data_atualizacao=""):
         super().__init__()
         self.identifier = identifier
@@ -126,6 +126,7 @@ class Usuario(BaseModel):
     def insert_dummy():
         db = DataBase()
         c = db.con.cursor()
-        usuario = Usuario(0, "Fulano da Silva", "fulano@gmail.com", "49 988776655", "000.000.000-00", "1234", )
+        usuario = Usuario(0, "Fulano da Silva", "fulano@gmail.com", "49 988776655", "000.000.000-00", "1234", 4, "2019-01-01", "2019-01-01")
+        usuario.insert()
         db.con.commit()
         c.close()

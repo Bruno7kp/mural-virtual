@@ -1,4 +1,4 @@
-from mural.models.base import BaseModel, DataBase
+from mural.mod_base import BaseModel, DataBase
 
 
 class Universidade(BaseModel):

@@ -1,5 +1,5 @@
-from mural.models import Usuario
-from mural.models.base import BaseModel, DataBase
+from mural.mod_usuarios import Usuario
+from mural.mod_base import BaseModel, DataBase
 
 
 class Aviso(BaseModel):
@@ -118,3 +118,5 @@ class Aviso(BaseModel):
         # Inserir na tabela
         db.con.commit()
         c.close()
+
+

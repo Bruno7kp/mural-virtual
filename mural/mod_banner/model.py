@@ -1,14 +1,14 @@
-from mural.models import Noticia, Usuario
-from mural.models.base import BaseModel, DataBase
+from mural.mod_usuarios import Usuario
+from mural.mod_base import BaseModel, DataBase
 
 
-class ImagemNoticia(BaseModel):
-    def __init__(self, identifier=0, noticia_id=0, legenda="", imagem="", ordem=0, data_cadastro="",
+class Banner(BaseModel):
+    def __init__(self, identifier=0, usuario_id=0, redireciona_url="", imagem="", ordem=0, data_cadastro="",
                  data_atualizacao=""):
         super().__init__()
         self.identifier = identifier
-        self.noticia_id = noticia_id
-        self.legenda = legenda
+        self.usuario_id = usuario_id
+        self.redireciona_url = redireciona_url
         self.imagem = imagem
         self.ordem = ordem
         self.data_cadastro = data_cadastro
@@ -16,11 +16,11 @@ class ImagemNoticia(BaseModel):
 
     def insert(self) -> int:
         c = self.db.con.cursor()
-        c.execute("""INSERT INTO imagem_noticia 
-                        (noticiaid, lengenda, imagem, ordem, data_cadastro, data_atualizacao)
-                        VALUES 
-                        (%s, %s, %s, %s, %s, %s)""", (self.noticia_id, self.legenda, self.imagem, self.ordem,
-                                                      self.data_cadastro, self.data_atualizacao))
+        c.execute("""INSERT INTO banner 
+                (usuario_id, redireciona_url, imagem, ordem, data_cadastro, data_atualizacao)
+                VALUES 
+                (%s, %s, %s, %s, %s, %s)""", (self.usuario_id, self.redireciona_url, self.imagem, self.ordem,
+                                              self.data_cadastro, self.data_atualizacao))
         self.db.con.commit()
         self.identifier = c.lastrowid
         c.close()
@@ -28,10 +28,11 @@ class ImagemNoticia(BaseModel):
 
     def update(self) -> int:
         c = self.db.con.cursor()
-        c.execute("""UPDATE imagem_noticia 
-            SET noticiaid = %s, lengenda = %s, imagem = %s, ordem = %s, data_cadastro = %s, data_atualizacao = %s 
-            WHERE id = %s""", (self.noticia_id, self.legenda, self.imagem, self.ordem, self.data_cadastro,
-                               self.data_atualizacao, self.identifier))
+        c.execute("""UPDATE banner 
+                    SET usuario_id = %s, redireciona_url = %s, imagem = %s, ordem = %s, data_cadastro = %s, 
+                    data_atualizacao = %s WHERE id = %s""", (self.usuario_id, self.redireciona_url, self.imagem,
+                                                             self.ordem, self.data_cadastro, self.data_atualizacao,
+                                                             self.identifier))
         self.db.con.commit()
         rows = c.rowcount
         c.close()
@@ -39,7 +40,7 @@ class ImagemNoticia(BaseModel):
 
     def delete(self) -> int:
         c = self.db.con.cursor()
-        c.execute("""DELETE FROM imagem_noticia WHERE id = %s""", self.identifier)
+        c.execute("""DELETE FROM banner WHERE id = %s""", self.identifier)
         self.db.con.commit()
         rows = c.rowcount
         c.close()
@@ -47,12 +48,12 @@ class ImagemNoticia(BaseModel):
 
     def select(self, identifier):
         c = self.db.con.cursor()
-        c.execute("""SELECT id, noticiaid, lengenda, imagem, ordem, data_cadastro, data_atualizacao 
-                            FROM imagem_noticia WHERE id = %s""", identifier)
+        c.execute("""SELECT id, usuario_id, redireciona_url, imagem, ordem, data_cadastro, data_atualizacao 
+                    FROM banner WHERE id = %s""", identifier)
         for row in c:
             self.identifier = row[0]
-            self.noticia_id = row[1]
-            self.legenda = row[2]
+            self.usuario_id = row[1]
+            self.redireciona_url = row[2]
             self.imagem = row[3]
             self.ordem = row[4]
             self.data_cadastro = row[5]
@@ -62,14 +63,14 @@ class ImagemNoticia(BaseModel):
 
     def all(self):
         c = self.db.con.cursor()
-        c.execute("""SELECT id, noticiaid, lengenda, imagem, ordem, data_cadastro, data_atualizacao
-                    FROM imagem_noticia ORDER BY ordem""")
+        c.execute("""SELECT id, usuario_id, redireciona_url, imagem, ordem, data_cadastro, data_atualizacao
+                                FROM banner ORDER BY ordem""")
         list_all = []
         for (row, key) in c:
-            list_all[key] = ImagemNoticia()
+            list_all[key] = Banner()
             list_all[key].identifier = row[0]
-            list_all[key].noticia_id = row[1]
-            list_all[key].legenda = row[2]
+            list_all[key].usuario_id = row[1]
+            list_all[key].redireciona_url = row[2]
             list_all[key].imagem = row[3]
             list_all[key].ordem = row[4]
             list_all[key].data_cadastro = row[5]
@@ -77,17 +78,12 @@ class ImagemNoticia(BaseModel):
         c.close()
         return list_all
 
-    def get_parent(self) -> Noticia:
-        noticia = Noticia()
-        noticia.select(self.noticia_id)
-        return noticia
-
     @staticmethod
     def has_ownership() -> bool:
         return True
 
     def get_owner_id(self) -> int:
-        return self.get_parent().usuario_id
+        return self.usuario_id
 
     def get_owner(self) -> Usuario:
         usuario = Usuario()
@@ -98,16 +94,16 @@ class ImagemNoticia(BaseModel):
     def create_table():
         db = DataBase()
         c = db.con.cursor()
-        c.execute("""CREATE TABLE `imagem_noticia` (
+        c.execute("""CREATE TABLE `banner` (
           `id` int PRIMARY KEY AUTO_INCREMENT,
-          `noticiaid` int,
-          `lengenda` varchar(255),
+          `usuario_id` int,
+          `redireciona_url` varchar(255),
           `imagem` longblob,
           `ordem` int,
           `data_cadastro` datetime,
           `data_atualizacao` datetime
         );""")
-        c.execute("ALTER TABLE `imagem_noticia` ADD FOREIGN KEY (`noticiaid`) REFERENCES `noticia` (`id`);")
+        c.execute("ALTER TABLE `banner` ADD FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`);")
         db.con.commit()
         c.close()
 

@@ -1,6 +1,5 @@
 from enum import Enum
 from typing import Union, List
-from mural.models import Usuario as User, BaseModel
 
 
 class Roles(Enum):
@@ -46,7 +45,7 @@ permissions = [
 
 
 class Auth:
-    user: User = None
+    user = None
 
     @staticmethod
     def in_role(role: Roles) -> bool:
@@ -54,7 +53,8 @@ class Auth:
         :param role: Nível de permissão
         :return: Indica se o usuário está no nível de permissão passado por parâmetro
         """
-        if Auth.user is User:
+        from mural.mod_usuarios import Usuario
+        if Auth.user is Usuario:
             return Auth.user.get_role() == role
         else:
             return False
@@ -86,15 +86,17 @@ class Auth:
             return None
 
     @staticmethod
-    def is_allowed(resource: str, relation: Union[BaseModel, None] = None) -> bool:
+    def is_allowed(resource: str, relation=None) -> bool:
         """
         :param resource: Nome do recurso que está sendo verificada a permissão
         :param relation: Entidade relacionada ao recurso
         :return: Indica se o usuário tem permissão para acessar o recurso
         """
         permission = Auth.get_resource(resource)
+        from mural.mod_usuarios import Usuario
+        from mural.mod_base import BaseModel
         # Se o recurso não for encontrado, ou se não tiver um usuário, retornará falso
-        if permission is not None and Auth.user is User:
+        if permission is not None and Auth.user is Usuario:
             if Auth.user.get_role() in permission.roles:
                 # Se o nível do usuário está entre os permitidos
                 return True

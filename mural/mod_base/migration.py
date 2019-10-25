@@ -1,7 +1,13 @@
 import pymysql
 import re
 from settings import DB_HOST, DB_USER, DB_PASSWORD, DB_NAME
-from . import Usuario, Aviso, Noticia, ImagemNoticia, Anuncio, ImagemAnuncio, Universidade, Banner, Logs
+from mural.mod_usuarios import Usuario
+from mural.mod_avisos import Aviso
+from mural.mod_noticias import Noticia, ImagemNoticia
+from mural.mod_anuncios import Anuncio, ImagemAnuncio
+from mural.mod_universidade import Universidade
+from mural.mod_banner import Banner
+from mural.mod_logs import Logs
 
 
 def create_database():

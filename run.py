@@ -1,5 +1,5 @@
 from sys import argv
-from mural.models.migration import create_tables, create_database, insert_dummy, insert_default_user
+from mural.mod_base.migration import create_tables, create_database, insert_dummy, insert_default_user
 
 
 if __name__ == '__main__':
