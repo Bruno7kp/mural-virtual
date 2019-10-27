@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     {% block head %}
     <title>Mural Virtual</title>
-    <link rel="stylesheet" href="static/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700">
-    <link rel="stylesheet" href="static/assets/fonts/font-awesome.min.css">
-    <link rel="stylesheet" href="static/assets/fonts/ionicons.min.css">
-    <link rel="stylesheet" href="static/assets/css/styles.min.css">
-        <link rel="stylesheet" href="static/assets/css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/fonts/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/fonts/ionicons.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/styles.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
     {% endblock %}
 </head>
 
@@ -55,17 +55,17 @@
     </div>
 {% endblock %}
 {% block scripts %}
-<script src="static/assets/js/jquery.min.js"></script>
-    <script src="static/assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="static/assets/js/jquery/jquery-2.2.4.min.js"></script>
+<script src="{{ url_for('static', filename='assets/js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/jquery/jquery-2.2.4.min.js') }}"></script>
     <!-- Popper js -->
-    <script src="static/assets/js/bootstrap/popper.min.js"></script>
+    <script src="{{ url_for('static', filename='assets/js/bootstrap/popper.min.js') }}"></script>
     <!-- Bootstrap js -->
-    <script src="static/assets/js/bootstrap/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='assets/js/bootstrap/bootstrap.min.js') }}"></script>
     <!-- All Plugins js -->
-    <script src="static/assets/js/plugins/plugins.js"></script>
+    <script src="{{ url_for('static', filename='assets/js/plugins/plugins.js') }}"></script>
     <!-- Active js -->
-    <script src="static/assets/js/active.js"></script>
+    <script src="{{ url_for('static', filename='assets/js/active.js') }}"></script>
 {% endblock %}
 </body>
 </html>
