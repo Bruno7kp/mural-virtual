@@ -1,1 +1,1 @@
-from .model import Universidade
+from .universidade_model import Universidade

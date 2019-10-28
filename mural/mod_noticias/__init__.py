@@ -1,1 +1,1 @@
-from .model import Noticia, ImagemNoticia
+from .noticias_model import Noticia, ImagemNoticia

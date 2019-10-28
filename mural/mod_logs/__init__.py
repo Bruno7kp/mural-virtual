@@ -1,1 +1,1 @@
-from .model import Logs
+from .logs_models import Logs

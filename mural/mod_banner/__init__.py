@@ -1,1 +1,1 @@
-from .model import Banner
+from .banner_model import Banner

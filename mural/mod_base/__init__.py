@@ -1,2 +1,2 @@
 from .auth import Roles, Resource, Auth
-from .model import BaseModel, DataBase
+from .base_model import BaseModel, DataBase

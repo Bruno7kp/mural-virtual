@@ -1,1 +1,1 @@
-from .model import Anuncio, ImagemAnuncio
+from .anuncios_model import Anuncio, ImagemAnuncio

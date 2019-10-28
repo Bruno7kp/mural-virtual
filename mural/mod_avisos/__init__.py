@@ -1,1 +1,1 @@
-from .model import Aviso
+from .avisos_model import Aviso
