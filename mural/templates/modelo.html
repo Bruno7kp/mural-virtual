@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/fonts/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/fonts/ionicons.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/styles.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/custom.css') }}">
     {% endblock %}
 </head>
 
@@ -19,14 +19,15 @@
 <nav class="navbar navbar-light navbar-expand fixed-top text-dark navigation-clean-button" style="width: 100%;height: 65px;">
         <div class="container"><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navcol-1" style="width: auto;height: auto;">
-                <ul class="nav navbar-nav mr-auto">
+                <ul class="nav navbar-nav">
                     <li class="nav-item dropdown"><a class="dropdown-toggle nav-link text-dark" data-toggle="dropdown" href="#">Dropdown </a>
                         <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="#">Noticias</a><a class="dropdown-item" role="presentation" href="#">Avisos</a><a class="dropdown-item" role="presentation" href="#">Anúncios</a><a class="dropdown-item" role="presentation"
                                 href="#">Dashboard</a></div>
                     </li>
-                </ul><img style="width: 50px;height: 50px;margin: 35%;" src="static/assets/img/logo-uniplac.png" width="50px" height="50px"><span class="navbar-text actions"> <a class="text-dark login" href="#">Log In</a><a class="btn btn-light action-button" role="button" href="#">Sign Up</a></span></div>
+                </ul><img alt="Logo Uniplac" style="width: 50px;height: 50px;margin: auto;" src="static/assets/img/logo-uniplac.png" width="50px" height="50px"><span class="navbar-text actions"> <a class="text-dark login" href="#">Log In</a><a class="btn btn-light action-button" role="button" href="#">Sign Up</a></span></div>
         </div>
     </nav>
+
 {% endblock %}
 {% block content %}{% endblock %}
 {% block footer %}
@@ -55,9 +56,8 @@
     </div>
 {% endblock %}
 {% block scripts %}
-<script src="{{ url_for('static', filename='assets/js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='assets/bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/js/jquery/jquery-2.2.4.min.js') }}"></script>
     <!-- Popper js -->
     <script src="{{ url_for('static', filename='assets/js/bootstrap/popper.min.js') }}"></script>
     <!-- Bootstrap js -->
