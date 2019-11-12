@@ -2204,4 +2204,6 @@ textarea.form-control {
 
 /* ====== The End ====== */
 
-/*# sourceMappingURL=style.css.map */
+.video-play {
+  display: none !important;
+}
