@@ -2207,3 +2207,7 @@ textarea.form-control {
 .video-play {
   display: none !important;
 }
+
+.navigation-clean-button{
+  background: #2e3367cf;
+}
