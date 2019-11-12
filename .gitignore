@@ -5,3 +5,4 @@ venv
 .idea
 .idea/.gitignore
 .env
+__pychache__
