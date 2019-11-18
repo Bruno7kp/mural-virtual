@@ -10,5 +10,10 @@ def anuncios():
 
 # Rotas da área administrativa
 @bp_anuncios.route("/admin/anuncios")
-def admin_anuncios():
+def admin_lista():
+    return render_template("admin_lista_anuncios.html")
+
+
+@bp_anuncios.route("/admin/anuncios/aprovacao")
+def admin_aprovacao():
     return render_template("admin_lista_anuncios.html")

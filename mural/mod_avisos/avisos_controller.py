@@ -9,3 +9,6 @@ def avisos():
     return render_template("formAvisos.html")
 
 # Rotas da área administrativa
+@bp_avisos.route("/admin/avisos")
+def admin_lista():
+    return render_template("admin_lista_avisos.html")

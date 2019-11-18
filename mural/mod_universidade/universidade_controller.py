@@ -7,3 +7,6 @@ bp_universidade = Blueprint('universidade', __name__, url_prefix='/', template_f
 
 
 # Rotas da área administrativa
+@bp_universidade.route("/admin/universidade")
+def admin_universidade():
+    return render_template("admin_universidade.html")

@@ -7,3 +7,6 @@ bp_usuarios = Blueprint('usuarios', __name__, url_prefix='/', template_folder='t
 
 
 # Rotas da área administrativa
+@bp_usuarios.route("/admin/usuarios")
+def admin_lista():
+    return render_template("admin_lista_usuarios.html")

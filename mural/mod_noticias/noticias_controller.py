@@ -9,3 +9,6 @@ def noticias():
     return render_template("formNoticias.html")
 
 # Rotas da área administrativa
+@bp_noticias.route("/admin/noticias")
+def admin_lista():
+    return render_template("admin_lista_noticias.html")
