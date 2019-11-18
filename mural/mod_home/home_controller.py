@@ -9,3 +9,6 @@ def home():
     return render_template("home.html")
 
 # Rotas da área administrativa
+@bp_home.route("/admin")
+def admin_home():
+    return render_template("admin_home.html")
