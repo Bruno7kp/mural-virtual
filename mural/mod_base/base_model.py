@@ -1,6 +1,13 @@
+from typing import List
+
 import pymysql
+from flask import jsonify
+
 from settings import DB_HOST, DB_USER, DB_PASSWORD, DB_NAME
 import abc
+
+# Usadas em busca de vários itens da tabela
+SEARCH_LIMIT = 20
 
 
 class DataBase:
@@ -64,3 +71,30 @@ class BaseModel:
     def get_owner(self):
         """Retorna o usuário relacionado"""
         return None
+
+    @abc.abstractmethod
+    def serialize(self):
+        """Retorna o objeto que pode ser convertido em json"""
+        return {}
+
+    @abc.abstractmethod
+    def serialize_array(self):
+        """Retorna um array com os valores do objeto"""
+        return []
+
+
+def json_response(message: str, data: List[BaseModel], redirect: str = None):
+    return jsonify({
+        'message': message,
+        'data': [e.serialize() for e in data],
+        'redirect': redirect
+    })
+
+
+def data_tables_response(draw: int, total: int, filtered: int, data: List[BaseModel]):
+    return jsonify({
+        'draw': draw,
+        'data': [e.serialize_array() for e in data],
+        'recordsTotal': total,
+        'recordsFiltered': filtered
+    })

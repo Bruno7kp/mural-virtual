@@ -1,0 +1,53 @@
+const App = {
+    init: () => {
+        App.loadTable();
+    },
+    dataTableLang: () => {
+        return {
+            "sEmptyTable": "Nenhum registro encontrado",
+            "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+            "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "_MENU_ resultados por página",
+            "sLoadingRecords": "Carregando...",
+            "sProcessing": "Processando...",
+            "sZeroRecords": "Nenhum registro encontrado",
+            "sSearch": "Pesquisar",
+            "oPaginate": {
+                "sNext": "Próximo",
+                "sPrevious": "Anterior",
+                "sFirst": "Primeiro",
+                "sLast": "Último"
+            },
+            "oAria": {
+                "sSortAscending": ": Ordenar colunas de forma ascendente",
+                "sSortDescending": ": Ordenar colunas de forma descendente"
+            },
+            "select": {
+                "rows": {
+                    "_": "Selecionado %d linhas",
+                    "0": "Nenhuma linha selecionada",
+                    "1": "Selecionado 1 linha"
+                }
+            }
+        }
+    },
+    loadTable: () => {
+        let table = document.querySelector("[data-table-url]");
+        if (table != null) {
+            let url = table.getAttribute("data-table-url");
+            $(table).DataTable( {
+                "ajax": url,
+                "processing": true,
+                "serverSide": true,
+                "language": App.dataTableLang()
+            });
+        }
+    },
+};
+
+(function() {
+   App.init();
+})();

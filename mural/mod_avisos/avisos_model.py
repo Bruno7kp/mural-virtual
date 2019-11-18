@@ -1,3 +1,4 @@
+from mural.mod_base.base_model import SEARCH_LIMIT
 from mural.mod_usuarios import Usuario
 from mural.mod_base import BaseModel, DataBase
 
@@ -68,18 +69,53 @@ class Aviso(BaseModel):
         c.execute("""SELECT id, usuario_id, titulo, conteudo, data_entrada, data_saida, data_cadastro, data_atualizacao
                         FROM aviso ORDER BY data_entrada DESC""")
         list_all = []
-        for (row, key) in c:
-            list_all[key] = Aviso()
-            list_all[key].identifier = row[0]
-            list_all[key].usuario_id = row[1]
-            list_all[key].titulo = row[2]
-            list_all[key].conteudo = row[3]
-            list_all[key].data_entrada = row[4]
-            list_all[key].data_saida = row[5]
-            list_all[key].data_cadastro = row[6]
-            list_all[key].data_atualizacao = row[7]
+        for row in c:
+            aviso = Aviso()
+            aviso.identifier = row[0]
+            aviso.usuario_id = row[1]
+            aviso.titulo = row[2]
+            aviso.conteudo = row[3]
+            aviso.data_entrada = row[4]
+            aviso.data_saida = row[5]
+            aviso.data_cadastro = row[6]
+            aviso.data_atualizacao = row[7]
+            list_all.append(aviso)
         c.close()
         return list_all
+
+    def search(self, title: str, start: int, limit: int):
+        c = self.db.con.cursor()
+        c.execute("""SELECT id, usuario_id, titulo, conteudo, data_entrada, data_saida, data_cadastro, data_atualizacao
+                        FROM aviso WHERE titulo LIKE %s ORDER BY data_entrada DESC LIMIT %s, %s""",
+                  (title, start, limit))
+        list_all = []
+        for row in c:
+            aviso = Aviso()
+            aviso.identifier = row[0]
+            aviso.usuario_id = row[1]
+            aviso.titulo = row[2]
+            aviso.conteudo = row[3]
+            aviso.data_entrada = row[4]
+            aviso.data_saida = row[5]
+            aviso.data_cadastro = row[6]
+            aviso.data_atualizacao = row[7]
+            list_all.append(aviso)
+        c.close()
+        return list_all
+
+    def total(self):
+        c = self.db.con.cursor()
+        c.execute("SELECT COUNT(id) AS total FROM aviso")
+        result = c.fetchone()
+        number_of_rows = result[0]
+        return number_of_rows
+
+    def count(self, title):
+        c = self.db.con.cursor()
+        c.execute("SELECT COUNT(id) AS total FROM aviso WHERE titulo LIKE %s", title)
+        result = c.fetchone()
+        number_of_rows = result[0]
+        return number_of_rows
 
     @staticmethod
     def has_ownership() -> bool:
