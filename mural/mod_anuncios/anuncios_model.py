@@ -72,19 +72,55 @@ class Anuncio(BaseModel):
         c.execute("""SELECT id, usuario_id, titulo, conteudo, aprovado, data_entrada, data_saida, data_cadastro, 
                   data_atualizacao FROM anuncio ORDER BY data_entrada DESC""")
         list_all = []
-        for (row, key) in c:
-            list_all[key] = Anuncio()
-            list_all[key].identifier = row[0]
-            list_all[key].usuario_id = row[1]
-            list_all[key].titulo = row[2]
-            list_all[key].conteudo = row[3]
-            list_all[key].aprovado = row[4]
-            list_all[key].data_entrada = row[5]
-            list_all[key].data_saida = row[6]
-            list_all[key].data_cadastro = row[7]
-            list_all[key].data_atualizacao = row[8]
+        for row in c:
+            anuncio = Anuncio()
+            anuncio.identifier = row[0]
+            anuncio.usuario_id = row[1]
+            anuncio.titulo = row[2]
+            anuncio.conteudo = row[3]
+            anuncio.aprovado = row[4]
+            anuncio.data_entrada = row[5]
+            anuncio.data_saida = row[6]
+            anuncio.data_cadastro = row[7]
+            anuncio.data_atualizacao = row[8]
+            list_all.append(anuncio)
         c.close()
         return list_all
+
+    def search(self, title: str, start: int, limit: int):
+        c = self.db.con.cursor()
+        c.execute("""SELECT id, usuario_id, titulo, conteudo, aprovado, data_entrada, data_saida, data_cadastro, 
+                  data_atualizacao FROM anuncio WHERE titulo LIKE %s ORDER BY data_entrada DESC LIMIT %s, %s""",
+                  (title, start, limit))
+        list_all = []
+        for row in c:
+            anuncio = Anuncio()
+            anuncio.identifier = row[0]
+            anuncio.usuario_id = row[1]
+            anuncio.titulo = row[2]
+            anuncio.conteudo = row[3]
+            anuncio.aprovado = row[4]
+            anuncio.data_entrada = row[5]
+            anuncio.data_saida = row[6]
+            anuncio.data_cadastro = row[7]
+            anuncio.data_atualizacao = row[8]
+            list_all.append(anuncio)
+        c.close()
+        return list_all
+
+    def total(self):
+        c = self.db.con.cursor()
+        c.execute("SELECT COUNT(id) AS total FROM anuncio")
+        result = c.fetchone()
+        number_of_rows = result[0]
+        return number_of_rows
+
+    def count(self, title):
+        c = self.db.con.cursor()
+        c.execute("SELECT COUNT(id) AS total FROM anuncio WHERE titulo LIKE %s", title)
+        result = c.fetchone()
+        number_of_rows = result[0]
+        return number_of_rows
 
     @staticmethod
     def has_ownership() -> bool:
