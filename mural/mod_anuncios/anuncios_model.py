@@ -87,11 +87,11 @@ class Anuncio(BaseModel):
         c.close()
         return list_all
 
-    def search(self, title: str, start: int, limit: int):
+    def search(self, text: str, start: int, limit: int):
         c = self.db.con.cursor()
         c.execute("""SELECT id, usuario_id, titulo, conteudo, aprovado, data_entrada, data_saida, data_cadastro, 
-                  data_atualizacao FROM anuncio WHERE titulo LIKE %s ORDER BY data_entrada DESC LIMIT %s, %s""",
-                  (title, start, limit))
+                  data_atualizacao FROM anuncio WHERE titulo LIKE %s OR conteudo LIKE %s ORDER BY data_entrada DESC LIMIT %s, %s""",
+                  (text, text, start, limit))
         list_all = []
         for row in c:
             anuncio = Anuncio()
@@ -115,9 +115,9 @@ class Anuncio(BaseModel):
         number_of_rows = result[0]
         return number_of_rows
 
-    def count(self, title):
+    def count(self, text):
         c = self.db.con.cursor()
-        c.execute("SELECT COUNT(id) AS total FROM anuncio WHERE titulo LIKE %s", title)
+        c.execute("SELECT COUNT(id) AS total FROM anuncio WHERE titulo LIKE %s OR conteudo LIKE %s", (text, text))
         result = c.fetchone()
         number_of_rows = result[0]
         return number_of_rows

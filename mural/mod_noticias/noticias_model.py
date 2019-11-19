@@ -68,18 +68,53 @@ class Noticia(BaseModel):
         c.execute("""SELECT id, usuario_id, titulo, conteudo, data_entrada, data_saida, data_cadastro, data_atualizacao
                 FROM noticia ORDER BY data_entrada DESC""")
         list_all = []
-        for (row, key) in c:
-            list_all[key] = Noticia()
-            list_all[key].identifier = row[0]
-            list_all[key].usuario_id = row[1]
-            list_all[key].titulo = row[2]
-            list_all[key].conteudo = row[3]
-            list_all[key].data_entrada = row[4]
-            list_all[key].data_saida = row[5]
-            list_all[key].data_cadastro = row[6]
-            list_all[key].data_atualizacao = row[7]
+        for row in c:
+            noticia = Noticia()
+            noticia.identifier = row[0]
+            noticia.usuario_id = row[1]
+            noticia.titulo = row[2]
+            noticia.conteudo = row[3]
+            noticia.data_entrada = row[4]
+            noticia.data_saida = row[5]
+            noticia.data_cadastro = row[6]
+            noticia.data_atualizacao = row[7]
+            list_all.append(noticia)
         c.close()
         return list_all
+
+    def search(self, text: str, start: int, limit: int):
+        c = self.db.con.cursor()
+        c.execute("""SELECT id, usuario_id, titulo, conteudo, data_entrada, data_saida, data_cadastro, data_atualizacao
+                    FROM noticia WHERE titulo = %s OR conteudo = %s ORDER BY data_entrada DESC LIMIT %s, %s""",
+                  (text, text, start, limit))
+        list_all = []
+        for row in c:
+            noticia = Noticia()
+            noticia.identifier = row[0]
+            noticia.usuario_id = row[1]
+            noticia.titulo = row[2]
+            noticia.conteudo = row[3]
+            noticia.data_entrada = row[4]
+            noticia.data_saida = row[5]
+            noticia.data_cadastro = row[6]
+            noticia.data_atualizacao = row[7]
+            list_all.append(noticia)
+        c.close()
+        return list_all
+
+    def total(self):
+        c = self.db.con.cursor()
+        c.execute("SELECT COUNT(id) AS total FROM noticia")
+        result = c.fetchone()
+        number_of_rows = result[0]
+        return number_of_rows
+
+    def count(self, text):
+        c = self.db.con.cursor()
+        c.execute("SELECT COUNT(id) AS total FROM noticia WHERE titulo = %s OR conteudo = %s", (text, text))
+        result = c.fetchone()
+        number_of_rows = result[0]
+        return number_of_rows
 
     @staticmethod
     def has_ownership() -> bool:

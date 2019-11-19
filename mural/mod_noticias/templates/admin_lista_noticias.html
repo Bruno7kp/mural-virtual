@@ -6,6 +6,19 @@
         <!-- Page Heading -->
         <h1 class="h3 mb-4 text-gray-800">Notícias</h1>
 
+        <div class="card">
+            <div class="card-body">
+                <table data-table-url="{{ url_for('anuncios.admin_busca') }}" class="table">
+                    <thead>
+                        <tr>
+                            <th>Cód.</th>
+                            <th>Título</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
     </div>
     <!-- /.container-fluid -->
 {% endblock %}
