@@ -41,7 +41,7 @@ permissions = [
     Resource("cadastra.usuario", roles=[Roles.admin, Roles.visitante]),
     Resource("edita.usuario", roles=[Roles.admin], author=[Roles.mod_noticia, Roles.mod_aviso, Roles.usuario]),
     Resource("remove.usuario", roles=[Roles.admin]),
-    Resource("cadastra.anuncio", roles=[Roles.admin, Roles.mod_noticia, Roles.mod_aviso], author=[Roles.usuario]),
+    Resource("cadastra.anuncio", roles=[Roles.admin, Roles.mod_noticia, Roles.mod_aviso, Roles.usuario]),
     Resource("edita.anuncio", roles=[Roles.admin, Roles.mod_noticia, Roles.mod_aviso], author=[Roles.usuario]),
     Resource("remove.anuncio", roles=[Roles.admin], author=[Roles.mod_noticia, Roles.mod_aviso]),
     Resource("aprova.anuncio", roles=[Roles.admin, Roles.mod_noticia, Roles.mod_aviso])
@@ -111,7 +111,7 @@ class Auth:
             if Roles(Auth.user.get_role()) in permission.roles:
                 # Se o nível do usuário está entre os permitidos
                 return True
-            elif Roles(Auth.user.get_role()) in permission.author and relation is BaseModel:
+            elif Roles(Auth.user.get_role()) in permission.author and isinstance(relation, BaseModel):
                 # Se é permitido acessar um recurso relacionado ao usuário (Ex: Anúncio cadastrado pelo próprio usuário)
                 return Auth.user.get_owner_id() == relation.get_owner_id()
         return False

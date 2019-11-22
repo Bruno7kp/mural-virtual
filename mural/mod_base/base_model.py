@@ -1,7 +1,7 @@
 from typing import List
 
 import pymysql
-from flask import jsonify
+from flask import jsonify, render_template
 
 from settings import DB_HOST, DB_USER, DB_PASSWORD, DB_NAME
 import abc
@@ -98,3 +98,7 @@ def data_tables_response(draw: int, total: int, filtered: int, data: List[BaseMo
         'recordsTotal': total,
         'recordsFiltered': filtered
     })
+
+
+def admin_403_response():
+    return render_template('admin_403.html'), 403
