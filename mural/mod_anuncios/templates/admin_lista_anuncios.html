@@ -8,11 +8,12 @@
 
         <div class="card">
             <div class="card-body">
-                <table data-table-url="{{ url_for('anuncios.admin_busca') }}" class="table">
+                <table data-table-url="{{ url_for('anuncios.admin_busca') }}" class="table default-table">
                     <thead>
                         <tr>
                             <th>Cód.</th>
-                            <th>Título</th>
+                            <th class="w-75">Título</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                 </table>

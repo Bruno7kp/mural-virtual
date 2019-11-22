@@ -1,5 +1,9 @@
+import time
 from enum import Enum
+from functools import wraps
 from typing import Union, List
+
+from flask import session, redirect, url_for
 
 
 class Roles(Enum):
@@ -46,6 +50,13 @@ permissions = [
 
 class Auth:
     user = None
+
+    def __init__(self):
+        from mural.mod_usuarios import Usuario
+        self.user = Usuario()
+        if 'user' in session:
+            userid = session['user'].id
+            self.user.select(userid)
 
     @staticmethod
     def in_role(role: Roles) -> bool:
@@ -104,3 +115,22 @@ class Auth:
                 # Se é permitido acessar um recurso relacionado ao usuário (Ex: Anúncio cadastrado pelo próprio usuário)
                 return Auth.user.get_owner_id() == relation.get_owner_id()
         return False
+
+
+SESSION_LIMIT = 30
+
+
+def logado(f):
+    """Verifica se usuario esta logado, impede que acesse o site caso tenha atingido o limite de tempo na sessao"""
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user' not in session:
+            return redirect(url_for('usuarios.entrar'))
+        if 'time' in session:
+            now = time.time()
+            diff_seconds = now - session['time']
+            diff_minutes = diff_seconds / 60
+            if diff_minutes >= SESSION_LIMIT:
+                return redirect(url_for('usuarios.entrar', erro=2))
+        return f(*args, **kwargs)
+    return decorated_function

@@ -1,0 +1,43 @@
+{% extends "admin_modelo.html" %}
+{% block content %}
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <h1 class="h3 mb-4 text-gray-800">{{ 'Adicionar' if anuncio.identifier == 0 else 'Editar' }} anúncio</h1>
+
+        <div class="card">
+            <div class="card-body">
+                <form method="post" action="{{ url_for('anuncios.admin_cadastro') if anuncio.identifier == 0 else url_for('anuncios.admin_edicao', identifier=anuncio.identifier) }}">
+                    <div class="row">
+                        <div class="col-lg-6 col-sm-12">
+                            <div class="form-group">
+                                <label for="titulo">Título</label>
+                                <input type="text" name="titulo" id="titulo" class="form-control" placeholder="Título" value="{{ anuncio.titulo }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="conteudo">Conteúdo</label>
+                                <textarea name="conteudo" id="conteudo" class="form-control" placeholder="Conteúdo" rows="4">{{ anuncio.conteudo }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-12">
+                            <div class="form-group">
+                                <label for="data_entrada">Data de entrada do anúncio</label>
+                                <input type="datetime-local" name="data_entrada" id="data_entrada" class="form-control" value="{{ anuncio.data_entrada }}">
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-12">
+                            <div class="form-group">
+                                <label for="data_entrada">Data de saída do anúncio</label>
+                                <input type="datetime-local" name="data_entrada" id="data_entrada" class="form-control" value="{{ anuncio.data_entrada }}">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+{% endblock %}

@@ -15,6 +15,24 @@ class Noticia(BaseModel):
         self.data_cadastro = data_cadastro
         self.data_atualizacao = data_atualizacao
 
+    def serialize(self):
+        return {
+            'id': self.identifier,
+            'usuario_id': self.usuario_id,
+            'titulo': self.titulo,
+            'conteudo': self.conteudo,
+            'data_entrada': self.data_entrada,
+            'data_saida': self.data_saida,
+            'data_cadastro': self.data_cadastro,
+            'data_atualizacao': self.data_atualizacao,
+        }
+
+    def serialize_array(self):
+        return [
+            self.identifier,
+            self.titulo
+        ]
+
     def insert(self) -> int:
         c = self.db.con.cursor()
         c.execute("""INSERT INTO noticia 
@@ -85,7 +103,7 @@ class Noticia(BaseModel):
     def search(self, text: str, start: int, limit: int):
         c = self.db.con.cursor()
         c.execute("""SELECT id, usuario_id, titulo, conteudo, data_entrada, data_saida, data_cadastro, data_atualizacao
-                    FROM noticia WHERE titulo = %s OR conteudo = %s ORDER BY data_entrada DESC LIMIT %s, %s""",
+                    FROM noticia WHERE titulo LIKE %s OR conteudo LIKE %s ORDER BY data_entrada DESC LIMIT %s, %s""",
                   (text, text, start, limit))
         list_all = []
         for row in c:
@@ -111,7 +129,7 @@ class Noticia(BaseModel):
 
     def count(self, text):
         c = self.db.con.cursor()
-        c.execute("SELECT COUNT(id) AS total FROM noticia WHERE titulo = %s OR conteudo = %s", (text, text))
+        c.execute("SELECT COUNT(id) AS total FROM noticia WHERE titulo LIKE %s OR conteudo LIKE %s", (text, text))
         result = c.fetchone()
         number_of_rows = result[0]
         return number_of_rows

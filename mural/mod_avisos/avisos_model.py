@@ -16,6 +16,24 @@ class Aviso(BaseModel):
         self.data_cadastro = data_cadastro
         self.data_atualizacao = data_atualizacao
 
+    def serialize(self):
+        return {
+            'id': self.identifier,
+            'usuario_id': self.usuario_id,
+            'titulo': self.titulo,
+            'conteudo': self.conteudo,
+            'data_entrada': self.data_entrada,
+            'data_saida': self.data_saida,
+            'data_cadastro': self.data_cadastro,
+            'data_atualizacao': self.data_atualizacao,
+        }
+
+    def serialize_array(self):
+        return [
+            self.identifier,
+            self.titulo
+        ]
+
     def insert(self) -> int:
         c = self.db.con.cursor()
         c.execute("""INSERT INTO aviso 

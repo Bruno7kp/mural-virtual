@@ -12,9 +12,27 @@ def anuncios():
     return render_template("formAnuncios.html")
 
 # Rotas da área administrativa
-@bp_anuncios.route("/admin/anuncios")
+@bp_anuncios.route("/admin/anuncios", methods=["GET"])
 def admin_lista():
     return render_template("admin_lista_anuncios.html")
+
+
+@bp_anuncios.route("/admin/anuncios/aprovacao", methods=["GET"])
+def admin_aprovacao():
+    return render_template("admin_lista_anuncios.html")
+
+
+@bp_anuncios.route("/admin/anuncios/adicionar", methods=["GET"])
+def admin_cadastro():
+    anuncio = Anuncio()
+    return render_template("admin_form_anuncio.html", anuncio=anuncio)
+
+
+@bp_anuncios.route("/admin/anuncios/<int:identifier>", methods=["GET"])
+def admin_edicao(identifier: int):
+    anuncio = Anuncio()
+    anuncio.select(identifier)
+    return render_template("admin_form_anuncio.html", anuncio=anuncio)
 
 
 @bp_anuncios.route('/admin/anuncios/busca')
@@ -29,8 +47,3 @@ def admin_busca():
     total = anuncio.total()
     filtrado = anuncio.count(busca)
     return data_tables_response(draw, total, filtrado, resultados)
-
-
-@bp_anuncios.route("/admin/anuncios/aprovacao")
-def admin_aprovacao():
-    return render_template("admin_lista_anuncios.html")

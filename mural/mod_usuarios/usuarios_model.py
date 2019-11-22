@@ -1,8 +1,11 @@
+import bcrypt as bcrypt
+from flask import url_for
+
 from mural.mod_base import BaseModel, DataBase
 
 
 class Usuario(BaseModel):
-    def __init__(self, identifier=0, nome="", email="", telefone="", cpf="", senha="", nivel=4,
+    def __init__(self, identifier=0, nome="", email="", telefone="", cpf="", senha="", nivel=5,
                  data_cadastro="", data_atualizacao=""):
         super().__init__()
         self.identifier = identifier
@@ -14,6 +17,26 @@ class Usuario(BaseModel):
         self.nivel = nivel
         self.data_cadastro = data_cadastro
         self.data_atualizacao = data_atualizacao
+
+    def serialize(self):
+        return {
+            'id': self.identifier,
+            'nome': self.nome,
+            'email': self.email,
+            'telefone': self.telefone,
+            'cpf': self.cpf,
+            'nivel': self.nivel,
+            'data_cadastro': self.data_cadastro,
+            'data_atualizacao': self.data_atualizacao,
+        }
+
+    def serialize_array(self):
+        return [
+            self.identifier,
+            self.nome,
+            '<a href="' + url_for('usuarios.admin_edicao', identifier=self.identifier) +
+            '" class="btn btn-warning btn-sm"><i class="fa fa-pen"></i> Editar</a>'
+        ]
 
     def insert(self) -> int:
         c = self.db.con.cursor()
@@ -60,17 +83,48 @@ class Usuario(BaseModel):
         c.execute("""SELECT id, nome, email, telefone, cpf, senha, nivel, data_cadastro, data_atualizacao 
                 FROM usuario WHERE id = %s""", identifier)
         for row in c:
-            self.identifier = row[0]
-            self.nome = row[1]
-            self.email = row[2]
-            self.telefone = row[3]
-            self.cpf = row[4]
-            self.senha = row[5]
-            self.nivel = row[6]
-            self.data_cadastro = row[7]
-            self.data_atualizacao = row[8]
+            self.populate_from_db(row)
         c.close()
         return self
+
+    def select_by_login(self, login):
+        c = self.db.con.cursor()
+        c.execute("""SELECT id, nome, email, telefone, cpf, senha, nivel, data_cadastro, data_atualizacao 
+                FROM usuario WHERE cpf = %s""", (login,))
+        for row in c:
+            self.populate_from_db(row)
+        c.close()
+        return self
+
+    def populate_from_db(self, row):
+        self.identifier = row[0]
+        self.nome = row[1]
+        self.email = row[2]
+        self.telefone = row[3]
+        self.cpf = row[4]
+        self.senha = row[5]
+        self.nivel = row[6]
+        self.data_cadastro = row[7]
+        self.data_atualizacao = row[8]
+
+    def login_exists(self, login, exceptid):
+        c = self.db.con.cursor()
+        c.execute("""SELECT id FROM usuario WHERE id != %s AND cpf = %s""", (exceptid, login))
+        rows = c.rowcount
+        c.close()
+        return rows > 0
+
+    @staticmethod
+    def valid_pass(password):
+        return len(password) >= 4
+
+    @staticmethod
+    def hash(password):
+        return bcrypt.hashpw(bytes(password, encoding='utf-8'), bcrypt.gensalt())
+
+    @staticmethod
+    def check_hash(password, hashed):
+        return bcrypt.checkpw(bytes(password, encoding='utf-8'), bytes(hashed, encoding='utf-8'))
 
     def get_role(self):
         return self.nivel
@@ -126,7 +180,8 @@ class Usuario(BaseModel):
     def insert_dummy():
         db = DataBase()
         c = db.con.cursor()
-        usuario = Usuario(0, "Fulano da Silva", "fulano@gmail.com", "49 988776655", "000.000.000-00", "1234", 4, "2019-01-01", "2019-01-01")
+        usuario = Usuario(0, "Fulano da Silva", "fulano@gmail.com", "49 988776655", "000.000.000-00",
+                          Usuario.hash("1234"), 4, "2019-01-01", "2019-01-01")
         usuario.insert()
         db.con.commit()
         c.close()
