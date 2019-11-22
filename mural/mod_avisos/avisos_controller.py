@@ -2,6 +2,7 @@
 from flask import Blueprint, render_template, request
 
 from mural.mod_avisos import Aviso
+from mural.mod_base.auth import logado
 from mural.mod_base.base_model import json_response, data_tables_response
 
 bp_avisos = Blueprint('avisos', __name__, url_prefix='/', template_folder='templates')
@@ -13,11 +14,13 @@ def avisos():
 
 # Rotas da área administrativa
 @bp_avisos.route('/admin/avisos')
+@logado
 def admin_lista():
     return render_template('admin_lista_avisos.html')
 
 
 @bp_avisos.route('/admin/avisos/busca')
+@logado
 def admin_busca():
     aviso = Aviso()
     busca = request.args.get('search[value]')

@@ -2,40 +2,46 @@
 from flask import Blueprint, render_template, request
 
 from mural.mod_anuncios import Anuncio
+from mural.mod_base.auth import logado
 from mural.mod_base.base_model import data_tables_response
 
 bp_anuncios = Blueprint('anuncios', __name__, url_prefix='/', template_folder='templates')
 
 # Rotas da área pública
-@bp_anuncios.route("/anuncios")
+@bp_anuncios.route('/anuncios')
 def anuncios():
-    return render_template("formAnuncios.html")
+    return render_template('formAnuncios.html')
 
 # Rotas da área administrativa
-@bp_anuncios.route("/admin/anuncios", methods=["GET"])
+@bp_anuncios.route('/admin/anuncios', methods=['GET'])
+@logado
 def admin_lista():
-    return render_template("admin_lista_anuncios.html")
+    return render_template('admin_lista_anuncios.html')
 
 
-@bp_anuncios.route("/admin/anuncios/aprovacao", methods=["GET"])
+@bp_anuncios.route('/admin/anuncios/aprovacao', methods=['GET'])
+@logado
 def admin_aprovacao():
-    return render_template("admin_lista_anuncios.html")
+    return render_template('admin_lista_anuncios.html')
 
 
-@bp_anuncios.route("/admin/anuncios/adicionar", methods=["GET"])
+@bp_anuncios.route('/admin/anuncios/adicionar', methods=['GET'])
+@logado
 def admin_cadastro():
     anuncio = Anuncio()
-    return render_template("admin_form_anuncio.html", anuncio=anuncio)
+    return render_template('admin_form_anuncio.html', anuncio=anuncio)
 
 
-@bp_anuncios.route("/admin/anuncios/<int:identifier>", methods=["GET"])
+@bp_anuncios.route('/admin/anuncios/<int:identifier>', methods=['GET'])
+@logado
 def admin_edicao(identifier: int):
     anuncio = Anuncio()
     anuncio.select(identifier)
-    return render_template("admin_form_anuncio.html", anuncio=anuncio)
+    return render_template('admin_form_anuncio.html', anuncio=anuncio)
 
 
-@bp_anuncios.route('/admin/anuncios/busca')
+@bp_anuncios.route('/admin/anuncios/busca', methods=['GET'])
+@logado
 def admin_busca():
     anuncio = Anuncio()
     busca = request.args.get('search[value]')

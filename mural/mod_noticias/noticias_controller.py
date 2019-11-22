@@ -1,23 +1,26 @@
 # coding: utf-8
 from flask import Blueprint, render_template, request
 
+from mural.mod_base.auth import logado
 from mural.mod_base.base_model import data_tables_response
 from mural.mod_noticias import Noticia
 
 bp_noticias = Blueprint('noticias', __name__, url_prefix='/', template_folder='templates')
 
 # Rotas da área pública
-@bp_noticias.route("/noticias")
+@bp_noticias.route('/noticias')
 def noticias():
-    return render_template("formNoticias.html")
+    return render_template('formNoticias.html')
 
 # Rotas da área administrativa
-@bp_noticias.route("/admin/noticias")
+@bp_noticias.route('/admin/noticias')
+@logado
 def admin_lista():
-    return render_template("admin_lista_noticias.html")
+    return render_template('admin_lista_noticias.html')
 
 
 @bp_noticias.route('/admin/noticias/busca')
+@logado
 def admin_busca():
     noticia = Noticia()
     busca = request.args.get('search[value]')
