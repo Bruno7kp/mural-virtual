@@ -54,19 +54,25 @@
             </a>
         </li>
 
+        {% if auth.is_allowed('cadastra.noticia') %}
         <li class="nav-item">
             <a class="nav-link" href="{{ url_for('noticias.admin_lista') }}">
                 <i class="fas fa-fw fa-newspaper"></i>
                 <span>Notícias</span>
             </a>
         </li>
+        {% endif %}
 
+        {% if auth.is_allowed('cadastra.aviso') %}
         <li class="nav-item">
             <a class="nav-link" href="{{ url_for('avisos.admin_lista') }}">
                 <i class="fa fa-fw fa-exclamation-triangle"></i>
                 <span>Avisos</span>
             </a>
         </li>
+        {% endif %}
+
+        {% if auth.is_allowed('edita.anuncio') %}
 
         <!-- Divider -->
         <li class="dropdown-divider mx-3 mb-3"></li>
@@ -82,6 +88,10 @@
                 <span>Aprovação de anúncios</span>
             </a>
         </li>
+
+        {% endif  %}
+
+        {% if auth.is_allowed('edita.universidade') %}
 
         <!-- Divider -->
         <li class="dropdown-divider mx-3 mb-3"></li>
@@ -111,6 +121,8 @@
                 <span>Logs de ações</span>
             </a>
         </li>
+
+        {% endif %}
 
         <!-- Divider -->
         <li class="dropdown-divider mx-3 mb-3"></li>
@@ -201,6 +213,8 @@
 
     <!-- Custom scripts for all pages-->
     <script src="{{ url_for('static', filename='admin/js/sb-admin-2.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/imask.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/add-mask.js') }}"></script>
     <script src="{{ url_for('static', filename='admin/js/script.js') }}"></script>
 {% endblock %}
 </body>

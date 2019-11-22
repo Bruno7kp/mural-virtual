@@ -3,7 +3,7 @@ import time
 
 from flask import Blueprint, render_template, request, session, redirect, url_for
 
-from mural.mod_base.auth import logado
+from mural.mod_base.auth import logado, Roles
 from mural.mod_base.base_model import json_response
 from mural.mod_usuarios import Usuario
 
@@ -40,10 +40,11 @@ def login():
 def cadastrar():
     # Cadastro via ajax
     usuario = Usuario()
+    usuario.nivel = Roles.usuario
     populate_from_request(usuario)
 
     if not Usuario.valid_pass(request.form['senha']):
-        return json_response(message='A senha deve ter pelo menos 4 dígitos', data=[]), 400
+        return json_response(message='A senha deve ter pelo menos 6 dígitos', data=[]), 400
 
     if usuario.login_exists(usuario.cpf, 0):
         return json_response(message='O CPF já está em uso, utilize outro', data=[]), 400
@@ -75,4 +76,5 @@ def populate_from_request(usuario: Usuario):
     usuario.email = request.form['email']
     usuario.telefone = request.form['telefone']
     usuario.cpf = request.form['cpf']
-    usuario.nivel = int(request.form['nivel'])
+    if 'nivel' in request.form:
+        usuario.nivel = int(request.form['nivel'])

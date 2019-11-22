@@ -53,10 +53,10 @@ class Auth:
 
     def __init__(self):
         from mural.mod_usuarios import Usuario
-        self.user = Usuario()
+        Auth.user = Usuario()
         if 'user' in session:
-            userid = session['user'].id
-            self.user.select(userid)
+            userid = session['user']['identifier']
+            Auth.user.select(userid)
 
     @staticmethod
     def in_role(role: Roles) -> bool:
@@ -66,7 +66,7 @@ class Auth:
         """
         from mural.mod_usuarios import Usuario
         if Auth.user is Usuario:
-            return Auth.user.get_role() == role
+            return Roles(Auth.user.get_role()) == role
         else:
             return False
 
@@ -107,11 +107,11 @@ class Auth:
         from mural.mod_usuarios import Usuario
         from mural.mod_base import BaseModel
         # Se o recurso não for encontrado, ou se não tiver um usuário, retornará falso
-        if permission is not None and Auth.user is Usuario:
-            if Auth.user.get_role() in permission.roles:
+        if permission is not None and isinstance(Auth.user, Usuario):
+            if Roles(Auth.user.get_role()) in permission.roles:
                 # Se o nível do usuário está entre os permitidos
                 return True
-            elif Auth.user.get_role() in permission.author and relation is BaseModel:
+            elif Roles(Auth.user.get_role()) in permission.author and relation is BaseModel:
                 # Se é permitido acessar um recurso relacionado ao usuário (Ex: Anúncio cadastrado pelo próprio usuário)
                 return Auth.user.get_owner_id() == relation.get_owner_id()
         return False

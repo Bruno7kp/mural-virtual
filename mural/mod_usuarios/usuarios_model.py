@@ -20,7 +20,7 @@ class Usuario(BaseModel):
 
     def serialize(self):
         return {
-            'id': self.identifier,
+            'identifier': self.identifier,
             'nome': self.nome,
             'email': self.email,
             'telefone': self.telefone,
@@ -116,7 +116,7 @@ class Usuario(BaseModel):
 
     @staticmethod
     def valid_pass(password):
-        return len(password) >= 4
+        return len(password) >= 6
 
     @staticmethod
     def hash(password):

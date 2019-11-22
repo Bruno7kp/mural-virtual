@@ -17,21 +17,23 @@
                                     </div>
                                     <form method="post" action="{{ url_for('usuarios.login') }}">
                                         <div class="form-group">
-                                            <input class="form-control" name="login" id="login" placeholder="CPF" type="text">
+                                            <label for="login">CPF</label>
+                                            <input class="form-control mask-cpf" name="login" id="login" placeholder="CPF" type="text" required>
                                         </div>
                                         <div class="form-group">
-                                            <input class="form-control" name="senha" id="senha" placeholder="Senha" type="password">
+                                            <label for="senha">Senha</label>
+                                            <input class="form-control" name="senha" id="senha" placeholder="Senha" type="password" required>
                                         </div>
                                         <button type="submit" class="btn btn-primary btn-user btn-block">
-                                            Login
+                                            Entrar
                                         </button>
                                     </form>
                                     <hr>
-                                    <div class="text-center">
+                                    {#  <div class="text-center">
                                         <a class="small" href="#">Esqueceu a senha?</a>
-                                    </div>
+                                    </div> #}
                                     <div class="text-center">
-                                        <a class="small" href="#">Crie uma conta!</a>
+                                        <a class="small" href="{{ url_for('usuarios.cadastro') }}">Crie uma conta!</a>
                                     </div>
                                 </div>
                             </div>
