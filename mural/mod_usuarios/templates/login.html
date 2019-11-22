@@ -27,6 +27,14 @@
                                         <button type="submit" class="btn btn-primary btn-user btn-block">
                                             Entrar
                                         </button>
+                                        {% if mensagem != None %}
+                                        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                                            {{ mensagem }}
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        {% endif %}
                                     </form>
                                     <hr>
                                     {#  <div class="text-center">
@@ -40,11 +48,8 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
-
     </div>
     <!-- /.container-fluid -->
 {% endblock %}

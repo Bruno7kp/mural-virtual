@@ -15,10 +15,10 @@
                                         <h1 class="h4 text-gray-900 mb-4">Bem vindo ao Mural Virtual!</h1>
                                         <p>Preencha o formulário abaixo para entrar no sistema.</p>
                                     </div>
-                                    <form method="post" action="{{ url_for('usuarios.cadastrar') }}">
+                                    <form method="post" action="{{ url_for('usuarios.cadastrar') }}" class="form-data">
                                         <div class="form-group">
                                             <label for="nome">Nome</label>
-                                            <input class="form-control" id="nome" name="nome" placeholder="Insire seu nome completo"
+                                            <input class="form-control" id="nome" name="nome" placeholder="Insira seu nome completo"
                                                    type="text" required>
                                         </div>
                                         <div class="form-group">
@@ -30,8 +30,8 @@
                                             <input class="form-control mask-phone" type="tel" id="telefone" name="telefone" placeholder="(49) 00000-0000" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="login">CPF</label>
-                                            <input class="form-control mask-cpf" name="login" id="login" placeholder="000.000.000-00" type="text" required>
+                                            <label for="cpf">CPF</label>
+                                            <input class="form-control mask-cpf" name="cpf" id="cpf" placeholder="000.000.000-00" type="text" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="senha">Senha</label>

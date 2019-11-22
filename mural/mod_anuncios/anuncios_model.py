@@ -1,7 +1,7 @@
 from flask import url_for
 
 from mural.mod_usuarios import Usuario
-from mural.mod_base import BaseModel, DataBase
+from mural.mod_base import BaseModel, DataBase, Auth, Roles
 
 
 class Anuncio(BaseModel):
@@ -110,11 +110,12 @@ class Anuncio(BaseModel):
         c.close()
         return list_all
 
-    def search(self, text: str, start: int, limit: int):
+    def search(self, text: str, start: int, limit: int, user_filter: int = 0):
         c = self.db.con.cursor()
         c.execute("""SELECT id, usuario_id, titulo, conteudo, aprovado, data_entrada, data_saida, data_cadastro, 
-                  data_atualizacao FROM anuncio WHERE titulo LIKE %s OR conteudo LIKE %s ORDER BY data_entrada DESC LIMIT %s, %s""",
-                  (text, text, start, limit))
+                                data_atualizacao FROM anuncio WHERE (titulo LIKE %s OR conteudo LIKE %s) AND 
+                                (%s = 0 OR %s = usuario_id) ORDER BY data_entrada DESC LIMIT %s, %s""",
+                  (text, text, user_filter, user_filter, start, limit))
         list_all = []
         for row in c:
             anuncio = Anuncio()
@@ -131,16 +132,17 @@ class Anuncio(BaseModel):
         c.close()
         return list_all
 
-    def total(self):
+    def total(self, user_filter: int = 0):
         c = self.db.con.cursor()
-        c.execute("SELECT COUNT(id) AS total FROM anuncio")
+        c.execute("SELECT COUNT(id) AS total FROM anuncio WHERE %s = 0 OR %s = usuario_id", (user_filter, user_filter))
         result = c.fetchone()
         number_of_rows = result[0]
         return number_of_rows
 
-    def count(self, text):
+    def count(self, text, user_filter: int = 0):
         c = self.db.con.cursor()
-        c.execute("SELECT COUNT(id) AS total FROM anuncio WHERE titulo LIKE %s OR conteudo LIKE %s", (text, text))
+        c.execute("""SELECT COUNT(id) AS total FROM anuncio WHERE (titulo LIKE %s OR conteudo LIKE %s) AND 
+                                (%s = 0 OR %s = usuario_id)""", (text, text, user_filter, user_filter))
         result = c.fetchone()
         number_of_rows = result[0]
         return number_of_rows

@@ -12,7 +12,13 @@ bp_usuarios = Blueprint('usuarios', __name__, url_prefix='/', template_folder='t
 # Rotas da área pública
 @bp_usuarios.route('/entrar', methods=['GET'])
 def entrar():
-    return render_template('login.html')
+    erro = request.args.get('erro')
+    mensagem = None
+    if erro == '1':
+        mensagem = 'Credenciais inválidas, tente novamente!'
+    elif erro == '2':
+        mensagem = 'Sua sessão expirou, faça login novamente!'
+    return render_template('login.html', mensagem=mensagem)
 
 
 @bp_usuarios.route('/cadastro')
@@ -25,7 +31,6 @@ def login():
     cpf = request.form.get('login')
     senha = request.form.get('senha')
     usuario = Usuario()
-    print(cpf)
     usuario.select_by_login(cpf)
     if usuario.identifier > 0 and Usuario.check_hash(senha, usuario.senha):
         usuario.permanent = True
@@ -36,11 +41,10 @@ def login():
 
 
 @bp_usuarios.route('/cadastro', methods=['POST'])
-@logado
 def cadastrar():
     # Cadastro via ajax
     usuario = Usuario()
-    usuario.nivel = Roles.usuario
+    usuario.nivel = Roles.usuario.value
     populate_from_request(usuario)
 
     if not Usuario.valid_pass(request.form['senha']):
@@ -52,7 +56,7 @@ def cadastrar():
     usuario.senha = Usuario.hash(request.form['senha'])
     identifier = usuario.insert()
     if identifier > 0:
-        return json_response(message='Cadastrado realizado!', data=[usuario], redirect=url_for('home.admin_home')), 201
+        return json_response(message='Cadastrado realizado!', data=[usuario], redirect=url_for('usuarios.entrar')), 201
     else:
         return json_response(message='Não foi possível cadastrar sua conta', data=[]), 400
 

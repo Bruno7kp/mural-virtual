@@ -65,7 +65,7 @@ class Auth:
         :return: Indica se o usuário está no nível de permissão passado por parâmetro
         """
         from mural.mod_usuarios import Usuario
-        if Auth.user is Usuario:
+        if isinstance(Auth.user, Usuario):
             return Roles(Auth.user.get_role()) == role
         else:
             return False
