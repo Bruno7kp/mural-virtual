@@ -2,7 +2,7 @@
 from datetime import timedelta
 
 from flask import Flask, redirect, url_for, render_template
-from mural import bp_home, bp_avisos, bp_noticias, bp_anuncios, bp_dashboard, bp_banner, bp_universidade, bp_usuarios, \
+from mural import bp_home, bp_avisos, bp_noticias, bp_anuncios, bp_banner, bp_universidade, bp_usuarios, \
     bp_logs
 from mural.mod_base.auth import SESSION_LIMIT, Auth
 
@@ -21,7 +21,6 @@ app.register_blueprint(bp_home)
 app.register_blueprint(bp_noticias)
 app.register_blueprint(bp_avisos)
 app.register_blueprint(bp_anuncios)
-app.register_blueprint(bp_dashboard)
 app.register_blueprint(bp_banner)
 app.register_blueprint(bp_universidade)
 app.register_blueprint(bp_usuarios)

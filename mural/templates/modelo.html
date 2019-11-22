@@ -30,15 +30,14 @@
                             <i class="fa fa-2x fa-bars"></i>
                         </a>
                         <div class="dropdown-menu" role="menu">
-                            <a class="dropdown-item" role="presentation" href="{{ url_for("home.home")}}">Menu</a>
+                            <a class="dropdown-item" role="presentation" href="{{ url_for("home.home")}}">Home</a>
                             <a class="dropdown-item" role="presentation" href="{{ url_for("noticias.noticias")}}">Noticias</a>
                             <a class="dropdown-item" role="presentation" href="{{ url_for("avisos.avisos")}}">Avisos</a>
                             <a class="dropdown-item" role="presentation" href="{{ url_for("anuncios.anuncios")}}">Anúncios</a>
-                            <a class="dropdown-item" role="presentation" href="{{ url_for("dashboard.dashboard")}}">Dashboard</a>
                         </div>
                     </li>
                 </ul>
-                <img alt="Logo Uniplac" style="width: 50px;height: 50px;margin: auto;" src="static/assets/img/logo-uniplac.png" width="50px" height="50px">
+                <a class="mx-auto" href="{{ url_for("home.home")}}"><img alt="Logo Uniplac" style="width: 50px;height: 50px;" src="{{ url_for("static", filename="assets/img/logo-uniplac.png")}}"></a>
                 <span class="navbar-text actions">
                     <a class="text-white login" href="#">Log In</a>
                     <a class="btn btn-light action-button" role="button" href="#">Sign Up</a>

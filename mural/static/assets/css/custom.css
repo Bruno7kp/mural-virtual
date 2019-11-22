@@ -221,7 +221,7 @@ img {
   margin-bottom: 30px;
   background-color: #f2f4f5;
   padding: 10px 25px;
-  border-left: 4px solid #ed3974; }
+  border-left: 4px solid #4828ed; }
   .section-heading h5 {
     margin-bottom: 0;
     text-transform: uppercase;
@@ -2208,6 +2208,12 @@ textarea.form-control {
   display: none !important;
 }
 
-.navigation-clean-button{
+.navigation-clean-button {
   background: #2e3367cf;
 }
+
+.margTop {
+  position: relative;
+  top: 45px;
+}
+
