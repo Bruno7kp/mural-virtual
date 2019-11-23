@@ -2,6 +2,7 @@ import bcrypt as bcrypt
 from flask import url_for
 
 from mural.mod_base import BaseModel, DataBase
+from mural.mod_base.auth import role_to_str, Roles
 
 
 class Usuario(BaseModel):
@@ -34,8 +35,13 @@ class Usuario(BaseModel):
         return [
             self.identifier,
             self.nome,
+            role_to_str(Roles(self.nivel)),
+            self.cpf,
+            self.email,
             '<a href="' + url_for('usuarios.admin_edicao', identifier=self.identifier) +
-            '" class="btn btn-warning btn-sm"><i class="fa fa-pen fa-sm text-white-50"></i> Editar</a>'
+            '" class="btn btn-warning btn-sm"><i class="fa fa-pen fa-fw fa-sm text-white-50"></i> Editar</a> ' +
+            '<button data-delete="' + url_for('usuarios.admin_remover', identifier=self.identifier) +
+            '" class="btn btn-danger btn-sm"><i class="fa fa-trash fa-fw fa-sm text-white-50"></i> Remover</button>'
         ]
 
     def insert(self) -> int:
@@ -95,6 +101,41 @@ class Usuario(BaseModel):
             self.populate_from_db(row)
         c.close()
         return self
+
+    def search(self, text: str, start: int, limit: int):
+        c = self.db.con.cursor()
+        c.execute("""SELECT id, nome, email, telefone, cpf, senha, nivel, data_cadastro, data_atualizacao 
+                FROM usuario WHERE nome LIKE %s OR cpf LIKE %s ORDER BY nome ASC LIMIT %s, %s""",
+                  (text, text, start, limit))
+        list_all = []
+        for row in c:
+            usuario = Usuario()
+            usuario.identifier = row[0]
+            usuario.nome = row[1]
+            usuario.email = row[2]
+            usuario.telefone = row[3]
+            usuario.cpf = row[4]
+            usuario.senha = row[5]
+            usuario.nivel = row[6]
+            usuario.data_cadastro = row[7]
+            usuario.data_atualizacao = row[8]
+            list_all.append(usuario)
+        c.close()
+        return list_all
+
+    def total(self):
+        c = self.db.con.cursor()
+        c.execute("SELECT COUNT(id) AS total FROM usuario")
+        result = c.fetchone()
+        number_of_rows = result[0]
+        return number_of_rows
+
+    def count(self, text):
+        c = self.db.con.cursor()
+        c.execute("SELECT COUNT(id) AS total FROM usuario WHERE nome LIKE %s OR cpf LIKE %s", (text, text))
+        result = c.fetchone()
+        number_of_rows = result[0]
+        return number_of_rows
 
     def populate_from_db(self, row):
         self.identifier = row[0]

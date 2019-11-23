@@ -30,7 +30,7 @@ def admin_lista():
 def admin_cadastro():
     """ Página para cadastro de avisos """
     aviso = Aviso()
-    if Auth().is_allowed('edita.aviso', aviso):
+    if Auth().is_allowed('cadastra.aviso', aviso):
         return render_template('admin_form_aviso.html', aviso=aviso)
     else:
         return admin_403_response()

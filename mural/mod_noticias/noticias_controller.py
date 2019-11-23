@@ -28,10 +28,10 @@ def admin_lista():
 @bp_noticias.route('/admin/noticias/adicionar', methods=['GET'])
 @logado
 def admin_cadastro():
-    """ Página para cadastro de notpicias """
+    """ Página para cadastro de notícias """
     noticia = Noticia()
-    if Auth().is_allowed('edita.noticia', noticia):
-        return render_template('admin_form_noticias.html', noticia=noticia)
+    if Auth().is_allowed('cadastra.noticia', noticia):
+        return render_template('admin_form_noticia.html', noticia=noticia)
     else:
         return admin_403_response()
 
@@ -62,7 +62,7 @@ def admin_edicao(identifier: int):
     noticia.select(identifier)
     if noticia.identifier > 0:
         if Auth().is_allowed('edita.noticia', noticia):
-            return render_template('admin_form_noticias.html', noticia=noticia)
+            return render_template('admin_form_noticia.html', noticia=noticia)
         else:
             return admin_403_response()
     else:

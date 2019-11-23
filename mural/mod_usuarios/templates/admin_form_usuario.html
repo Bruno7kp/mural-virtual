@@ -1,0 +1,60 @@
+{% extends "admin_modelo.html" %}
+{% block content %}
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <h1 class="h3 mb-4 text-gray-800">{{ 'Adicionar' if usuario.identifier == 0 else 'Editar' }} usuário</h1>
+
+        <div class="card">
+            <div class="card-body">
+                <form class="form-data" method="post" action="{{ url_for('usuarios.admin_cadastrar') if usuario.identifier == 0 else url_for('usuarios.admin_editar', identifier=usuario.identifier) }}">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <label for="nome">Nome</label>
+                                        <input type="text" name="nome" id="nome" class="form-control" placeholder="Nome Completo" value="{{ usuario.nome }}" required>
+                                    </div>
+                                    {% if auth.is_allowed('edita.usuario') %}
+                                    <div class="form-group">
+                                        <label for="nivel">Nível de Usuário</label>
+                                        <select name="nivel" id="nivel" class="form-control">
+                                            <option value="1"{% if usuario.nivel == 1 %} selected{% endif %}>Nível 1 - Administrador</option>
+                                            <option value="2"{% if usuario.nivel == 2 %} selected{% endif %}>Nível 2 - Moderador de notícias</option>
+                                            <option value="3"{% if usuario.nivel == 3 %} selected{% endif %}>Nível 3 - Moderador de avisos</option>
+                                            <option value="4"{% if usuario.nivel == 4 %} selected{% endif %}>Nível 4 - Usuário</option>
+                                        </select>
+                                    </div>
+                                    {% endif %}
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input type="email" name="email" id="email" class="form-control" placeholder="email@exemplo.com" value="{{ usuario.email }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="telefone">Telefone</label>
+                                        <input type="tel" name="telefone" id="telefone" class="form-control mask-phone" placeholder="(00) 00000-0000" value="{{ usuario.telefone }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cpf">CPF</label>
+                                        <input type="text" name="cpf" id="cpf" class="form-control mask-cpf" placeholder="000.000.000-00" value="{{ usuario.cpf }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="senha">Senha</label>
+                                        <input type="password" name="senha" id="senha" class="form-control" placeholder="" value="" {% if usuario.identifier == 0 %}required{% endif %}>
+                                        <small class="d-block">* {% if usuario.identifier > 0 %}Deixe o campo em branco para manter a senha atual. {% endif %}A senha deve ter no mínimo 6 dígitos</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-success"><i class="fa fa-save fa-sm fa-fw text-white-50"></i> Salvar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+{% endblock %}

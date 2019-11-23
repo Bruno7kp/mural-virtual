@@ -40,7 +40,7 @@ def admin_aprovacao():
 def admin_cadastro():
     """ Página para cadastro de anúncios """
     anuncio = Anuncio()
-    if Auth().is_allowed('edita.anuncio', anuncio):
+    if Auth().is_allowed('cadastra.anuncio', anuncio):
         return render_template('admin_form_anuncio.html', anuncio=anuncio)
     else:
         return admin_403_response()

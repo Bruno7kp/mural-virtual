@@ -14,6 +14,19 @@ class Roles(Enum):
     visitante = 5
 
 
+def role_to_str(role: Roles):
+    if role == Roles.admin:
+        return 'Administrador'
+    elif role == Roles.mod_noticia:
+        return 'Moderador de notícia'
+    elif role == Roles.mod_aviso:
+        return 'Moderador de aviso'
+    elif role == Roles.usuario:
+        return 'Usuário'
+    else:
+        return 'Visitante'
+
+
 class Resource(object):
     def __init__(self, resource: str, roles: List[Roles], author: Union[List[Roles], None] = None):
         """
