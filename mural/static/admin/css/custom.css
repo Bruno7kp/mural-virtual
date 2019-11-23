@@ -5,3 +5,7 @@
 .bg-uniplac {
     background: #2e3367;
 }
+
+.default-table tr td:last-child {
+    text-align: right;
+}

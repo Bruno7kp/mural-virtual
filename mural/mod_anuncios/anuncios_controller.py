@@ -4,7 +4,7 @@ import datetime
 from flask import Blueprint, render_template, request
 
 from mural.mod_anuncios import Anuncio
-from mural.mod_base.auth import logado, Auth, Roles
+from mural.mod_base.auth import logado, Auth
 from mural.mod_base.base_model import data_tables_response, admin_403_response, json_response, admin_404_response
 
 bp_anuncios = Blueprint('anuncios', __name__, url_prefix='/', template_folder='templates')
@@ -63,7 +63,7 @@ def admin_cadastrar():
         else:
             return json_response(message='Não foi possível cadastrar o anúncio', data=[]), 400
     else:
-        return admin_403_response()
+        return json_response(message='Você não tem permissão para realizar esta ação', data=[]), 403
 
 
 @bp_anuncios.route('/admin/anuncios/<int:identifier>', methods=['GET'])

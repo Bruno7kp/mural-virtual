@@ -2,7 +2,7 @@ from flask import url_for
 
 from mural.mod_base.base_model import show_date
 from mural.mod_usuarios import Usuario
-from mural.mod_base import BaseModel, DataBase, Auth, Roles
+from mural.mod_base import BaseModel, DataBase
 
 
 class Anuncio(BaseModel):
