@@ -6,6 +6,10 @@
     background: #2e3367;
 }
 
+.default-table tr td:first-child {
+    text-align: left !important;
+}
+
 .default-table tr td:last-child {
     text-align: right;
 }

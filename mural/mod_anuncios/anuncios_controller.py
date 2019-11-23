@@ -59,7 +59,7 @@ def admin_cadastrar():
         # Apenas usuários que podem editar os anúncios já ficam aprovados
         anuncio.aprovado = auth.is_allowed('edita.anuncio')
         if anuncio.insert():
-            return json_response(message='Anúncio cadastrado', data=[anuncio], redirect=url_for('noticias.admin_lista'))
+            return json_response(message='Anúncio cadastrado', data=[anuncio], redirect=url_for('anuncios.admin_lista'))
         else:
             return json_response(message='Não foi possível cadastrar o anúncio', data=[]), 400
     else:

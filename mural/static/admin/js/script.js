@@ -2,6 +2,16 @@ const App = {
     init: () => {
         App.loadTable();
         App.addFormListener();
+        App.addDeleteListener();
+        App.addTextEditor();
+    },
+    addTextEditor: () => {
+        let editor = CKEDITOR.replace( 'conteudo', {
+            language: 'pt-br',
+        });
+        editor.on( 'change', function( evt ) {
+            document.querySelector('#conteudo').value = evt.editor.getData()
+        });
     },
     addFormListener: () => {
         let form = document.querySelector(".form-data");
