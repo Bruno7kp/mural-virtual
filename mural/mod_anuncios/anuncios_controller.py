@@ -1,7 +1,7 @@
 # coding: utf-8
 import datetime
 
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, url_for
 
 from mural.mod_anuncios import Anuncio
 from mural.mod_base.auth import logado, Auth
@@ -59,7 +59,7 @@ def admin_cadastrar():
         # Apenas usuários que podem editar os anúncios já ficam aprovados
         anuncio.aprovado = auth.is_allowed('edita.anuncio')
         if anuncio.insert():
-            return json_response(message='Anúncio cadastrado!', data=[anuncio]), 200
+            return json_response(message='Anúncio cadastrado', data=[anuncio], redirect=url_for('noticias.admin_lista'))
         else:
             return json_response(message='Não foi possível cadastrar o anúncio', data=[]), 400
     else:

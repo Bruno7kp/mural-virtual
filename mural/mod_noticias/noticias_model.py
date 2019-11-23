@@ -1,3 +1,6 @@
+from flask import url_for
+
+from mural.mod_base.base_model import show_date
 from mural.mod_usuarios import Usuario
 from mural.mod_base import BaseModel, DataBase
 
@@ -30,7 +33,13 @@ class Noticia(BaseModel):
     def serialize_array(self):
         return [
             self.identifier,
-            self.titulo
+            self.titulo,
+            show_date(self.data_entrada),
+            show_date(self.data_saida),
+            '<a href="' + url_for('noticias.admin_edicao', identifier=self.identifier) +
+            '" class="btn btn-warning btn-sm"><i class="fa fa-pen fa-fw fa-sm text-white-50"></i> Editar</a> ' +
+            '<button data-delete="' + url_for('noticias.admin_remover', identifier=self.identifier) +
+            '" class="btn btn-danger btn-sm"><i class="fa fa-trash fa-fw fa-sm text-white-50"></i> Remover</button>'
         ]
 
     def insert(self) -> int:
@@ -67,8 +76,9 @@ class Noticia(BaseModel):
 
     def select(self, identifier):
         c = self.db.con.cursor()
-        c.execute("""SELECT id, usuario_id, titulo, conteudo, data_entrada, data_saida, data_cadastro, data_atualizacao 
-                FROM noticia WHERE id = %s""", identifier)
+        c.execute("""SELECT id, usuario_id, titulo, conteudo, DATE_FORMAT(data_entrada, '%%Y-%%m-%%dT%%H:%%i'), 
+                        DATE_FORMAT(data_saida, '%%Y-%%m-%%dT%%H:%%i'), data_cadastro, data_atualizacao 
+                        FROM noticia WHERE id = %s""", identifier)
         for row in c:
             self.identifier = row[0]
             self.usuario_id = row[1]
@@ -83,8 +93,9 @@ class Noticia(BaseModel):
 
     def all(self):
         c = self.db.con.cursor()
-        c.execute("""SELECT id, usuario_id, titulo, conteudo, data_entrada, data_saida, data_cadastro, data_atualizacao
-                FROM noticia ORDER BY data_entrada DESC""")
+        c.execute("""SELECT id, usuario_id, titulo, conteudo, DATE_FORMAT(data_entrada, '%%Y-%%m-%%dT%%H:%%i'), 
+                        DATE_FORMAT(data_saida, '%%Y-%%m-%%dT%%H:%%i'), data_cadastro, data_atualizacao
+                        FROM noticia ORDER BY data_entrada DESC""")
         list_all = []
         for row in c:
             noticia = Noticia()
@@ -102,8 +113,9 @@ class Noticia(BaseModel):
 
     def search(self, text: str, start: int, limit: int):
         c = self.db.con.cursor()
-        c.execute("""SELECT id, usuario_id, titulo, conteudo, data_entrada, data_saida, data_cadastro, data_atualizacao
-                    FROM noticia WHERE titulo LIKE %s OR conteudo LIKE %s ORDER BY data_entrada DESC LIMIT %s, %s""",
+        c.execute("""SELECT id, usuario_id, titulo, conteudo, DATE_FORMAT(data_entrada, '%%Y-%%m-%%dT%%H:%%i'), 
+                        DATE_FORMAT(data_saida, '%%Y-%%m-%%dT%%H:%%i'), data_cadastro, data_atualizacao
+                        FROM noticia WHERE titulo LIKE %s OR conteudo LIKE %s ORDER BY data_entrada DESC LIMIT %s, %s""",
                   (text, text, start, limit))
         list_all = []
         for row in c:

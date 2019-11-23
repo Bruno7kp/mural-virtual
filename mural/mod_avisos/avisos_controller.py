@@ -1,7 +1,7 @@
 # coding: utf-8
 import datetime
 
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, url_for
 
 from mural.mod_avisos import Aviso
 from mural.mod_base.auth import logado, Auth
@@ -18,7 +18,7 @@ def avisos():
 @bp_avisos.route('/admin/avisos', methods=['GET'])
 @logado
 def admin_lista():
-    """ Página com listagem de anúncios """
+    """ Página com listagem de avisos """
     if Auth().is_allowed('cadastra.aviso'):
         return render_template('admin_lista_avisos.html')
     else:
@@ -28,7 +28,7 @@ def admin_lista():
 @bp_avisos.route('/admin/avisos/adicionar', methods=['GET'])
 @logado
 def admin_cadastro():
-    """ Página para cadastro de anúncios """
+    """ Página para cadastro de avisos """
     aviso = Aviso()
     if Auth().is_allowed('edita.aviso', aviso):
         return render_template('admin_form_aviso.html', aviso=aviso)
@@ -39,7 +39,7 @@ def admin_cadastro():
 @bp_avisos.route('/admin/avisos/adicionar', methods=['POST'])
 @logado
 def admin_cadastrar():
-    """ Cadastro de anúncios """
+    """ Cadastro de avisos """
     auth = Auth()
     if auth.is_allowed('cadastra.aviso'):
         aviso = Aviso()
@@ -47,7 +47,7 @@ def admin_cadastrar():
         aviso.data_cadastro = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         aviso.usuario_id = auth.user.identifier
         if aviso.insert():
-            return json_response(message='Aviso cadastrado!', data=[aviso]), 200
+            return json_response(message='Aviso cadastrado!', data=[aviso], redirect=url_for('avisos.admin_lista'))
         else:
             return json_response(message='Não foi possível cadastrar o aviso', data=[]), 400
     else:
@@ -57,7 +57,7 @@ def admin_cadastrar():
 @bp_avisos.route('/admin/avisos/<int:identifier>', methods=['GET'])
 @logado
 def admin_edicao(identifier: int):
-    """ Página para edição de anúncios """
+    """ Página para edição de avisos """
     aviso = Aviso()
     aviso.select(identifier)
     if aviso.identifier > 0:

@@ -1,6 +1,6 @@
 from flask import url_for
 
-from mural.mod_base.base_model import SEARCH_LIMIT, show_date
+from mural.mod_base.base_model import show_date
 from mural.mod_usuarios import Usuario
 from mural.mod_base import BaseModel, DataBase
 
