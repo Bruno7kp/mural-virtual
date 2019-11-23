@@ -1,5 +1,5 @@
 from sys import argv
-from mural.mod_base.migration import create_tables, create_database, insert_dummy, insert_default_user
+from mural.mod_base.migration import migrate_database, create_database
 
 
 if __name__ == '__main__':
@@ -8,11 +8,5 @@ if __name__ == '__main__':
     if command == 'create-database':
         create_database()
 
-    if command == 'create-tables':
-        create_tables()
-
-    if command == 'insert-default-user':
-        insert_default_user()
-
-    if command == 'insert-dummy':
-        insert_dummy()
+    if command == 'migrate-database':
+        migrate_database()

@@ -1,4 +1,5 @@
 # coding: utf-8
+import base64
 import datetime
 
 from flask import Blueprint, render_template, request, url_for
@@ -127,3 +128,6 @@ def populate_from_request(noticia: Noticia):
     noticia.data_entrada = request.form['data_entrada']
     noticia.data_saida = request.form['data_saida']
     noticia.conteudo = request.form['conteudo']
+    if 'imagem' in request.files and request.files['imagem'].filename != '':
+        noticia.imagem = "data:" + request.files['imagem'].content_type + ";base64," + str(
+            base64.b64encode(request.files['imagem'].read()), "utf-8")

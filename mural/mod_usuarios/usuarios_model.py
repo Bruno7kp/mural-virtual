@@ -207,8 +207,8 @@ class Usuario(BaseModel):
           `id` int PRIMARY KEY AUTO_INCREMENT,
           `nome` varchar(255),
           `email` varchar(255),
-          `telefone` varchar(255),
-          `cpf` varchar(255),
+          `telefone` varchar(15),
+          `cpf` varchar(14),
           `senha` varchar(255),
           `nivel` int,
           `data_cadastro` datetime,
@@ -221,8 +221,17 @@ class Usuario(BaseModel):
     def insert_dummy():
         db = DataBase()
         c = db.con.cursor()
-        usuario = Usuario(0, "Fulano da Silva", "fulano@gmail.com", "49 988776655", "000.000.000-00",
-                          Usuario.hash("1234"), 4, "2019-01-01", "2019-01-01")
+        usuario = Usuario(0, "Administrador", "admin@uniplaclages.edu.br", "(00) 00000-0000", "000.000.000-00",
+                          Usuario.hash("123456"), 1, "2019-01-01", "2019-01-01")
+        usuario.insert()
+        usuario = Usuario(0, "Moderador Notícias", "noticias@uniplaclages.edu.br", "(11) 11111-1111", "111.111.111-11",
+                          Usuario.hash("123456"), 2, "2019-01-01", "2019-01-01")
+        usuario.insert()
+        usuario = Usuario(0, "Moderador Avisos", "avisos@uniplaclages.edu.br", "(22) 22222-2222", "222.222.222-22",
+                          Usuario.hash("123456"), 3, "2019-01-01", "2019-01-01")
+        usuario.insert()
+        usuario = Usuario(0, "Usuário Padrão", "usuario@uniplaclages.edu.br", "(33) 33333-3333", "333.333.333-33",
+                          Usuario.hash("123456"), 4, "2019-01-01", "2019-01-01")
         usuario.insert()
         db.con.commit()
         c.close()

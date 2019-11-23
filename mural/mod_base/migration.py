@@ -21,7 +21,8 @@ def create_database():
         print('Nome de banco de dados inválido')
 
 
-def create_tables():
+def migrate_database():
+    # Cria tabelas
     Usuario.create_table()
     Aviso.create_table()
     Noticia.create_table()
@@ -31,18 +32,6 @@ def create_tables():
     Universidade.create_table()
     Banner.create_table()
     Logs.create_table()
-
-
-def insert_dummy():
-    Aviso.insert_dummy()
-    Noticia.insert_dummy()
-    ImagemNoticia.insert_dummy()
-    Anuncio.insert_dummy()
-    ImagemAnuncio.insert_dummy()
-    Universidade.insert_dummy()
-    Banner.insert_dummy()
-    Logs.insert_dummy()
-
-
-def insert_default_user():
+    # Adiciona usuários e dados da universidade
     Usuario.insert_dummy()
+    Universidade.insert_dummy()
