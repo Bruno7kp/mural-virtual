@@ -1,5 +1,6 @@
 from flask import url_for
 
+from mural.mod_base.base_model import show_date
 from mural.mod_usuarios import Usuario
 from mural.mod_base import BaseModel, DataBase, Auth, Roles
 
@@ -35,8 +36,12 @@ class Anuncio(BaseModel):
         return [
             self.identifier,
             self.titulo,
+            show_date(self.data_entrada),
+            show_date(self.data_saida),
             '<a href="' + url_for('anuncios.admin_edicao', identifier=self.identifier) +
-            '" class="btn btn-warning btn-sm"><i class="fa fa-pen"></i> Editar</a>'
+            '" class="btn btn-warning btn-sm"><i class="fa fa-pen fa-fw fa-sm text-white-50"></i> Editar</a> ' +
+            '<button data-delete="' + url_for('anuncios.admin_remover', identifier=self.identifier) +
+            '" class="btn btn-danger btn-sm"><i class="fa fa-trash fa-fw fa-sm text-white-50"></i> Remover</button>'
         ]
 
     def insert(self) -> int:
@@ -50,7 +55,7 @@ class Anuncio(BaseModel):
         self.db.con.commit()
         self.identifier = c.lastrowid
         c.close()
-        return self.identifier
+        return self.identifier > 0
 
     def update(self) -> int:
         c = self.db.con.cursor()
@@ -63,7 +68,7 @@ class Anuncio(BaseModel):
         self.db.con.commit()
         rows = c.rowcount
         c.close()
-        return rows
+        return rows > 0
 
     def delete(self) -> int:
         c = self.db.con.cursor()
@@ -71,18 +76,19 @@ class Anuncio(BaseModel):
         self.db.con.commit()
         rows = c.rowcount
         c.close()
-        return rows
+        return rows > 0
 
     def select(self, identifier):
         c = self.db.con.cursor()
-        c.execute("""SELECT id, usuario_id, titulo, conteudo, aprovado, data_entrada, data_saida, data_cadastro, 
-        data_atualizacao FROM anuncio WHERE id = %s""", identifier)
+        c.execute("""SELECT id, usuario_id, titulo, conteudo, aprovado,DATE_FORMAT(data_entrada, '%%Y-%%m-%%dT%%H:%%i'), 
+                    DATE_FORMAT(data_saida, '%%Y-%%m-%%dT%%H:%%i'), data_cadastro, data_atualizacao 
+                    FROM anuncio WHERE id = %s""", identifier)
         for row in c:
             self.identifier = row[0]
             self.usuario_id = row[1]
             self.titulo = row[2]
             self.conteudo = row[3]
-            self.aprovado = row[4]
+            self.aprovado = row[4] == '1'  # transforma em booleano
             self.data_entrada = row[5]
             self.data_saida = row[6]
             self.data_cadastro = row[7]
@@ -92,8 +98,9 @@ class Anuncio(BaseModel):
 
     def all(self):
         c = self.db.con.cursor()
-        c.execute("""SELECT id, usuario_id, titulo, conteudo, aprovado, data_entrada, data_saida, data_cadastro, 
-                  data_atualizacao FROM anuncio ORDER BY data_entrada DESC""")
+        c.execute("""SELECT id, usuario_id, titulo, conteudo, aprovado,DATE_FORMAT(data_entrada, '%%Y-%%m-%%dT%%H:%%i'), 
+                    DATE_FORMAT(data_saida, '%%Y-%%m-%%dT%%H:%%i'), data_cadastro, data_atualizacao 
+                    FROM anuncio ORDER BY data_entrada DESC""")
         list_all = []
         for row in c:
             anuncio = Anuncio()
@@ -101,7 +108,7 @@ class Anuncio(BaseModel):
             anuncio.usuario_id = row[1]
             anuncio.titulo = row[2]
             anuncio.conteudo = row[3]
-            anuncio.aprovado = row[4]
+            anuncio.aprovado = row[4] == '1'  # transforma em booleano
             anuncio.data_entrada = row[5]
             anuncio.data_saida = row[6]
             anuncio.data_cadastro = row[7]
@@ -112,8 +119,9 @@ class Anuncio(BaseModel):
 
     def search(self, text: str, start: int, limit: int, user_filter: int = 0):
         c = self.db.con.cursor()
-        c.execute("""SELECT id, usuario_id, titulo, conteudo, aprovado, data_entrada, data_saida, data_cadastro, 
-                                data_atualizacao FROM anuncio WHERE (titulo LIKE %s OR conteudo LIKE %s) AND 
+        c.execute("""SELECT id, usuario_id, titulo, conteudo, aprovado,DATE_FORMAT(data_entrada, '%%Y-%%m-%%dT%%H:%%i'), 
+                                DATE_FORMAT(data_saida, '%%Y-%%m-%%dT%%H:%%i'), data_cadastro, data_atualizacao 
+                                FROM anuncio WHERE (titulo LIKE %s OR conteudo LIKE %s) AND 
                                 (%s = 0 OR %s = usuario_id) ORDER BY data_entrada DESC LIMIT %s, %s""",
                   (text, text, user_filter, user_filter, start, limit))
         list_all = []
@@ -123,7 +131,7 @@ class Anuncio(BaseModel):
             anuncio.usuario_id = row[1]
             anuncio.titulo = row[2]
             anuncio.conteudo = row[3]
-            anuncio.aprovado = row[4]
+            anuncio.aprovado = row[4] == '1'  # transforma em booleano
             anuncio.data_entrada = row[5]
             anuncio.data_saida = row[6]
             anuncio.data_cadastro = row[7]

@@ -35,7 +35,7 @@ class Usuario(BaseModel):
             self.identifier,
             self.nome,
             '<a href="' + url_for('usuarios.admin_edicao', identifier=self.identifier) +
-            '" class="btn btn-warning btn-sm"><i class="fa fa-pen"></i> Editar</a>'
+            '" class="btn btn-warning btn-sm"><i class="fa fa-pen fa-sm text-white-50"></i> Editar</a>'
         ]
 
     def insert(self) -> int:

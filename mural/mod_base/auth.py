@@ -103,6 +103,7 @@ class Auth:
         :param relation: Entidade relacionada ao recurso
         :return: Indica se o usuário tem permissão para acessar o recurso
         """
+        from mural.mod_anuncios import Anuncio
         permission = Auth.get_resource(resource)
         from mural.mod_usuarios import Usuario
         from mural.mod_base import BaseModel
@@ -112,12 +113,15 @@ class Auth:
                 # Se o nível do usuário está entre os permitidos
                 return True
             elif Roles(Auth.user.get_role()) in permission.author and isinstance(relation, BaseModel):
+                if isinstance(relation, Anuncio) and relation.aprovado:
+                    # Usuário não pode editar anúncio depois de aprovado
+                    return False
                 # Se é permitido acessar um recurso relacionado ao usuário (Ex: Anúncio cadastrado pelo próprio usuário)
                 return Auth.user.get_owner_id() == relation.get_owner_id()
         return False
 
 
-SESSION_LIMIT = 30
+SESSION_LIMIT = 120
 
 
 def logado(f):

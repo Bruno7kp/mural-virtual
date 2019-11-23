@@ -8,30 +8,37 @@
 
         <div class="card">
             <div class="card-body">
-                <form method="post" action="{{ url_for('anuncios.admin_cadastro') if anuncio.identifier == 0 else url_for('anuncios.admin_edicao', identifier=anuncio.identifier) }}">
+                <form class="form-data" method="post" action="{{ url_for('anuncios.admin_cadastrar') if anuncio.identifier == 0 else url_for('anuncios.admin_editar', identifier=anuncio.identifier) }}">
                     <div class="row">
-                        <div class="col-lg-6 col-sm-12">
-                            <div class="form-group">
-                                <label for="titulo">Título</label>
-                                <input type="text" name="titulo" id="titulo" class="form-control" placeholder="Título" value="{{ anuncio.titulo }}">
-                            </div>
-                            <div class="form-group">
-                                <label for="conteudo">Conteúdo</label>
-                                <textarea name="conteudo" id="conteudo" class="form-control" placeholder="Conteúdo" rows="4">{{ anuncio.conteudo }}</textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-3 col-sm-12">
-                            <div class="form-group">
-                                <label for="data_entrada">Data de entrada do anúncio</label>
-                                <input type="datetime-local" name="data_entrada" id="data_entrada" class="form-control" value="{{ anuncio.data_entrada }}">
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-sm-12">
-                            <div class="form-group">
-                                <label for="data_entrada">Data de saída do anúncio</label>
-                                <input type="datetime-local" name="data_entrada" id="data_entrada" class="form-control" value="{{ anuncio.data_entrada }}">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <label for="titulo">Título</label>
+                                        <input type="text" name="titulo" id="titulo" class="form-control" placeholder="Título" value="{{ anuncio.titulo }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="conteudo">Conteúdo</label>
+                                        <textarea name="conteudo" id="conteudo" class="form-control" placeholder="Conteúdo" rows="4" required>{{ anuncio.conteudo }}</textarea>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-12">
+                                            <div class="form-group">
+                                                <label for="data_entrada">Data de entrada do anúncio</label>
+                                                <input type="datetime-local" name="data_entrada" id="data_entrada" class="form-control" value="{{ anuncio.data_entrada }}" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}" placeholder="Ex: 2000-12-31T20:00">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-sm-12">
+                                            <div class="form-group">
+                                                <label for="data_saida">Data de saída do anúncio</label>
+                                                <input type="datetime-local" name="data_saida" id="data_saida" class="form-control" value="{{ anuncio.data_saida }}" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}" placeholder="Ex: 2000-12-31T20:00">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-success"><i class="fa fa-save fa-sm fa-fw text-white-50"></i> Salvar</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
