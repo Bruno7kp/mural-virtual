@@ -5,10 +5,9 @@
 
         <!-- Page Heading -->
         <h1 class="h3 mb-4 text-gray-800">{{ 'Adicionar' if usuario.identifier == 0 else 'Editar' }} usuário</h1>
-
-        <div class="card">
-            <div class="card-body">
-                <form class="form-data" method="post" action="{{ url_for('usuarios.admin_cadastrar') if usuario.identifier == 0 else url_for('usuarios.admin_editar', identifier=usuario.identifier) }}">
+        <form class="form-data" method="post" action="{{ url_for('usuarios.admin_cadastrar') if usuario.identifier == 0 else url_for('usuarios.admin_editar', identifier=usuario.identifier) }}">
+            <div class="card mb-3">
+                <div class="card-body">
                     <div class="row">
                         <div class="col-12">
                             <div class="row">
@@ -18,15 +17,15 @@
                                         <input type="text" name="nome" id="nome" class="form-control" placeholder="Nome Completo" value="{{ usuario.nome }}" required>
                                     </div>
                                     {% if auth.is_allowed('edita.usuario') %}
-                                    <div class="form-group">
-                                        <label for="nivel">Nível de Usuário</label>
-                                        <select name="nivel" id="nivel" class="form-control">
-                                            <option value="1"{% if usuario.nivel == 1 %} selected{% endif %}>Nível 1 - Administrador</option>
-                                            <option value="2"{% if usuario.nivel == 2 %} selected{% endif %}>Nível 2 - Moderador de notícias</option>
-                                            <option value="3"{% if usuario.nivel == 3 %} selected{% endif %}>Nível 3 - Moderador de avisos</option>
-                                            <option value="4"{% if usuario.nivel == 4 %} selected{% endif %}>Nível 4 - Usuário</option>
-                                        </select>
-                                    </div>
+                                        <div class="form-group">
+                                            <label for="nivel">Nível de Usuário</label>
+                                            <select name="nivel" id="nivel" class="form-control">
+                                                <option value="1"{% if usuario.nivel == 1 %} selected{% endif %}>Nível 1 - Administrador</option>
+                                                <option value="2"{% if usuario.nivel == 2 %} selected{% endif %}>Nível 2 - Moderador de notícias</option>
+                                                <option value="3"{% if usuario.nivel == 3 %} selected{% endif %}>Nível 3 - Moderador de avisos</option>
+                                                <option value="4"{% if usuario.nivel == 4 %} selected{% endif %}>Nível 4 - Usuário</option>
+                                            </select>
+                                        </div>
                                     {% endif %}
                                     <div class="form-group">
                                         <label for="email">Email</label>
@@ -45,16 +44,17 @@
                                         <input type="password" name="senha" id="senha" class="form-control" placeholder="" value="" {% if usuario.identifier == 0 %}required{% endif %}>
                                         <small class="d-block">* {% if usuario.identifier > 0 %}Deixe o campo em branco para manter a senha atual. {% endif %}A senha deve ter no mínimo 6 dígitos</small>
                                     </div>
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-success"><i class="fa fa-save fa-sm fa-fw text-white-50"></i> Salvar</button>
-                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </form>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-success"><i class="fa fa-save fa-sm fa-fw text-white-50"></i> Salvar</button>
+                </div>
             </div>
-        </div>
+        </form>
+
     </div>
     <!-- /.container-fluid -->
 {% endblock %}

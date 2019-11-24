@@ -5,10 +5,9 @@
 
         <!-- Page Heading -->
         <h1 class="h3 mb-4 text-gray-800">{{ 'Adicionar' if aviso.identifier == 0 else 'Editar' }} aviso</h1>
-
-        <div class="card">
-            <div class="card-body">
-                <form class="form-data" method="post" action="{{ url_for('avisos.admin_cadastrar') if aviso.identifier == 0 else url_for('avisos.admin_editar', identifier=aviso.identifier) }}">
+        <form autocomplete="off" class="form-data" method="post" action="{{ url_for('avisos.admin_cadastrar') if aviso.identifier == 0 else url_for('avisos.admin_editar', identifier=aviso.identifier) }}">
+            <div class="card mb-3">
+                <div class="card-body">
                     <div class="row">
                         <div class="col-12">
                             <div class="row">
@@ -35,16 +34,17 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-success"><i class="fa fa-save fa-sm fa-fw text-white-50"></i> Salvar</button>
-                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </form>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-success"><i class="fa fa-save fa-sm fa-fw text-white-50"></i> Salvar</button>
+                </div>
             </div>
-        </div>
+        </form>
+
     </div>
     <!-- /.container-fluid -->
 {% endblock %}

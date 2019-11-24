@@ -13,3 +13,31 @@
 .default-table tr td:last-child {
     text-align: right;
 }
+
+.dataTables_filter label {
+    width: 60%;
+    margin-left: 40%;
+}
+
+@media screen and (max-width: 767px) {
+    .dataTables_filter label {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .dataTables_length label select {
+        width: 50%;
+    }
+}
+
+.dataTables_length label {
+    width: 100%;
+}
+
+.dataTables_length label select {
+    width: 25%;
+}
+
+.card-body {
+    overflow: auto;
+}
