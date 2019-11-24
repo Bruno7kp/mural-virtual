@@ -5,10 +5,10 @@
 
         <!-- Page Heading -->
         <h1 class="h3 mb-4 text-gray-800">Universidade</h1>
+        <form class="form-data" method="post" action="{{ url_for('universidade.admin_editar') }}">
+            <div class="card mb-3">
+                <div class="card-body">
 
-        <div class="card">
-            <div class="card-body">
-                <form class="form-data" method="post" action="{{ url_for('universidade.admin_editar') }}">
                     <div class="row">
                         <div class="col-12">
                             <div class="row">
@@ -25,14 +25,11 @@
                                         <label for="email">Email</label>
                                         <input type="email" name="email" id="email" class="form-control" placeholder="exemplo@email.com" value="{{ universidade.email }}" required>
                                     </div>
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-success"><i class="fa fa-save fa-sm fa-fw text-white-50"></i> Salvar</button>
-                                    </div>
                                 </div>
                                 <div class="col-sm-12 col-md-6">
                                     <div class="form-group">
                                         <label for="logo">Logo</label>
-                                        <input type="file" name="logo" id="logo" class="form-control">
+                                        <input type="file" name="logo" id="logo" accept="image/jpeg, image/png" class="form-control">
                                         <small class="">Selecione uma nova imagem para substituir a atual.</small>
                                     </div>
                                     <div class="form-group">
@@ -45,9 +42,12 @@
                             </div>
                         </div>
                     </div>
-                </form>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-success"><i class="fa fa-save fa-sm fa-fw text-white-50"></i> Salvar</button>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
     <!-- /.container-fluid -->
 {% endblock %}

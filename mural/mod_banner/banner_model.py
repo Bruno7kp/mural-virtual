@@ -14,6 +14,25 @@ class Banner(BaseModel):
         self.data_cadastro = data_cadastro
         self.data_atualizacao = data_atualizacao
 
+    def serialize(self):
+        return {
+            'id': self.identifier,
+            'usuario_id': self.usuario_id,
+            'redireciona_url': self.redireciona_url,
+            'ordem': self.ordem,
+            'data_cadastro': self.data_cadastro,
+            'data_atualizacao': self.data_atualizacao,
+        }
+
+    def serialize_array(self):
+        return [
+            self.identifier,
+            self.usuario_id,
+            self.redireciona_url,
+            self.imagem,
+            self.ordem
+        ]
+
     def insert(self) -> int:
         c = self.db.con.cursor()
         c.execute("""INSERT INTO banner 
@@ -66,15 +85,16 @@ class Banner(BaseModel):
         c.execute("""SELECT id, usuario_id, redireciona_url, imagem, ordem, data_cadastro, data_atualizacao
                                 FROM banner ORDER BY ordem""")
         list_all = []
-        for (row, key) in c:
-            list_all[key] = Banner()
-            list_all[key].identifier = row[0]
-            list_all[key].usuario_id = row[1]
-            list_all[key].redireciona_url = row[2]
-            list_all[key].imagem = row[3]
-            list_all[key].ordem = row[4]
-            list_all[key].data_cadastro = row[5]
-            list_all[key].data_atualizacao = row[6]
+        for row in c:
+            banner = Banner()
+            banner.identifier = row[0]
+            banner.usuario_id = row[1]
+            banner.redireciona_url = row[2]
+            banner.imagem = row[3]
+            banner.ordem = row[4]
+            banner.data_cadastro = row[5]
+            banner.data_atualizacao = row[6]
+            list_all.append(banner)
         c.close()
         return list_all
 

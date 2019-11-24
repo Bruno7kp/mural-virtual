@@ -57,7 +57,7 @@ permissions = [
     Resource("cadastra.anuncio", roles=[Roles.admin, Roles.mod_noticia, Roles.mod_aviso, Roles.usuario]),
     Resource("edita.anuncio", roles=[Roles.admin, Roles.mod_noticia, Roles.mod_aviso], author=[Roles.usuario]),
     Resource("remove.anuncio", roles=[Roles.admin, Roles.mod_noticia, Roles.mod_aviso]),
-    Resource("aprova.anuncio", roles=[Roles.admin, Roles.mod_noticia, Roles.mod_aviso])
+    Resource("aprova.anuncio", roles=[Roles.admin, Roles.mod_noticia, Roles.mod_aviso]),
 ]
 
 
