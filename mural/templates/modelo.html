@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     {% block head %}
         <title>{{ universidade.nome }} - Mural Virtual</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/styles.min.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/custom.css') }}">
         <link rel="icon" href="{{ universidade.logo.decode('utf-8') }}">
     {% endblock %}

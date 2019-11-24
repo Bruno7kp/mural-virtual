@@ -1,3 +1,5 @@
+import datetime
+
 from flask import url_for
 
 from mural.mod_base.base_model import show_date
@@ -111,12 +113,20 @@ class Aviso(BaseModel):
         c.close()
         return list_all
 
-    def search(self, text: str, start: int, limit: int):
+    def search(self, text: str, start: int, limit: int, filter_date: bool = False):
         c = self.db.con.cursor()
-        c.execute("""SELECT id, usuario_id, titulo, conteudo,DATE_FORMAT(data_entrada, '%%Y-%%m-%%dT%%H:%%i'), 
+        if filter_date:
+            now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            c.execute("""SELECT id, usuario_id, titulo, conteudo,DATE_FORMAT(data_entrada, '%%Y-%%m-%%dT%%H:%%i'), 
+                                    DATE_FORMAT(data_saida, '%%Y-%%m-%%dT%%H:%%i'), data_cadastro, data_atualizacao
+                                    FROM aviso WHERE titulo LIKE %s AND %s >= data_entrada AND %s < data_saida 
+                                    ORDER BY data_entrada DESC LIMIT %s, %s""",
+                      (text, now, now, start, limit))
+        else:
+            c.execute("""SELECT id, usuario_id, titulo, conteudo,DATE_FORMAT(data_entrada, '%%Y-%%m-%%dT%%H:%%i'), 
                         DATE_FORMAT(data_saida, '%%Y-%%m-%%dT%%H:%%i'), data_cadastro, data_atualizacao
                         FROM aviso WHERE titulo LIKE %s ORDER BY data_entrada DESC LIMIT %s, %s""",
-                  (text, start, limit))
+                      (text, start, limit))
         list_all = []
         for row in c:
             aviso = Aviso()

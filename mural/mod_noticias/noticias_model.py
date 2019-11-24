@@ -1,3 +1,5 @@
+import datetime
+
 from flask import url_for
 
 from mural.mod_base.base_model import show_date
@@ -111,12 +113,20 @@ class Noticia(BaseModel):
         c.close()
         return list_all
 
-    def search(self, text: str, start: int, limit: int):
+    def search(self, text: str, start: int, limit: int, filter_date: bool = False):
         c = self.db.con.cursor()
-        c.execute("""SELECT id, usuario_id, titulo, conteudo, DATE_FORMAT(data_entrada, '%%Y-%%m-%%dT%%H:%%i'), 
+        if filter_date:
+            now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            c.execute("""SELECT id, usuario_id, titulo, conteudo, DATE_FORMAT(data_entrada, '%%Y-%%m-%%dT%%H:%%i'), 
+                                    DATE_FORMAT(data_saida, '%%Y-%%m-%%dT%%H:%%i'), data_cadastro, data_atualizacao
+                                    FROM noticia WHERE titulo LIKE %s AND %s >= data_entrada AND %s < data_saida 
+                                    ORDER BY data_entrada DESC LIMIT %s, %s""",
+                      (text, now, now, start, limit))
+        else:
+            c.execute("""SELECT id, usuario_id, titulo, conteudo, DATE_FORMAT(data_entrada, '%%Y-%%m-%%dT%%H:%%i'), 
                         DATE_FORMAT(data_saida, '%%Y-%%m-%%dT%%H:%%i'), data_cadastro, data_atualizacao
                         FROM noticia WHERE titulo LIKE %s ORDER BY data_entrada DESC LIMIT %s, %s""",
-                  (text, start, limit))
+                      (text, start, limit))
         list_all = []
         for row in c:
             noticia = Noticia()
@@ -145,6 +155,13 @@ class Noticia(BaseModel):
         result = c.fetchone()
         number_of_rows = result[0]
         return number_of_rows
+
+    def get_cover(self):
+        imagem = ImagemNoticia()
+        imagens = imagem.select_by_parent(self.identifier)
+        if len(imagens) > 0:
+            return imagens[0].imagem
+        return ''
 
     @staticmethod
     def has_ownership() -> bool:

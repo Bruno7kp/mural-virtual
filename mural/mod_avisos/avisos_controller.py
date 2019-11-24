@@ -15,6 +15,11 @@ bp_avisos = Blueprint('avisos', __name__, url_prefix='/', template_folder='templ
 def avisos():
     return render_template("lista_avisos.html")
 
+
+@bp_avisos.route('/aviso/<int:identifier>')
+def aviso(identifier: int):
+    return render_template("aviso.html")
+
 # Rotas da área administrativa
 @bp_avisos.route('/admin/avisos', methods=['GET'])
 @logado
