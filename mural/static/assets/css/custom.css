@@ -812,7 +812,7 @@ input:focus {
         .single-blog-post .post-content .post-title {
           font-size: 16px; } }
       .single-blog-post .post-content .post-title:hover, .single-blog-post .post-content .post-title:focus {
-        color: #ed3974; }
+        color: #4b6cd0; }
     .single-blog-post .post-content .post-meta a {
       font-size: 14px;
       color: #777777; }
@@ -2180,7 +2180,7 @@ blockquote {
   transition-duration: 500ms; }
   .form-control:focus {
     box-shadow: none;
-    border-color: #ed3974; }
+    border-color: #4169E1; }
 
 select.form-control {
   -webkit-appearance: none;
@@ -2217,3 +2217,56 @@ textarea.form-control {
   top: 45px;
 }
 
+header.masthead {
+    margin-bottom: 50px;
+    background: no-repeat 50%;
+    background-color: #6c757d;
+    background-attachment: scroll;
+    position: relative;
+    background-size: cover;
+}
+
+header.masthead .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background-color: #212529;
+        opacity: .5;
+    }
+
+@media (min-width:1200px) {
+    .container {
+        max-width: 1140px;
+    }
+}
+
+.row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.ml-auto, .mx-auto {
+    margin-left: auto !important;
+}
+
+header.masthead .page-heading, header.masthead .site-heading {
+    text-align: center;
+}
+
+@media only screen and (min-width:768px) {
+    header.masthead .page-heading h1, header.masthead .site-heading h1 {
+        font-size: 80px;
+    }
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
