@@ -7,6 +7,7 @@ from flask import Blueprint, render_template, request, url_for
 from mural.mod_banner import Banner
 from mural.mod_base.auth import logado, Auth
 from mural.mod_base.base_model import admin_403_response, json_response, admin_404_response
+from mural.mod_logs import Logs
 
 bp_banner = Blueprint('banner', __name__, url_prefix='/', template_folder='templates')
 
@@ -51,6 +52,9 @@ def admin_cadastrar():
         banner.usuario_id = auth.user.identifier
         banner.ordem = len(banners)
         if banner.insert():
+            Logs(0, auth.user.identifier,
+                 auth.user.nome + '(' + auth.user.cpf + ')' + ' cadastrou um banner [Cód. ' + banner.identifier.__str__() + ']',
+                 'banner', banner.identifier, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).insert()
             return json_response(message='Banner cadastrado!', data=[banner], redirect=url_for('banner.admin_lista'))
         else:
             return json_response(message='Não foi possível cadastrar o banner', data=[]), 400
@@ -79,11 +83,15 @@ def admin_editar(identifier: int):
     """ Edição de banner """
     banner = Banner()
     banner.select(identifier)
+    auth = Auth()
     if banner.identifier > 0:
-        if Auth().is_allowed('edita.universidade', banner):
+        if auth.is_allowed('edita.universidade', banner):
             populate_from_request(banner)
             banner.data_atualizacao = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             if banner.update():
+                Logs(0, auth.user.identifier,
+                     auth.user.nome + '(' + auth.user.cpf + ')' + ' editou um banner [Cód. ' + banner.identifier.__str__() + ']',
+                     'banner', banner.identifier, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).insert()
                 return json_response(message='Banner atualizado!', data=[banner], redirect=url_for('banner.admin_lista'))
             else:
                 return json_response(message='Não foi possível editar o banner', data=[]), 400
@@ -96,7 +104,8 @@ def admin_editar(identifier: int):
 @bp_banner.route('/admin/destaque/imagem-ordem', methods=['POST'])
 @logado
 def admin_imagem_ordem():
-    if Auth().is_allowed('edita.universidade'):
+    auth = Auth()
+    if auth.is_allowed('edita.universidade'):
         ordem = request.form['ordem']
         lista = ordem.split(',')
         imagem = Banner()
@@ -106,6 +115,9 @@ def admin_imagem_ordem():
             imagem.ordem = count
             imagem.update()
             count = count + 1
+        Logs(0, auth.user.identifier,
+             auth.user.nome + '(' + auth.user.cpf + ')' + ' alterou a ordem dos banners',
+             'banner', 0, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).insert()
         return json_response(message='Ordem atualizada!', data=[])
     else:
         return json_response(message='Você não tem permissão para realizar esta ação', data=[]), 403
@@ -116,9 +128,13 @@ def admin_imagem_ordem():
 def admin_remover(identifier: int):
     banner = Banner()
     banner.select(identifier)
+    auth = Auth()
     if banner.identifier > 0:
-        if Auth().is_allowed('edita.universidade', banner):
+        if auth.is_allowed('edita.universidade', banner):
             if banner.delete():
+                Logs(0, auth.user.identifier,
+                     auth.user.nome + '(' + auth.user.cpf + ')' + ' removeu o banner [Cód. ' + banner.identifier.__str__() + ']',
+                     'banner', banner.identifier, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).insert()
                 return json_response(message='Banner removido!', data=[])
             else:
                 return json_response(message='Não foi possível remover o banner', data=[]), 400

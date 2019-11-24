@@ -6,6 +6,7 @@ from flask import Blueprint, render_template, request, url_for
 from mural.mod_avisos import Aviso
 from mural.mod_base.auth import logado, Auth
 from mural.mod_base.base_model import json_response, data_tables_response, admin_403_response, admin_404_response
+from mural.mod_logs import Logs
 
 bp_avisos = Blueprint('avisos', __name__, url_prefix='/', template_folder='templates')
 
@@ -47,6 +48,9 @@ def admin_cadastrar():
         aviso.data_cadastro = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         aviso.usuario_id = auth.user.identifier
         if aviso.insert():
+            Logs(0, auth.user.identifier,
+                 auth.user.nome + '(' + auth.user.cpf + ')' + ' cadastrou o aviso ' + aviso.titulo + ' [Cód. ' + aviso.identifier.__str__() + ']',
+                 'aviso', aviso.identifier, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).insert()
             return json_response(message='Aviso cadastrado!', data=[aviso], redirect=url_for('avisos.admin_lista'))
         else:
             return json_response(message='Não foi possível cadastrar o aviso', data=[]), 400
@@ -75,11 +79,15 @@ def admin_editar(identifier: int):
     """ Edição de avisos """
     aviso = Aviso()
     aviso.select(identifier)
+    auth = Auth()
     if aviso.identifier > 0:
-        if Auth().is_allowed('edita.aviso', aviso):
+        if auth.is_allowed('edita.aviso', aviso):
             populate_from_request(aviso)
             aviso.data_atualizacao = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             if aviso.update():
+                Logs(0, auth.user.identifier,
+                     auth.user.nome + '(' + auth.user.cpf + ')' + ' editou o aviso ' + aviso.titulo + ' [Cód. ' + aviso.identifier.__str__() + ']',
+                     'aviso', aviso.identifier, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).insert()
                 return json_response(message='Aviso atualizado!', data=[aviso])
             else:
                 return json_response(message='Não foi possível editar o aviso', data=[]), 400
@@ -109,9 +117,13 @@ def admin_busca():
 def admin_remover(identifier: int):
     aviso = Aviso()
     aviso.select(identifier)
+    auth = Auth()
     if aviso.identifier > 0:
-        if Auth().is_allowed('remove.aviso', aviso):
+        if auth.is_allowed('remove.aviso', aviso):
             if aviso.delete():
+                Logs(0, auth.user.identifier,
+                     auth.user.nome + '(' + auth.user.cpf + ')' + ' removeu o aviso ' + aviso.titulo + ' [Cód. ' + aviso.identifier.__str__() + ']',
+                     'aviso', aviso.identifier, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).insert()
                 return json_response(message='Aviso removido!', data=[])
             else:
                 return json_response(message='Não foi possível remover o aviso', data=[]), 400

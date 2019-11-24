@@ -7,6 +7,7 @@ from flask import Blueprint, render_template, request, url_for
 
 from mural.mod_base.auth import logado, Auth
 from mural.mod_base.base_model import data_tables_response, json_response, admin_404_response, admin_403_response
+from mural.mod_logs import Logs
 from mural.mod_noticias import Noticia, ImagemNoticia
 
 bp_noticias = Blueprint('noticias', __name__, url_prefix='/', template_folder='templates')
@@ -57,6 +58,9 @@ def admin_cadastrar():
                 imagem.ordem = order
                 imagem.insert()
                 order = order + 1
+            Logs(0, auth.user.identifier,
+                 auth.user.nome + '(' + auth.user.cpf + ')' + ' cadastrou a notícia ' + noticia.titulo + ' [Cód. ' + noticia.identifier.__str__() + ']',
+                 'noticia', noticia.identifier, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).insert()
             return json_response(message='Notícia cadastrada', data=[noticia], redirect=url_for('noticias.admin_lista'))
         else:
             return json_response(message='Não foi possível cadastrar a notícia', data=[]), 400
@@ -87,8 +91,9 @@ def admin_editar(identifier: int):
     """ Edição de notícias """
     noticia = Noticia()
     noticia.select(identifier)
+    auth = Auth()
     if noticia.identifier > 0:
-        if Auth().is_allowed('edita.noticia', noticia):
+        if auth.is_allowed('edita.noticia', noticia):
             populate_from_request(noticia)
             noticia.data_atualizacao = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             if noticia.update():
@@ -102,6 +107,9 @@ def admin_editar(identifier: int):
                     imagem.ordem = count
                     imagem.insert()
                     count = count + 1
+                Logs(0, auth.user.identifier,
+                     auth.user.nome + '(' + auth.user.cpf + ')' + ' editou a notícia ' + noticia.titulo + ' [Cód. ' + noticia.identifier.__str__() + ']',
+                     'noticia', noticia.identifier, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).insert()
                 return json_response(message='Notícia atualizado!', data=[noticia],
                                      redirect=url_for('noticias.admin_edicao', identifier=noticia.identifier))
             else:
@@ -117,6 +125,7 @@ def admin_editar(identifier: int):
 def admin_imagem_ordem(identifier: int):
     noticia = Noticia()
     noticia.select(identifier)
+    auth = Auth()
     if noticia.identifier > 0:
         if Auth().is_allowed('edita.noticia', noticia):
             ordem = request.form['ordem']
@@ -128,6 +137,9 @@ def admin_imagem_ordem(identifier: int):
                 imagem.ordem = count
                 imagem.update()
                 count = count + 1
+            Logs(0, auth.user.identifier,
+                 auth.user.nome + '(' + auth.user.cpf + ')' + ' alterou a ordem das imagens da notícia' + noticia.titulo + ' [Cód. ' + noticia.identifier.__str__() + ']',
+                 'noticia', noticia.identifier, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).insert()
             return json_response(message='Ordem atualizada!', data=[])
         else:
             return json_response(message='Você não tem permissão para realizar esta ação', data=[]), 403
@@ -140,9 +152,14 @@ def admin_imagem_ordem(identifier: int):
 def admin_imagem_remover(identifier: int):
     imagem = ImagemNoticia()
     imagem.select(identifier)
+    auth = Auth()
     if imagem.identifier > 0:
-        if Auth().is_allowed('edita.noticia', imagem.get_parent()):
+        if auth.is_allowed('edita.noticia', imagem.get_parent()):
             if imagem.delete():
+                noticia = imagem.get_parent()
+                Logs(0, auth.user.identifier,
+                     auth.user.nome + '(' + auth.user.cpf + ')' + ' removeu uma imagem da notícia ' + noticia.titulo + ' [Cód. ' + noticia.identifier.__str__() + ']',
+                     'noticia', noticia.identifier, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).insert()
                 return json_response(message='Imagem removida!', data=[],
                                      redirect=url_for('noticias.admin_edicao', identifier=imagem.noticia_id))
             else:
@@ -173,9 +190,13 @@ def admin_busca():
 def admin_remover(identifier: int):
     noticia = Noticia()
     noticia.select(identifier)
+    auth = Auth()
     if noticia.identifier > 0:
-        if Auth().is_allowed('remove.noticia', noticia):
+        if auth.is_allowed('remove.noticia', noticia):
             if noticia.delete():
+                Logs(0, auth.user.identifier,
+                     auth.user.nome + '(' + auth.user.cpf + ')' + ' removeu a notícia ' + noticia.titulo + ' [Cód. ' + noticia.identifier.__str__() + ']',
+                     'noticia', noticia.identifier, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).insert()
                 return json_response(message='Notícia removida!', data=[])
             else:
                 return json_response(message='Não foi possível remover a notícia', data=[]), 400

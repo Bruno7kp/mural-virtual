@@ -6,6 +6,7 @@ from flask import Blueprint, render_template, request, session, redirect, url_fo
 
 from mural.mod_base.auth import logado, Roles, Auth
 from mural.mod_base.base_model import json_response, admin_403_response, admin_404_response, data_tables_response
+from mural.mod_logs import Logs
 from mural.mod_usuarios import Usuario
 
 bp_usuarios = Blueprint('usuarios', __name__, url_prefix='/', template_folder='templates')
@@ -37,6 +38,9 @@ def login():
         usuario.permanent = True
         session['user'] = usuario.serialize()
         session['time'] = time.time()
+        Logs(0, usuario.identifier,
+             usuario.nome + ' (' + usuario.cpf + ')' + ' entrou no sistema',
+             'usuario', usuario.identifier, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).insert()
         return redirect(url_for('home.admin_home'))
     return redirect(url_for('usuarios.entrar', erro=1))
 
@@ -57,6 +61,9 @@ def cadastrar():
     usuario.senha = Usuario.hash(request.form['senha'])
     identifier = usuario.insert()
     if identifier > 0:
+        Logs(0, usuario.identifier,
+             usuario.nome + '(' + usuario.cpf + ')' + ' fez o cadastro',
+             'usuario', usuario.identifier, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).insert()
         return json_response(message='Cadastrado realizado!', data=[usuario], redirect=url_for('usuarios.entrar')), 201
     else:
         return json_response(message='Não foi possível cadastrar sua conta', data=[]), 400
@@ -109,6 +116,9 @@ def admin_cadastrar():
         usuario.senha = Usuario.hash(request.form['senha'])
         usuario.data_cadastro = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         if usuario.insert():
+            Logs(0, auth.user.identifier,
+                 auth.user.nome + '(' + auth.user.cpf + ')' + ' cadastrou o usuário ' + usuario.nome + ' (' + usuario.cpf + ')',
+                 'usuario', usuario.identifier, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).insert()
             return json_response(message='Usuário cadastrado', data=[usuario], redirect=url_for('usuarios.admin_lista'))
         else:
             return json_response(message='Não foi possível cadastrar o usuário', data=[]), 400
@@ -137,11 +147,12 @@ def admin_editar(identifier: int):
     """ Edição de usuários """
     usuario = Usuario()
     usuario.select(identifier)
+    auth = Auth()
     if usuario.identifier > 0:
-        if Auth().is_allowed('edita.usuario', usuario):
+        if auth.is_allowed('edita.usuario', usuario):
             populate_from_request(usuario)
             # Apenas usuários que podem editar qualquer usuário (e não apenas si mesmo) podem alterar o nível de perm.
-            if Auth().is_allowed('edita.usuario') and 'nivel' in request.form:
+            if auth.is_allowed('edita.usuario') and 'nivel' in request.form:
                 usuario.nivel = int(request.form['nivel'])
 
             if usuario.login_exists(usuario.cpf, usuario.identifier):
@@ -157,6 +168,9 @@ def admin_editar(identifier: int):
 
             usuario.data_atualizacao = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             if usuario.update():
+                Logs(0, auth.user.identifier,
+                     auth.user.nome + '(' + auth.user.cpf + ')' + ' editou o usuário ' + usuario.nome + ' (' + usuario.cpf + ')',
+                     'usuario', usuario.identifier, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).insert()
                 return json_response(message='Usuário atualizado!', data=[usuario])
             else:
                 return json_response(message='Não foi possível editar o usuário', data=[]), 400
@@ -186,9 +200,13 @@ def admin_busca():
 def admin_remover(identifier: int):
     usuario = Usuario()
     usuario.select(identifier)
+    auth = Auth()
     if usuario.identifier > 0:
-        if Auth().is_allowed('remove.usuario', usuario):
+        if auth.is_allowed('remove.usuario', usuario):
             if usuario.delete():
+                Logs(0, auth.user.identifier,
+                     auth.user.nome + '(' + auth.user.cpf + ')' + ' removeu o usuário ' + usuario.nome + ' (' + usuario.cpf + ')',
+                     'usuario', usuario.identifier, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).insert()
                 return json_response(message='Usuário removido!', data=[])
             else:
                 return json_response(message='Não foi possível remover o usuário', data=[]), 400

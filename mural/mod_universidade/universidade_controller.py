@@ -6,6 +6,7 @@ from flask import Blueprint, render_template, request, url_for
 
 from mural.mod_base import Auth
 from mural.mod_base.base_model import json_response, admin_403_response
+from mural.mod_logs import Logs
 from mural.mod_universidade import Universidade
 
 bp_universidade = Blueprint('universidade', __name__, url_prefix='/', template_folder='templates')
@@ -29,10 +30,14 @@ def admin_editar():
     """ Edição de universidade """
     universidade = Universidade()
     universidade.select(1)
-    if Auth().is_allowed('edita.universidade'):
+    auth = Auth()
+    if auth.is_allowed('edita.universidade'):
         populate_from_request(universidade)
         universidade.data_atualizacao = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         if universidade.update():
+            Logs(0, auth.user.identifier,
+                 auth.user.nome + '(' + auth.user.cpf + ')' + ' editou os dados da universidade ' + universidade.nome + ' [Cód. ' + universidade.identifier.__str__() + ']',
+                 'universidade', universidade.identifier, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).insert()
             return json_response(message='Dados da universidade atualizados!', data=[universidade],
                                  redirect=url_for('universidade.admin_universidade'))
         else:

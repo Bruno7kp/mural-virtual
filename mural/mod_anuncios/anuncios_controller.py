@@ -8,6 +8,7 @@ from flask import Blueprint, render_template, request, url_for
 from mural.mod_anuncios import Anuncio, ImagemAnuncio
 from mural.mod_base.auth import logado, Auth
 from mural.mod_base.base_model import data_tables_response, admin_403_response, json_response, admin_404_response
+from mural.mod_logs import Logs
 
 bp_anuncios = Blueprint('anuncios', __name__, url_prefix='/', template_folder='templates')
 
@@ -69,6 +70,9 @@ def admin_cadastrar():
                 imagem.ordem = order
                 imagem.insert()
                 order = order + 1
+            Logs(0, auth.user.identifier,
+                 auth.user.nome + '(' + auth.user.cpf + ')' + ' cadastrou o anúncio ' + anuncio.titulo + ' [Cód. ' + anuncio.identifier.__str__() + ']',
+                 'anuncio', anuncio.identifier, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).insert()
             return json_response(message='Anúncio cadastrado', data=[anuncio],
                                  redirect=url_for('anuncios.admin_edicao', identifier=anuncio.identifier))
         else:
@@ -100,8 +104,9 @@ def admin_editar(identifier: int):
     """ Edição de anúncios """
     anuncio = Anuncio()
     anuncio.select(identifier)
+    auth = Auth()
     if anuncio.identifier > 0:
-        if Auth().is_allowed('edita.anuncio', anuncio):
+        if auth.is_allowed('edita.anuncio', anuncio):
             populate_from_request(anuncio)
             anuncio.data_atualizacao = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             if anuncio.update():
@@ -115,6 +120,9 @@ def admin_editar(identifier: int):
                     imagem.ordem = count
                     imagem.insert()
                     count = count + 1
+                Logs(0, auth.user.identifier,
+                     auth.user.nome + '(' + auth.user.cpf + ')' + ' editou o anúncio ' + anuncio.titulo + ' [Cód. ' + anuncio.identifier.__str__() + ']',
+                     'anuncio', anuncio.identifier, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).insert()
                 return json_response(message='Anúncio atualizado!', data=[anuncio],
                                      redirect=url_for('anuncios.admin_edicao', identifier=anuncio.identifier))
             else:
@@ -130,8 +138,9 @@ def admin_editar(identifier: int):
 def admin_imagem_ordem(identifier: int):
     anuncio = Anuncio()
     anuncio.select(identifier)
+    auth = Auth()
     if anuncio.identifier > 0:
-        if Auth().is_allowed('edita.anuncio', anuncio):
+        if auth.is_allowed('edita.anuncio', anuncio):
             ordem = request.form['ordem']
             lista = ordem.split(',')
             imagem = ImagemAnuncio()
@@ -141,6 +150,9 @@ def admin_imagem_ordem(identifier: int):
                 imagem.ordem = count
                 imagem.update()
                 count = count + 1
+            Logs(0, auth.user.identifier,
+                 auth.user.nome + '(' + auth.user.cpf + ')' + ' alterou a ordem das imagens do anúncio ' + anuncio.titulo + ' [Cód. ' + anuncio.identifier.__str__() + ']',
+                 'anuncio', anuncio.identifier, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).insert()
             return json_response(message='Ordem atualizada!', data=[])
         else:
             return json_response(message='Você não tem permissão para realizar esta ação', data=[]), 403
@@ -153,9 +165,14 @@ def admin_imagem_ordem(identifier: int):
 def admin_imagem_remover(identifier: int):
     imagem = ImagemAnuncio()
     imagem.select(identifier)
+    auth = Auth()
     if imagem.identifier > 0:
-        if Auth().is_allowed('edita.anuncio', imagem.get_parent()):
+        if auth.is_allowed('edita.anuncio', imagem.get_parent()):
             if imagem.delete():
+                anuncio = imagem.get_parent()
+                Logs(0, auth.user.identifier,
+                     auth.user.nome + '(' + auth.user.cpf + ')' + ' removeu a imagem do anúncio ' + anuncio.titulo + ' [Cód. ' + anuncio.identifier.__str__() + ']',
+                     'anuncio', anuncio.identifier, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).insert()
                 return json_response(message='Imagem removida!', data=[],
                                      redirect=url_for('anuncios.admin_edicao', identifier=imagem.anuncio_id))
             else:
@@ -218,9 +235,13 @@ def admin_busca_aprovacao():
 def admin_remover(identifier: int):
     anuncio = Anuncio()
     anuncio.select(identifier)
+    auth = Auth()
     if anuncio.identifier > 0:
-        if Auth().is_allowed('remove.anuncio', anuncio):
+        if auth.is_allowed('remove.anuncio', anuncio):
             if anuncio.delete():
+                Logs(0, auth.user.identifier,
+                     auth.user.nome + '(' + auth.user.cpf + ')' + ' removeu o anúncio ' + anuncio.titulo + ' [Cód. ' + anuncio.identifier.__str__() + ']',
+                     'anuncio', anuncio.identifier, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).insert()
                 return json_response(message='Anúncio removido!', data=[])
             else:
                 return json_response(message='Não foi possível remover o anúncio', data=[]), 400
