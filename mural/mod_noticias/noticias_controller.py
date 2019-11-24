@@ -14,7 +14,7 @@ bp_noticias = Blueprint('noticias', __name__, url_prefix='/', template_folder='t
 # Rotas da área pública
 @bp_noticias.route('/noticias')
 def noticias():
-    return render_template("listNoticias.html")
+    return render_template("lista_noticias.html")
 
 # Rotas da área administrativa
 @bp_noticias.route('/admin/noticias', methods=['GET'])
