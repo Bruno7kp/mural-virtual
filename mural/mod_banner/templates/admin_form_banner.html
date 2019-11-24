@@ -5,7 +5,7 @@
 
         <!-- Page Heading -->
         <h1 class="h3 mb-4 text-gray-800">{{ 'Adicionar' if banner.identifier == 0 else 'Editar' }} banner</h1>
-        <form class="form-data" method="post" action="{{ url_for('banner.admin_cadastrar') if banner.identifier == 0 else url_for('banner.admin_editar', identifier=banner.identifier) }}">
+        <form autocomplete="off" class="form-data" method="post" action="{{ url_for('banner.admin_cadastrar') if banner.identifier == 0 else url_for('banner.admin_editar', identifier=banner.identifier) }}">
             <div class="card mb-3">
                 <div class="card-body">
                     <div class="row">

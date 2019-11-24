@@ -9,13 +9,24 @@ from mural.mod_base.auth import logado, Auth
 from mural.mod_base.base_model import data_tables_response, json_response, admin_404_response, admin_403_response
 from mural.mod_logs import Logs
 from mural.mod_noticias import Noticia, ImagemNoticia
+from flask_paginate import Pagination, get_page_args
 
 bp_noticias = Blueprint('noticias', __name__, url_prefix='/', template_folder='templates')
 
 # Rotas da área pública
 @bp_noticias.route('/noticias')
 def noticias():
-    return render_template("lista_noticias.html")
+    busca = Noticia()
+    page, per_page, offset = get_page_args(page_parameter='page',
+                                           per_page_parameter='per_page')
+    total = busca.count('%%', True)
+    pagination_noticias = busca.search('%%', offset, per_page, True)
+    pagination = Pagination(page=page, per_page=per_page, total=total,
+                            css_framework='bootstrap4')
+    return render_template("lista_noticias.html", noticias=pagination_noticias,
+                           page=page,
+                           per_page=per_page,
+                           pagination=pagination, )
 
 
 @bp_noticias.route('/noticia/<int:identifier>')

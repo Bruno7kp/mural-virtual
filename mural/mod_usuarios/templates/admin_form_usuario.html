@@ -5,7 +5,7 @@
 
         <!-- Page Heading -->
         <h1 class="h3 mb-4 text-gray-800">{{ 'Adicionar' if usuario.identifier == 0 else 'Editar' }} usuário</h1>
-        <form class="form-data" method="post" action="{{ url_for('usuarios.admin_cadastrar') if usuario.identifier == 0 else url_for('usuarios.admin_editar', identifier=usuario.identifier) }}">
+        <form autocomplete="off" class="form-data" method="post" action="{{ url_for('usuarios.admin_cadastrar') if usuario.identifier == 0 else url_for('usuarios.admin_editar', identifier=usuario.identifier) }}">
             <div class="card mb-3">
                 <div class="card-body">
                     <div class="row">

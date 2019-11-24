@@ -9,13 +9,24 @@ from mural.mod_anuncios import Anuncio, ImagemAnuncio
 from mural.mod_base.auth import logado, Auth
 from mural.mod_base.base_model import data_tables_response, admin_403_response, json_response, admin_404_response
 from mural.mod_logs import Logs
+from flask_paginate import Pagination, get_page_args
 
 bp_anuncios = Blueprint('anuncios', __name__, url_prefix='/', template_folder='templates')
 
 # Rotas da área pública
 @bp_anuncios.route('/anuncios')
 def anuncios():
-    return render_template("lista_anuncios.html")
+    busca = Anuncio()
+    page, per_page, offset = get_page_args(page_parameter='page',
+                                           per_page_parameter='per_page')
+    total = busca.count('%%', 1, 0, True)
+    pagination_anuncios = busca.search('%%', offset, per_page, 1, 0, True)
+    pagination = Pagination(page=page, per_page=per_page, total=total,
+                            css_framework='bootstrap4')
+    return render_template("lista_anuncios.html", anuncios=pagination_anuncios,
+                           page=page,
+                           per_page=per_page,
+                           pagination=pagination, )
 
 
 @bp_anuncios.route('/anuncio/<int:identifier>')

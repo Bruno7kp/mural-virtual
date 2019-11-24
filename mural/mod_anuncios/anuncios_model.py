@@ -164,10 +164,16 @@ class Anuncio(BaseModel):
         number_of_rows = result[0]
         return number_of_rows
 
-    def count(self, text, approval_filter: int = -1, user_filter: int = 0):
+    def count(self, text, approval_filter: int = -1, user_filter: int = 0, filter_date: bool = False):
         c = self.db.con.cursor()
-        c.execute("""SELECT COUNT(id) AS total FROM anuncio WHERE (titulo LIKE %s) AND (%s = -1 OR %s = aprovado) AND
-                    (%s = 0 OR %s = usuario_id)""", (text, approval_filter, approval_filter, user_filter, user_filter))
+        if filter_date:
+            now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            c.execute("""SELECT COUNT(id) AS total FROM anuncio WHERE (titulo LIKE %s) AND (%s = -1 OR %s = aprovado) 
+                        AND (%s = 0 OR %s = usuario_id) AND (%s >= data_entrada AND %s < data_saida)""",
+                      (text, approval_filter, approval_filter, user_filter, user_filter, now, now))
+        else:
+            c.execute("""SELECT COUNT(id) AS total FROM anuncio WHERE (titulo LIKE %s) AND (%s = -1 OR %s = aprovado) AND
+                        (%s = 0 OR %s = usuario_id)""", (text, approval_filter, approval_filter, user_filter, user_filter))
         result = c.fetchone()
         number_of_rows = result[0]
         return number_of_rows

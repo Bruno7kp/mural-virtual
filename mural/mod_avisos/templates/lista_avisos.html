@@ -3,71 +3,25 @@
 {% block title %}Lista de Avisos{% endblock %}
 
 {% block content %}
-    <div class="container margTop">
+    <div class="container mt-100 mb-5">
         <div class="card">
             <div class="card-body">
                 <div class="section-heading">
                     <h5>Avisos</h5>
                 </div>
-                <div class="single-blog-post d-flex">
+                {% if avisos|length > 0 %}
+                {% for aviso in avisos %}
+                <div class="single-featured-post d-flex">
                     <div class="post-content">
-                        <a href="#" class="post-title">Aviso importante para amanhã</a>
-                        <p>Não haverá aula</p>
+                        <a href="#" class="post-title">{{ aviso.titulo }}</a>
+                        <p>{{ aviso.conteudo|striptags|truncate(350) }} <a class="text-dark" href="{{ url_for('avisos.aviso', identifier=aviso.identifier) }}">Veja mais</a></p>
                     </div>
                 </div>
-                <div class="single-blog-post d-flex">
-                    <div class="post-content">
-                        <a href="#" class="post-title">Aviso importante para amanhã</a>
-                        <p>Não haverá aula</p>
-                    </div>
-                </div>
-                <div class="single-blog-post d-flex">
-                    <div class="post-content">
-                        <a href="#" class="post-title">Aviso importante para amanhã</a>
-                        <p>Não haverá aula</p>
-                    </div>
-                </div>
-                <div class="single-blog-post d-flex">
-                    <div class="post-content">
-                        <a href="#" class="post-title">Aviso importante para amanhã</a>
-                        <p>Não haverá aula</p>
-                    </div>
-                </div>
-                <div class="single-blog-post d-flex">
-                    <div class="post-content">
-                        <a href="#" class="post-title">Aviso importante para amanhã</a>
-                        <p>Não haverá aula</p>
-                    </div>
-                </div>
-                <nav>
-                    <ul class="pagination">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">«</span>
-                            </a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">1</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">2</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">3</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">4</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">5</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">»</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                {% endfor %}
+                {% else %}
+                    Não temos nenhum aviso no momento.
+                {% endif %}
+                {{ pagination.links }}
             </div>
         </div>
     </div>

@@ -149,9 +149,14 @@ class Aviso(BaseModel):
         number_of_rows = result[0]
         return number_of_rows
 
-    def count(self, text):
+    def count(self, text, filter_date: bool = False):
         c = self.db.con.cursor()
-        c.execute("SELECT COUNT(id) AS total FROM aviso WHERE titulo LIKE %s", text)
+        if filter_date:
+            now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            c.execute("SELECT COUNT(id) AS total FROM aviso WHERE titulo LIKE %s AND %s >= data_entrada AND %s < data_saida",
+                      (text, now, now))
+        else:
+            c.execute("SELECT COUNT(id) AS total FROM aviso WHERE titulo LIKE %s", text)
         result = c.fetchone()
         number_of_rows = result[0]
         return number_of_rows
