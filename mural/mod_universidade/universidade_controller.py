@@ -34,7 +34,7 @@ def admin_editar():
         universidade.data_atualizacao = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         if universidade.update():
             return json_response(message='Dados da universidade atualizados!', data=[universidade],
-                                 redirect=url_for('universidade.admin_universidade')), 200
+                                 redirect=url_for('universidade.admin_universidade'))
         else:
             return json_response(message='Não foi possível editar a universidade', data=[]), 400
     else:

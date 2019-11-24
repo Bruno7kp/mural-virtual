@@ -115,8 +115,8 @@ class Noticia(BaseModel):
         c = self.db.con.cursor()
         c.execute("""SELECT id, usuario_id, titulo, conteudo, DATE_FORMAT(data_entrada, '%%Y-%%m-%%dT%%H:%%i'), 
                         DATE_FORMAT(data_saida, '%%Y-%%m-%%dT%%H:%%i'), data_cadastro, data_atualizacao
-                        FROM noticia WHERE titulo LIKE %s OR conteudo LIKE %s ORDER BY data_entrada DESC LIMIT %s, %s""",
-                  (text, text, start, limit))
+                        FROM noticia WHERE titulo LIKE %s ORDER BY data_entrada DESC LIMIT %s, %s""",
+                  (text, start, limit))
         list_all = []
         for row in c:
             noticia = Noticia()
@@ -141,7 +141,7 @@ class Noticia(BaseModel):
 
     def count(self, text):
         c = self.db.con.cursor()
-        c.execute("SELECT COUNT(id) AS total FROM noticia WHERE titulo LIKE %s OR conteudo LIKE %s", (text, text))
+        c.execute("SELECT COUNT(id) AS total FROM noticia WHERE titulo LIKE %s", text)
         result = c.fetchone()
         number_of_rows = result[0]
         return number_of_rows
@@ -197,6 +197,22 @@ class ImagemNoticia(BaseModel):
         self.data_cadastro = data_cadastro
         self.data_atualizacao = data_atualizacao
 
+    def serialize(self):
+        if not isinstance(self.imagem, str):
+            self.imagem = self.imagem.decode('utf-8')
+        return {
+            'id': self.identifier,
+            'noticia_id': self.noticia_id,
+            'legenda': self.legenda,
+            'imagem': self.imagem,
+            'ordem': self.ordem,
+            'data_cadastro': self.data_cadastro,
+            'data_atualizacao': self.data_atualizacao,
+        }
+
+    def serialize_array(self):
+        return []
+
     def insert(self) -> int:
         c = self.db.con.cursor()
         c.execute("""INSERT INTO imagem_noticia 
@@ -248,15 +264,34 @@ class ImagemNoticia(BaseModel):
         c.execute("""SELECT id, noticiaid, lengenda, imagem, ordem, data_cadastro, data_atualizacao
                     FROM imagem_noticia ORDER BY ordem""")
         list_all = []
-        for (row, key) in c:
-            list_all[key] = ImagemNoticia()
-            list_all[key].identifier = row[0]
-            list_all[key].noticia_id = row[1]
-            list_all[key].legenda = row[2]
-            list_all[key].imagem = row[3]
-            list_all[key].ordem = row[4]
-            list_all[key].data_cadastro = row[5]
-            list_all[key].data_atualizacao = row[6]
+        for row in c:
+            imagem = ImagemNoticia()
+            imagem.identifier = row[0]
+            imagem.noticia_id = row[1]
+            imagem.legenda = row[2]
+            imagem.imagem = row[3]
+            imagem.ordem = row[4]
+            imagem.data_cadastro = row[5]
+            imagem.data_atualizacao = row[6]
+            list_all.append(imagem)
+        c.close()
+        return list_all
+
+    def select_by_parent(self, identifier: int):
+        c = self.db.con.cursor()
+        c.execute("""SELECT id, noticiaid, lengenda, imagem, ordem, data_cadastro, data_atualizacao
+                    FROM imagem_noticia WHERE noticiaid = %s ORDER BY ordem""", identifier)
+        list_all = []
+        for row in c:
+            imagem = ImagemNoticia()
+            imagem.identifier = row[0]
+            imagem.noticia_id = row[1]
+            imagem.legenda = row[2]
+            imagem.imagem = row[3]
+            imagem.ordem = row[4]
+            imagem.data_cadastro = row[5]
+            imagem.data_atualizacao = row[6]
+            list_all.append(imagem)
         c.close()
         return list_all
 
@@ -290,7 +325,7 @@ class ImagemNoticia(BaseModel):
           `data_cadastro` datetime,
           `data_atualizacao` datetime
         );""")
-        c.execute("ALTER TABLE `imagem_noticia` ADD FOREIGN KEY (`noticiaid`) REFERENCES `noticia` (`id`);")
+        c.execute("ALTER TABLE `imagem_noticia` ADD FOREIGN KEY (`noticiaid`) REFERENCES `noticia` (`id`) ON DELETE CASCADE;")
         db.con.commit()
         c.close()
 

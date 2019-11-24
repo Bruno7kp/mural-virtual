@@ -2,8 +2,32 @@ const App = {
     init: () => {
         App.loadTable();
         App.addFormListener();
-        App.addDeleteListener();
+        App.addDeleteListener(() => {});
         App.addTextEditor();
+        App.addSort();
+    },
+    addSort: () => {
+        let sort = document.querySelector('[data-sort]');
+        if (sort != null) {
+            let sorturl = sort.getAttribute('data-sort');
+            let sortable = new Sortable(sort, {
+                swapThreshold: 0.50,
+                animation: 150,
+                filter: '[data-delete]',
+                onUpdate: function (evt) {
+                    let formData = new FormData();
+                    formData.append('ordem', sortable.toArray());
+                    fetch(sorturl, {
+                        method: 'post',
+                        body: formData
+                    }).then((response) => {
+                        if (response.status !== 200) {
+                            App.responseHandler(response);
+                        }
+                    })
+                },
+            });
+        }
     },
     addTextEditor: () => {
         let editor = CKEDITOR.replace( 'conteudo', {

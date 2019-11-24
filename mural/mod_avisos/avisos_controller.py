@@ -80,7 +80,7 @@ def admin_editar(identifier: int):
             populate_from_request(aviso)
             aviso.data_atualizacao = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             if aviso.update():
-                return json_response(message='Aviso atualizado!', data=[aviso]), 200
+                return json_response(message='Aviso atualizado!', data=[aviso])
             else:
                 return json_response(message='Não foi possível editar o aviso', data=[]), 400
         else:
@@ -112,7 +112,7 @@ def admin_remover(identifier: int):
     if aviso.identifier > 0:
         if Auth().is_allowed('remove.aviso', aviso):
             if aviso.delete():
-                return json_response(message='Aviso removido!', data=[]), 200
+                return json_response(message='Aviso removido!', data=[])
             else:
                 return json_response(message='Não foi possível remover o aviso', data=[]), 400
         else:

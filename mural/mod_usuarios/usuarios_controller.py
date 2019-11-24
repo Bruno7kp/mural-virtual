@@ -157,7 +157,7 @@ def admin_editar(identifier: int):
 
             usuario.data_atualizacao = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             if usuario.update():
-                return json_response(message='Usuário atualizado!', data=[usuario]), 200
+                return json_response(message='Usuário atualizado!', data=[usuario])
             else:
                 return json_response(message='Não foi possível editar o usuário', data=[]), 400
         else:
@@ -189,7 +189,7 @@ def admin_remover(identifier: int):
     if usuario.identifier > 0:
         if Auth().is_allowed('remove.usuario', usuario):
             if usuario.delete():
-                return json_response(message='Usuário removido!', data=[]), 200
+                return json_response(message='Usuário removido!', data=[])
             else:
                 return json_response(message='Não foi possível remover o usuário', data=[]), 400
         else:

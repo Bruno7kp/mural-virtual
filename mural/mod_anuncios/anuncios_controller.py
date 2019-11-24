@@ -1,9 +1,11 @@
 # coding: utf-8
+import base64
 import datetime
+from typing import List
 
 from flask import Blueprint, render_template, request, url_for
 
-from mural.mod_anuncios import Anuncio
+from mural.mod_anuncios import Anuncio, ImagemAnuncio
 from mural.mod_base.auth import logado, Auth
 from mural.mod_base.base_model import data_tables_response, admin_403_response, json_response, admin_404_response
 
@@ -59,7 +61,16 @@ def admin_cadastrar():
         # Apenas usuários que podem editar os anúncios já ficam aprovados
         anuncio.aprovado = auth.is_allowed('edita.anuncio')
         if anuncio.insert():
-            return json_response(message='Anúncio cadastrado', data=[anuncio], redirect=url_for('anuncios.admin_lista'))
+            imagens = get_uploaded_images()
+            order = 0
+            for imagem in imagens:
+                imagem.anuncio_id = anuncio.identifier
+                imagem.data_cadastro = anuncio.data_cadastro
+                imagem.ordem = order
+                imagem.insert()
+                order = order + 1
+            return json_response(message='Anúncio cadastrado', data=[anuncio],
+                                 redirect=url_for('anuncios.admin_edicao', identifier=anuncio.identifier))
         else:
             return json_response(message='Não foi possível cadastrar o anúncio', data=[]), 400
     else:
@@ -74,7 +85,9 @@ def admin_edicao(identifier: int):
     anuncio.select(identifier)
     if anuncio.identifier > 0:
         if Auth().is_allowed('edita.anuncio', anuncio):
-            return render_template('admin_form_anuncio.html', anuncio=anuncio)
+            imagem = ImagemAnuncio()
+            imagens = imagem.select_by_parent(anuncio.identifier)
+            return render_template('admin_form_anuncio.html', anuncio=anuncio, imagens=imagens)
         else:
             return admin_403_response()
     else:
@@ -92,13 +105,65 @@ def admin_editar(identifier: int):
             populate_from_request(anuncio)
             anuncio.data_atualizacao = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             if anuncio.update():
-                return json_response(message='Anúncio atualizado!', data=[anuncio]), 200
+                imagens = get_uploaded_images()
+                atual = ImagemAnuncio()
+                atuais = atual.select_by_parent(anuncio.identifier)
+                count = len(atuais)
+                for imagem in imagens:
+                    imagem.anuncio_id = anuncio.identifier
+                    imagem.data_cadastro = anuncio.data_atualizacao
+                    imagem.ordem = count
+                    imagem.insert()
+                    count = count + 1
+                return json_response(message='Anúncio atualizado!', data=[anuncio],
+                                     redirect=url_for('anuncios.admin_edicao', identifier=anuncio.identifier))
             else:
                 return json_response(message='Não foi possível editar o anúncio', data=[]), 400
         else:
             return json_response(message='Você não tem permissão para realizar esta ação', data=[]), 403
     else:
         return json_response(message='Anúncio não encontrado', data=[]), 404
+
+
+@bp_anuncios.route('/admin/anuncios/imagem-ordem/<int:identifier>', methods=['POST'])
+@logado
+def admin_imagem_ordem(identifier: int):
+    anuncio = Anuncio()
+    anuncio.select(identifier)
+    if anuncio.identifier > 0:
+        if Auth().is_allowed('edita.anuncio', anuncio):
+            ordem = request.form['ordem']
+            lista = ordem.split(',')
+            imagem = ImagemAnuncio()
+            count = 0
+            for item in lista:
+                imagem.select(item)
+                imagem.ordem = count
+                imagem.update()
+                count = count + 1
+            return json_response(message='Ordem atualizada!', data=[])
+        else:
+            return json_response(message='Você não tem permissão para realizar esta ação', data=[]), 403
+    else:
+        return json_response(message='Anúncio não encontrado', data=[]), 404
+
+
+@bp_anuncios.route('/admin/anuncios/imagem/<int:identifier>', methods=['DELETE'])
+@logado
+def admin_imagem_remover(identifier: int):
+    imagem = ImagemAnuncio()
+    imagem.select(identifier)
+    if imagem.identifier > 0:
+        if Auth().is_allowed('edita.anuncio', imagem.get_parent()):
+            if imagem.delete():
+                return json_response(message='Imagem removida!', data=[],
+                                     redirect=url_for('anuncios.admin_edicao', identifier=imagem.anuncio_id))
+            else:
+                return json_response(message='Não foi possível remover a imagem', data=[]), 400
+        else:
+            return json_response(message='Você não tem permissão para realizar esta ação', data=[]), 403
+    else:
+        return json_response(message='Imagem não encontrada', data=[]), 404
 
 
 @bp_anuncios.route('/admin/anuncios/busca', methods=['GET'])
@@ -133,7 +198,7 @@ def admin_remover(identifier: int):
     if anuncio.identifier > 0:
         if Auth().is_allowed('remove.anuncio', anuncio):
             if anuncio.delete():
-                return json_response(message='Anúncio removido!', data=[]), 200
+                return json_response(message='Anúncio removido!', data=[])
             else:
                 return json_response(message='Não foi possível remover o anúncio', data=[]), 400
         else:
@@ -148,3 +213,14 @@ def populate_from_request(anuncio: Anuncio):
     anuncio.data_entrada = request.form['data_entrada']
     anuncio.data_saida = request.form['data_saida']
     anuncio.conteudo = request.form['conteudo']
+
+
+def get_uploaded_images():
+    images: List[ImagemAnuncio] = []
+    if 'imagens' in request.files:
+        files = request.files.getlist('imagens')
+        for file in files:
+            if file.filename != '':
+                image = "data:" + file.content_type + ";base64," + str(base64.b64encode(file.read()), "utf-8")
+                images.append(ImagemAnuncio(0, 0, file.filename, image))
+    return images

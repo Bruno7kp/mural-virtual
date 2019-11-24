@@ -8,7 +8,7 @@
 
         <div class="card">
             <div class="card-body">
-                <form class="form-data" method="post" action="{{ url_for('anuncios.admin_cadastrar') if anuncio.identifier == 0 else url_for('anuncios.admin_editar', identifier=anuncio.identifier) }}">
+                <form autocomplete="off" class="form-data" method="post" action="{{ url_for('anuncios.admin_cadastrar') if anuncio.identifier == 0 else url_for('anuncios.admin_editar', identifier=anuncio.identifier) }}">
                     <div class="row">
                         <div class="col-12">
                             <div class="row">
@@ -37,6 +37,33 @@
                                     </div>
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-success"><i class="fa fa-save fa-sm fa-fw text-white-50"></i> Salvar</button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <label for="imagens">Imagens</label>
+                                        <input type="file" name="imagens" id="imagens" class="form-control" accept="image/jpeg, image/png" multiple>
+                                        <small class="">Você pode selecionar várias imagens nos formatos .jpg, .jpeg e .png</small>
+                                    </div>
+                                    <div class="form-group">
+                                        {% if imagens is defined and imagens | length > 0 %}
+                                            <label class="d-block">Imagens atuais</label>
+                                            <small class="d-block mb-1"><i class="fa fa-fw fa-fm fa-exclamation-circle"></i> Arraste as imagens para alterar a ordem.</small>
+                                            <div class="row" data-sort="{{ url_for('anuncios.admin_imagem_ordem', identifier=anuncio.identifier) }}">
+                                                {% for imagem in imagens %}
+                                                    <div class="col-sm-6 col-md-3" data-id="{{ imagem.identifier }}">
+                                                        <div class="card">
+                                                            <div class="card-body p-0">
+                                                                <img src="{{ imagem.imagem.decode('utf-8') }}" class="img-fluid rounded" alt="{{ imagem.legenda }}">
+                                                                <button type="button" class="btn btn-sm btn-outline-danger btn-block mt-1" data-delete="{{ url_for('anuncios.admin_imagem_remover', identifier=imagem.identifier) }}"><i class="fa fa-sm fa-trash fa-fw"></i> Remover</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        {% elif imagens is defined %}
+                                            <label class="d-block">Nenhuma imagem adicionada</label>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>

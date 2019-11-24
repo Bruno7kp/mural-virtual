@@ -115,8 +115,8 @@ class Aviso(BaseModel):
         c = self.db.con.cursor()
         c.execute("""SELECT id, usuario_id, titulo, conteudo,DATE_FORMAT(data_entrada, '%%Y-%%m-%%dT%%H:%%i'), 
                         DATE_FORMAT(data_saida, '%%Y-%%m-%%dT%%H:%%i'), data_cadastro, data_atualizacao
-                        FROM aviso WHERE titulo LIKE %s OR conteudo = %s ORDER BY data_entrada DESC LIMIT %s, %s""",
-                  (text, text, start, limit))
+                        FROM aviso WHERE titulo LIKE %s ORDER BY data_entrada DESC LIMIT %s, %s""",
+                  (text, start, limit))
         list_all = []
         for row in c:
             aviso = Aviso()
@@ -141,7 +141,7 @@ class Aviso(BaseModel):
 
     def count(self, text):
         c = self.db.con.cursor()
-        c.execute("SELECT COUNT(id) AS total FROM aviso WHERE titulo LIKE %s OR conteudo = %s", (text, text))
+        c.execute("SELECT COUNT(id) AS total FROM aviso WHERE titulo LIKE %s", text)
         result = c.fetchone()
         number_of_rows = result[0]
         return number_of_rows
