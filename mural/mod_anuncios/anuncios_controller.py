@@ -32,7 +32,7 @@ def admin_lista():
 def admin_aprovacao():
     """ Página com listagem de anúncios em aprovação """
     if Auth().is_allowed('edita.anuncio'):
-        return render_template('admin_lista_anuncios.html')
+        return render_template('admin_lista_anuncios_aprovacao.html')
     else:
         return admin_403_response()
 
@@ -179,13 +179,36 @@ def admin_busca():
     # Filtra listagem de anúncios para que usuário não possam ver anúncios de outros usuários sem permissão
     auth = Auth()
     if auth.is_allowed('edita.anuncio'):
-        resultados = anuncio.search(busca, inicio, fim)
-        total = anuncio.total()
-        filtrado = anuncio.count(busca)
+        resultados = anuncio.search(busca, inicio, fim, 1)
+        total = anuncio.total(1)
+        filtrado = anuncio.count(busca, 1)
     else:
-        resultados = anuncio.search(busca, inicio, fim, auth.user.identifier)
-        total = anuncio.total(auth.user.identifier)
-        filtrado = anuncio.count(busca, auth.user.identifier)
+        resultados = anuncio.search(busca, inicio, fim, -1, auth.user.identifier)
+        total = anuncio.total(-1, auth.user.identifier)
+        filtrado = anuncio.count(busca, -1, auth.user.identifier)
+
+    return data_tables_response(draw, total, filtrado, resultados)
+
+
+@bp_anuncios.route('/admin/anuncios/busca-aprovacao', methods=['GET'])
+@logado
+def admin_busca_aprovacao():
+    """ Busca de anúncios sem aprovação """
+    anuncio = Anuncio()
+    busca = request.args.get('search[value]')
+    busca = '%' + busca + '%'
+    inicio = int(request.args.get('start'))
+    fim = int(request.args.get('length'))
+    draw = int(request.args.get('draw'))
+    auth = Auth()
+    if auth.is_allowed('edita.anuncio'):
+        resultados = anuncio.search(busca, inicio, fim, 0)
+        total = anuncio.total(0)
+        filtrado = anuncio.count(busca, 0)
+    else:
+        resultados = []
+        total = 0
+        filtrado = 0
 
     return data_tables_response(draw, total, filtrado, resultados)
 
@@ -213,6 +236,8 @@ def populate_from_request(anuncio: Anuncio):
     anuncio.data_entrada = request.form['data_entrada']
     anuncio.data_saida = request.form['data_saida']
     anuncio.conteudo = request.form['conteudo']
+    if 'aprovado' in request.form and Auth().is_allowed('edita.anuncio'):
+        anuncio.aprovado = int(request.form['aprovado'])
 
 
 def get_uploaded_images():

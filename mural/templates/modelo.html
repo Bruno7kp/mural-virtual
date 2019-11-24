@@ -3,17 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <link rel="apple-icon" sizes="180x180" href="/static/assets/img/apple-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/static/assets/img/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/static/assets/img/favicon-16x16.png">
     {% block head %}
-    <title>Mural Virtual</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/bootstrap/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700">
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/fonts/font-awesome.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/fonts/ionicons.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/styles.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/custom.css') }}">
+        <title>{{ universidade.nome }} - Mural Virtual</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/styles.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/custom.css') }}">
+        <link rel="icon" href="{{ universidade.logo.decode('utf-8') }}">
     {% endblock %}
 </head>
 
@@ -22,9 +16,7 @@
 <nav class="navbar navbar-expand fixed-top text-dark navigation-clean-button" style="width: 100%;height: 65px;">
         <div class="container">
             <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1">
-                <span class="sr-only">Toggle navigation</span><
-                span class="navbar-toggler-icon">
-                </span>
+                <span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navcol-1" style="width: auto;height: auto;">
                 <ul class="nav navbar-nav">
@@ -40,10 +32,12 @@
                         </div>
                     </li>
                 </ul>
-                <a class="mx-auto" href="{{ url_for("home.home")}}"><img alt="Logo Uniplac" style="width: 50px;height: 50px;" src="{{ url_for("static", filename="assets/img/logo-uniplac.png")}}"></a>
+                <a class="mx-auto" href="{{ url_for("home.home") }}">
+                    <img alt="Logo Uniplac" style="width: 50px;height: 50px;" src="{{ universidade.logo.decode('utf-8') }}">
+                </a>
                 <span class="navbar-text actions">
-                    <a class="text-white login" href="#">Log In</a>
-                    <a class="btn btn-light action-button" role="button" href="#">Sign Up</a>
+                    <a class="text-white login" href="{{ url_for('usuarios.entrar') }}">Entrar</a>
+                    <a class="btn btn-light action-button" role="button" href="{{ url_for('usuarios.cadastro') }}">Cadastre-se</a>
                 </span>
             </div>
         </div>
@@ -59,27 +53,23 @@
                     <div class="col-sm-4 col-md-3 item">
                         <h3>Telefone:</h3>
                         <ul>
-                            <li><a href="#">(49) 99999-9999</a></li>
+                            <li>{{ universidade.telefone }}</li>
                         </ul>
                     </div>
                     <div class="col-sm-4 col-md-3 item">
                         <h3>E-mail</h3>
                         <ul>
-                            <li><a href="#">uniplac@uniplaclages.edu.br</a></li>
+                            <li><a href="mailto:{{ universidade.email }}">{{ universidade.email }}</a></li>
                         </ul>
                     </div>
                     <div class="col-sm-4 col-lg-3 item social">
-                        <a href="https://www.facebook.com/uniplaclages/?__tn__=%2Cd%2CP-R&eid=ARDElj91vT_nP7SYjgskWsB0W1JKWrAJK-y6NTRGWRF2Gcuzb-AtiT_F6_BuQGRuuS26qitZm_Cp85ia">
-                            <i class="icon ion-social-facebook">
-
-                            </i>
+                        <a href="https://www.facebook.com/uniplaclages/" target="_blank">
+                            <i class="fa fa-facebook fa-sm fa-fw"></i>
                         </a>
-                        <a href="https://www.instagram.com/uniplaclages/?hl=pt-br">
-                            <i class="icon ion-social-instagram">
-
-                            </i>
+                        <a href="https://www.instagram.com/uniplaclages/" target="_blank">
+                            <i class="fa fa-instagram fa-sm fa-fw"></i>
                         </a>
-                        <p class="copyright">Projeto Integrador © 2019 </p>
+                        <p class="copyright">{{ universidade.nome }} &copy; Mural Virtual 2019</p>
                     </div>
                 </div>
             </div>

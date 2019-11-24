@@ -30,12 +30,16 @@ const App = {
         }
     },
     addTextEditor: () => {
-        let editor = CKEDITOR.replace( 'conteudo', {
-            language: 'pt-br',
-        });
-        editor.on( 'change', function( evt ) {
-            document.querySelector('#conteudo').value = evt.editor.getData()
-        });
+        let textarea = document.querySelector('#conteudo');
+        if (textarea != null) {
+            let editor = CKEDITOR.replace( 'conteudo', {
+                language: 'pt-br',
+            });
+            editor.on( 'change', function( evt ) {
+                textarea.value = evt.editor.getData()
+            });
+        }
+
     },
     addFormListener: () => {
         let form = document.querySelector(".form-data");
@@ -142,7 +146,7 @@ const App = {
         let table = document.querySelector("[data-table-url]");
         if (table != null) {
             let url = table.getAttribute("data-table-url");
-            let datatable = $(table).DataTable( {
+            App.datatable = $(table).DataTable( {
                 "ajax": url,
                 "processing": true,
                 "serverSide": true,
@@ -150,7 +154,7 @@ const App = {
                 "language": App.dataTableLang()
             });
             $(table).on('draw.dt', function () {
-                App.addDeleteListener(() => datatable.ajax.reload());
+                App.addDeleteListener(() => App.datatable.ajax.reload());
             });
         }
     },

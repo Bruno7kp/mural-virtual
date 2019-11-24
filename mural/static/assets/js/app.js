@@ -1,7 +1,11 @@
 const App = {
     startUp: () => {
         App.addFormListener();
-        App.addDeleteListener();
+        let fixClick = document.querySelector("[data-toggle=\"dropdown\"]");
+        if (fixClick != null) {
+            // Pra resolver o problema de ter que dar clique duplo pra abrir o menu, já deixamos um clique ao abrir a página
+            fixClick.click();
+        }
     },
     addFormListener: () => {
         let form = document.querySelector(".form-data");
@@ -18,24 +22,6 @@ const App = {
                     App.responseHandler(response);
                 })
             });
-        }
-    },
-    addDeleteListener: () => {
-        let del = document.querySelectorAll("[data-delete]");
-        if (del.length > 0) {
-            for (let i = 0; i < del.length; i++) {
-                let d = del[i];
-                d.addEventListener("click", (ev) => {
-                    if (confirm("Tem certeza que dejesa remover?")) {
-                        let url = d.getAttribute("data-delete");
-                        fetch(url, {
-                            method: 'delete'
-                        }).then((response) => {
-                            App.responseHandler(response);
-                        });
-                    }
-                });
-            }
         }
     },
     responseHandler: (response) => {
