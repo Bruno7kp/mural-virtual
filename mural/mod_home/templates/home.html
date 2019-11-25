@@ -28,9 +28,9 @@
                 {% for aviso in avisos %}
                 <div class="card mb-3">
                     <div class="card-body">
-                        <a href="{{ url_for('avisos.aviso', identifier=aviso.identifier) }}" class="post-title"><h5 class="card-title">{{ aviso.titulo }}</h5></a>
+                        <a href="{{ url_for('avisos.pagina_aviso', identifier=aviso.identifier) }}" class="post-title"><h5 class="card-title">{{ aviso.titulo }}</h5></a>
                         <p class="card-text">{{ aviso.conteudo|striptags|truncate(150) }}</p>
-                        <a href="{{ url_for('avisos.aviso', identifier=aviso.identifier) }}" class="btn btn-outline-warning btn-sm">Veja mais</a>
+                        <a href="{{ url_for('avisos.pagina_aviso', identifier=aviso.identifier) }}" class="btn btn-outline-warning btn-sm">Veja mais</a>
                     </div>
                 </div>
                 {% endfor %}
@@ -48,14 +48,14 @@
                 <div class="card mb-3">
                     {% set image = anuncio.get_cover() %}
                     {% if image|length > 0 %}
-                        <a href="{{ url_for('anuncios.anuncio', identifier=anuncio.identifier) }}">
+                        <a href="{{ url_for('anuncios.pagina_anuncio', identifier=anuncio.identifier) }}">
                             <img src="{{ image.decode('utf-8') }}" class="card-img-top" alt="{{ anuncio.titulo }}">
                         </a>
                     {% endif %}
                     <div class="card-body">
-                        <a href="{{ url_for('anuncios.anuncio', identifier=anuncio.identifier) }}"><h5 class="card-title">{{ anuncio.titulo }}</h5></a>
+                        <a href="{{ url_for('anuncios.pagina_anuncio', identifier=anuncio.identifier) }}"><h5 class="card-title">{{ anuncio.titulo }}</h5></a>
                         <p class="card-text">{{ anuncio.conteudo|striptags|truncate(250) }}</p>
-                        <a href="{{ url_for('anuncios.anuncio', identifier=anuncio.identifier) }}" class="btn btn-outline-primary btn-sm">Veja mais</a>
+                        <a href="{{ url_for('anuncios.pagina_anuncio', identifier=anuncio.identifier) }}" class="btn btn-outline-primary btn-sm">Veja mais</a>
                     </div>
                 </div>
                 {% endfor %}
@@ -73,14 +73,14 @@
                     <div class="card mb-3">
                         {% set image = noticia.get_cover() %}
                         {% if image|length > 0 %}
-                            <a href="{{ url_for('noticias.noticia', identifier=noticia.identifier) }}">
+                            <a href="{{ url_for('noticias.pagina_noticia', identifier=noticia.identifier) }}">
                                 <img src="{{ image.decode('utf-8') }}" class="card-img-top" alt="{{ noticia.titulo }}">
                             </a>
                         {% endif %}
                         <div class="card-body">
-                            <a href="{{ url_for('noticias.noticia', identifier=noticia.identifier) }}"><h5 class="card-title">{{ noticia.titulo }}</h5></a>
+                            <a href="{{ url_for('noticias.pagina_noticia', identifier=noticia.identifier) }}"><h5 class="card-title">{{ noticia.titulo }}</h5></a>
                             <p class="card-text">{{ noticia.conteudo|striptags|truncate(150) }}</p>
-                            <a href="{{ url_for('noticias.noticia', identifier=noticia.identifier) }}" class="btn btn-outline-success btn-sm">Veja mais</a>
+                            <a href="{{ url_for('noticias.pagina_noticia', identifier=noticia.identifier) }}" class="btn btn-outline-success btn-sm">Veja mais</a>
                         </div>
                     </div>
                 {% endfor %}

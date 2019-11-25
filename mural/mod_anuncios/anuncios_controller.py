@@ -31,7 +31,7 @@ def anuncios():
 
 
 @bp_anuncios.route('/anuncio/<int:identifier>')
-def anuncio(identifier: int):
+def pagina_anuncio(identifier: int):
     busca = Anuncio()
     busca.select(identifier)
     if busca.identifier > 0:
@@ -267,7 +267,7 @@ def admin_remover(identifier: int):
                 Logs(0, auth.user.identifier,
                      auth.user.nome + '(' + auth.user.cpf + ')' + ' removeu o anúncio ' + anuncio.titulo + ' [Cód. ' + anuncio.identifier.__str__() + ']',
                      'anuncio', anuncio.identifier, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).insert()
-                return json_response(message='Anúncio removido!', data=[])
+                return json_response(message='Anúncio removido!', data=[], redirect=url_for('anuncios.admin_lista'))
             else:
                 return json_response(message='Não foi possível remover o anúncio', data=[]), 400
         else:

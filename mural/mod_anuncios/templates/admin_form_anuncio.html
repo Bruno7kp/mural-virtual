@@ -87,6 +87,9 @@
                     {% else %}
                         <button type="submit" class="btn btn-success"><i class="fa fa-save fa-sm fa-fw text-white-50"></i> Salvar</button>
                     {% endif %}
+                    {% if anuncio.identifier > 0 and auth.is_allowed('remove.anuncio', anuncio)%}
+                        <button type="button" class="btn btn-danger" data-delete="{{ url_for('anuncios.admin_remover', identifier=anuncio.identifier) }}"><i class="fa fa-trash fa-sm fa-fw text-white-50"></i> Remover</button>
+                    {% endif %}
                 </div>
             </div>
         </form>

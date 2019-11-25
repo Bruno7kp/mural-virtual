@@ -214,7 +214,7 @@ def admin_remover(identifier: int):
                 Logs(0, auth.user.identifier,
                      auth.user.nome + '(' + auth.user.cpf + ')' + ' removeu o usuário ' + usuario.nome + ' (' + usuario.cpf + ')',
                      'usuario', usuario.identifier, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).insert()
-                return json_response(message='Usuário removido!', data=[])
+                return json_response(message='Usuário removido!', data=[], redirect=url_for('usuarios.admin_lista'))
             else:
                 return json_response(message='Não foi possível remover o usuário', data=[]), 400
         else:

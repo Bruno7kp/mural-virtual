@@ -23,14 +23,14 @@
             <div class="card">
                 {% set image = noticia.get_cover() %}
                 {% if image|length > 0 %}
-                    <a href="{{ url_for('noticias.noticia', identifier=noticia.identifier) }}">
+                    <a href="{{ url_for('noticias.pagina_noticia', identifier=noticia.identifier) }}">
                         <img src="{{ image.decode('utf-8') }}" class="card-img-top" alt="{{ noticia.titulo }}">
                     </a>
                 {% endif %}
                 <div class="card-body">
-                    <a href="{{ url_for('noticias.noticia', identifier=noticia.identifier) }}"><h5 class="card-title">{{ noticia.titulo }}</h5></a>
+                    <a href="{{ url_for('noticias.pagina_noticia', identifier=noticia.identifier) }}"><h5 class="card-title">{{ noticia.titulo }}</h5></a>
                     <p class="card-text">{{ noticia.conteudo|striptags|truncate(150) }}</p>
-                    <a href="{{ url_for('noticias.noticia', identifier=noticia.identifier) }}" class="btn btn-outline-success btn-sm">Veja mais</a>
+                    <a href="{{ url_for('noticias.pagina_noticia', identifier=noticia.identifier) }}" class="btn btn-outline-success btn-sm">Veja mais</a>
                 </div>
             </div>
         {% endfor %}

@@ -29,7 +29,7 @@ def avisos():
 
 
 @bp_avisos.route('/aviso/<int:identifier>')
-def aviso(identifier: int):
+def pagina_aviso(identifier: int):
     busca = Aviso()
     busca.select(identifier)
     if busca.identifier > 0:
@@ -149,7 +149,7 @@ def admin_remover(identifier: int):
                 Logs(0, auth.user.identifier,
                      auth.user.nome + '(' + auth.user.cpf + ')' + ' removeu o aviso ' + aviso.titulo + ' [Cód. ' + aviso.identifier.__str__() + ']',
                      'aviso', aviso.identifier, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).insert()
-                return json_response(message='Aviso removido!', data=[])
+                return json_response(message='Aviso removido!', data=[], redirect=url_for('avisos.admin_lista'))
             else:
                 return json_response(message='Não foi possível remover o aviso', data=[]), 400
         else:

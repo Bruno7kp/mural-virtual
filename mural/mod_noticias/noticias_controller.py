@@ -31,7 +31,7 @@ def noticias():
 
 
 @bp_noticias.route('/noticia/<int:identifier>')
-def noticia(identifier: int):
+def pagina_noticia(identifier: int):
     busca = Noticia()
     busca.select(identifier)
     if busca.identifier > 0:
@@ -222,7 +222,7 @@ def admin_remover(identifier: int):
                 Logs(0, auth.user.identifier,
                      auth.user.nome + '(' + auth.user.cpf + ')' + ' removeu a notícia ' + noticia.titulo + ' [Cód. ' + noticia.identifier.__str__() + ']',
                      'noticia', noticia.identifier, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).insert()
-                return json_response(message='Notícia removida!', data=[])
+                return json_response(message='Notícia removida!', data=[], redirect=url_for('noticias.admin_lista'))
             else:
                 return json_response(message='Não foi possível remover a notícia', data=[]), 400
         else:

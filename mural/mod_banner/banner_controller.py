@@ -135,7 +135,7 @@ def admin_remover(identifier: int):
                 Logs(0, auth.user.identifier,
                      auth.user.nome + '(' + auth.user.cpf + ')' + ' removeu o banner [Cód. ' + banner.identifier.__str__() + ']',
                      'banner', banner.identifier, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).insert()
-                return json_response(message='Banner removido!', data=[])
+                return json_response(message='Banner removido!', data=[], redirect=url_for('banner.admin_lista'))
             else:
                 return json_response(message='Não foi possível remover o banner', data=[]), 400
         else:

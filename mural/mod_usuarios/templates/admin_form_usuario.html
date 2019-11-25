@@ -66,6 +66,9 @@
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-success"><i class="fa fa-save fa-sm fa-fw text-white-50"></i> Salvar</button>
+                    {% if usuario.identifier > 0 and auth.is_allowed('remove.usuario', usuario)%}
+                        <button type="button" class="btn btn-danger" data-delete="{{ url_for('usuarios.admin_remover', identifier=usuario.identifier) }}"><i class="fa fa-trash fa-sm fa-fw text-white-50"></i> Remover</button>
+                    {% endif %}
                 </div>
             </div>
         </form>

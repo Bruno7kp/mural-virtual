@@ -48,6 +48,9 @@
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-success"><i class="fa fa-save fa-sm fa-fw text-white-50"></i> Salvar</button>
+                    {% if banner.identifier > 0 %}
+                        <button type="button" class="btn btn-danger" data-delete="{{ url_for('banner.admin_remover', identifier=banner.identifier) }}"><i class="fa fa-trash fa-sm fa-fw text-white-50"></i> Remover</button>
+                    {% endif %}
                 </div>
             </div>
         </form>

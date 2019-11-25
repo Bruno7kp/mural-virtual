@@ -13,7 +13,6 @@ const App = {
         });
     },
     openLoader: () => {
-        console.log('open');
         $('.preloader').fadeIn(100);
     },
     closeLoader: () => {
