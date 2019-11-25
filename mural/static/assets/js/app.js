@@ -1,6 +1,7 @@
 const App = {
     startUp: () => {
         App.addFormListener();
+        App.loader();
         let gal = document.querySelector(".owl-carousel");
         if (gal != null) {
             $(gal).owlCarousel({
@@ -15,6 +16,11 @@ const App = {
                 }
             })
         }
+    },
+    loader: () => {
+        $(window).on('load', function(event) {
+            $('.preloader').delay(500).fadeOut(500);
+        });
     },
     addFormListener: () => {
         let form = document.querySelector(".form-data");

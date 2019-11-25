@@ -135,7 +135,7 @@ def admin_editar(identifier: int):
                 Logs(0, auth.user.identifier,
                      auth.user.nome + '(' + auth.user.cpf + ')' + ' editou a notícia ' + noticia.titulo + ' [Cód. ' + noticia.identifier.__str__() + ']',
                      'noticia', noticia.identifier, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")).insert()
-                return json_response(message='Notícia atualizado!', data=[noticia],
+                return json_response(message='Notícia atualizada!', data=[noticia],
                                      redirect=url_for('noticias.admin_edicao', identifier=noticia.identifier))
             else:
                 return json_response(message='Não foi possível editar a notícia', data=[]), 400

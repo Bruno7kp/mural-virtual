@@ -5,6 +5,19 @@ const App = {
         App.addDeleteListener(() => {});
         App.addTextEditor();
         App.addSort();
+        App.loader();
+    },
+    loader: () => {
+        $(window).on('load', function(event) {
+            $('.preloader').delay(500).fadeOut(500);
+        });
+    },
+    openLoader: () => {
+        console.log('open');
+        $('.preloader').fadeIn(100);
+    },
+    closeLoader: () => {
+        $('.preloader').fadeOut(0);
     },
     addSort: () => {
         let sort = document.querySelector('[data-sort]');
@@ -49,11 +62,13 @@ const App = {
                 let method = form.getAttribute("method");
                 let action = form.getAttribute("action");
                 let formData = new FormData(form);
+                App.openLoader();
                 fetch(action, {
                     method: method,
                     body: formData
                 }).then((response) => {
                     App.responseHandler(response);
+                    App.closeLoader();
                 })
             });
         }
@@ -73,12 +88,14 @@ const App = {
                         cancelButtonText: 'Cancelar',
                     }).then((result) => {
                         if (result.value) {
+                            App.openLoader();
                             let url = d.getAttribute("data-delete");
                             fetch(url, {
                                 method: 'delete'
                             }).then((response) => {
                                 call();
                                 App.responseHandler(response);
+                                App.closeLoader();
                             });
                         }
                     });
