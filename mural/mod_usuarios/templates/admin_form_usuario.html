@@ -47,10 +47,17 @@
                                         <label for="cpf">CPF</label>
                                         <input type="text" name="cpf" id="cpf" class="form-control mask-cpf" placeholder="000.000.000-00" value="{{ usuario.cpf }}" required>
                                     </div>
+                                    {% if auth.user.identifier == usuario.identifier %}
+                                        <div class="form-group">
+                                            <label for="antiga">Confirme sua senha</label>
+                                            <input type="password" name="antiga" id="antiga" class="form-control">
+                                            <small class="d-block"><i class="fa fa-sm fa-exclamation-circle"></i> Informe sua senha atual para realizar as alterações.</small>
+                                        </div>
+                                    {% endif %}
                                     <div class="form-group">
-                                        <label for="senha">Senha</label>
+                                        <label for="senha">Nova senha</label>
                                         <input type="password" name="senha" id="senha" class="form-control" placeholder="" value="" {% if usuario.identifier == 0 %}required{% endif %}>
-                                        <small class="d-block">* {% if usuario.identifier > 0 %}Deixe o campo em branco para manter a senha atual. {% endif %}A senha deve ter no mínimo 6 dígitos</small>
+                                        <small class="d-block"><i class="fa fa-sm fa-exclamation-circle"></i> {% if usuario.identifier > 0 %}Deixe o campo em branco para manter a senha atual. {% endif %}A senha deve ter no mínimo 6 dígitos</small>
                                     </div>
                                 </div>
                             </div>

@@ -155,6 +155,13 @@ def admin_editar(identifier: int):
             if auth.is_allowed('edita.usuario') and 'nivel' in request.form:
                 usuario.nivel = int(request.form['nivel'])
 
+            # Se estiver alterando o próprio perfil, solicita senha
+            if auth.user.identifier == usuario.identifier:
+                if 'antiga' not in request.form or len(request.form['antiga']) == 0:
+                    return json_response(message='Informe sua senha atual', data=[]), 400
+                elif not Usuario.check_hash(request.form['antiga'], usuario.senha):
+                    return json_response(message='Senha atual incorreta', data=[]), 400
+
             if usuario.login_exists(usuario.cpf, usuario.identifier):
                 return json_response(message='O CPF já está em uso, utilize outro', data=[]), 400
 
