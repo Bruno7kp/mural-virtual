@@ -614,7 +614,7 @@ input:focus {
     line-height: 54px;
     top: 50%;
     left: 3%;
-    margin-top: 30px;
+    margin-top: 0px;
     -webkit-transition-duration: 500ms;
     -o-transition-duration: 500ms;
     transition-duration: 500ms; }
@@ -625,7 +625,7 @@ input:focus {
         height: 40px;
         font-size: 18px;
         line-height: 44px;
-        margin-top: 40px; } }
+        margin-top: 0px; } }
     .hero-area .owl-prev:hover, .hero-area .owl-prev:focus,
     .hero-area .owl-next:hover,
     .hero-area .owl-next:focus {
