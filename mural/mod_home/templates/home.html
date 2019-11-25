@@ -21,7 +21,7 @@
     <section class="container-fluid mt-30 mb-30">
         <div class="row">
             <div class="col-md-3 col-sm-12 mb-3">
-                <div class="section-heading danger">
+                <div class="section-heading warning">
                    <a href="{{ url_for("avisos.avisos")}}"><h5>Avisos</h5></a>
                 </div>
                 {% if avisos|length > 0 %}
@@ -30,11 +30,11 @@
                     <div class="card-body">
                         <a href="{{ url_for('avisos.aviso', identifier=aviso.identifier) }}" class="post-title"><h5 class="card-title">{{ aviso.titulo }}</h5></a>
                         <p class="card-text">{{ aviso.conteudo|striptags|truncate(150) }}</p>
-                        <a href="{{ url_for('avisos.aviso', identifier=aviso.identifier) }}" class="btn btn-outline-danger btn-sm">Veja mais</a>
+                        <a href="{{ url_for('avisos.aviso', identifier=aviso.identifier) }}" class="btn btn-outline-warning btn-sm">Veja mais</a>
                     </div>
                 </div>
                 {% endfor %}
-                    <a href="{{ url_for('avisos.avisos') }}" class="btn btn-danger btn-sm text-white">Ver todos os avisos</a>
+                    <a href="{{ url_for('avisos.avisos') }}" class="btn btn-warning btn-sm text-white">Ver todos os avisos</a>
                 {% else %}
                     Não temos nenhum aviso no momento.
                 {% endif %}

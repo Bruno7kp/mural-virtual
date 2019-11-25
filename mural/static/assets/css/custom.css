@@ -2803,6 +2803,10 @@ header.masthead .page-heading, header.masthead .site-heading {
   border-left-color: #28a745;
 }
 
+.section-heading.warning {
+  border-left-color: #ffc107;
+}
+
 /*===== All Preloader Style =====*/
 .preloader {
   /* Body Overlay */
