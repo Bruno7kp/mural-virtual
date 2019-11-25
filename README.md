@@ -91,6 +91,7 @@ python -m flask run
 
 **Banco de dados**
 
+
 *MySQL (4.8.4)*: O MySQL é um sistema de gerenciamento de banco de dados, que utiliza a linguagem SQL como interface. É atualmente um dos sistemas de gerenciamento de bancos de dados mais populares da Oracle Corporation, com mais de 10 milhões de instalações pelo mundo.
 
 ---
@@ -116,6 +117,7 @@ python -m flask run
 ---
 
 **Frontend**
+
 
 *HTML (5)*: HTML é uma linguagem de marcação utilizada na construção de páginas na web.
 
