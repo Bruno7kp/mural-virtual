@@ -1,3 +1,5 @@
+**Atenção: O banco de dados está sendo criado a partir de de um script em python, siga as instruções de instalação para adicionar.**
+
 ### Mural Virtual
 
 Trabalho integrador da 4ª fase do curso de Sistemas de Informação da UNIPLAC (2019/2).
@@ -28,7 +30,7 @@ pip install -r requirements.txt
 
 **IMPORTANTE:**
 
-Copie o conteúdo do arquivo ```.env.example``` e cole dentro de um novo arquivo ```.env```
+Copie o conteúdo do arquivo ```.env.example``` que está na raiz do projeto e cole dentro de um **novo** arquivo com o nome ```.env``` também na raiz.
 
 Depois altere os valores dentro do arquivo ```.env``` com os dados de acesso ao banco de dados
 
