@@ -1,4 +1,4 @@
-**Atenção: O banco de dados está sendo criado a partir de de um script em python, siga as instruções de instalação para adicionar.**
+**Atenção: O banco de dados está sendo criado a partir de um script em python, siga as instruções de instalação para adicionar.**
 
 ### Mural Virtual
 
