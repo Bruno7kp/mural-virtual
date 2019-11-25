@@ -136,3 +136,5 @@ python -m flask run
 *CKEditor (4)*: Plugin escrito em JavaScript para criação de textos formatados com estilos CSS e HTML.
 
 *Sortable (1.10.1)*: Plugin em JavaScript utilizado para ordenar elementos HTML, como imagens, linhas de uma tabela, etc.
+
+*SweetAlert 2 (9.4.0)*: Plugin em JavaScript para mostrar caixas de diálogo customizadas.

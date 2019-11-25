@@ -64,15 +64,24 @@ const App = {
             for (let i = 0; i < del.length; i++) {
                 let d = del[i];
                 d.addEventListener("click", (ev) => {
-                    if (confirm("Tem certeza que dejesa remover?")) {
-                        let url = d.getAttribute("data-delete");
-                        fetch(url, {
-                            method: 'delete'
-                        }).then((response) => {
-                            call();
-                            App.responseHandler(response);
-                        });
-                    }
+                    Swal.fire({
+                        title: "Tem certeza que dejesa remover?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Sim, remova!',
+                        cancelButtonText: 'Cancelar',
+                    }).then((result) => {
+                        if (result.value) {
+                            let url = d.getAttribute("data-delete");
+                            fetch(url, {
+                                method: 'delete'
+                            }).then((response) => {
+                                call();
+                                App.responseHandler(response);
+                            });
+                        }
+                    });
                 });
             }
         }
@@ -91,24 +100,44 @@ const App = {
         }
     },
     onFormError: (response) => {
-        alert(response.message);
+        Swal.fire({
+            text: response.message,
+            icon: 'error',
+        });
     },
     onNotAuth: () => {
-        alert('não logado');
+        Swal.fire({
+            title: 'Oops...',
+            text: 'Entre no sistema para realizar esta ação.',
+            icon: 'warning',
+        });
     },
     onForbidden: (response) => {
-        alert(response.message);
+        Swal.fire({
+            title: 'Oops...',
+            text: response.message,
+            icon: 'warning',
+        });
     },
     onServerError: () => {
-        alert('erro no servidor, tente mais tarde');
+        Swal.fire({
+            title: 'Oops...',
+            text: 'Ocorreu um erro no servidor, tente novamente mais tarde.',
+            icon: 'error',
+        });
     },
     onFormSuccess: (response) => {
-        alert(response.message);
-        if (response.redirect && response.redirect.length > 0) {
-            setTimeout(() => {
-                window.location.href = response.redirect;
-            },300);
-        }
+        Swal.fire({
+            title: response.message,
+            timer: 2000,
+            icon: 'success',
+        }).then(() => {
+            if (response.redirect && response.redirect.length > 0) {
+                setTimeout(() => {
+                    window.location.href = response.redirect;
+                },300);
+            }
+        });
     },
     dataTableLang: () => {
         return {
