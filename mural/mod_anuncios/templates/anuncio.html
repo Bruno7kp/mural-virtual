@@ -11,26 +11,42 @@
             <li class="breadcrumb-item active" aria-current="page">{{ anuncio.titulo }}</li>
         </ol>
     </nav>
-    <div class="card">
+    <div class="row">
+        <div class="col-12">
+            <div class="section-heading primary">
+                <h5>{{ anuncio.titulo }}</h5>
+            </div>
+        </div>
+    </div>
+    <div class="card mb-4">
         <div class="card-body">
             <div class="post-content">
-                <a href="{{ url_for('anuncios.anuncio', identifier=anuncio.identifier) }}"><h1 class="h3">{{ anuncio.titulo }}</h1></a>
                 <div class="post-meta justify-content-between">
                     {{ anuncio.conteudo|safe }}
                 </div>
             </div>
-            {% set images = anuncio.get_images() %}
-            {% if images|length > 0 %}
-                <hr>
-                <span class="h4 mb-15 d-block">Galeria de imagens</span>
-                <div class="owl-carousel owl-theme hero-area">
-                    {% for image in images %}
-                    <div class="item"><img src="{{ image.imagem.decode('utf-8') }}" alt="{{ image.legenda }}"></div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-
         </div>
     </div>
+    {% set images = anuncio.get_images() %}
+    {% if images|length > 0 %}
+        <div class="row">
+            <div class="col-12">
+                <div class="section-heading primary">
+                    <h5>Galeria de imagens</h5>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="post-content">
+                    <div class="owl-carousel owl-theme hero-area">
+                        {% for image in images %}
+                        <div class="item"><img src="{{ image.imagem.decode('utf-8') }}" alt="{{ image.legenda }}"></div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 </div>
 {% endblock %}

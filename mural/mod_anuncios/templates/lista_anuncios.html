@@ -10,31 +10,36 @@
             <li class="breadcrumb-item active" aria-current="page">Anúncios</li>
         </ol>
     </nav>
-    <div class="card">
-        <div class="card-body">
-            <div class="section-heading">
+    <div class="row">
+        <div class="col-12">
+            <div class="section-heading primary">
                 <h5>Anúncios</h5>
             </div>
-            {% if anuncios|length > 0 %}
-            {% for anuncio in anuncios %}
-                <div class="single-blog-post d-flex">
+        </div>
+    </div>
+    <div class="card-columns">
+        {% if anuncios|length > 0 %}
+        {% for anuncio in anuncios %}
+            <div class="card">
                 {% set image = anuncio.get_cover() %}
                 {% if image|length > 0 %}
-                <!-- Thumbnail -->
-                <div class="post-thumbnail mb-3" style="-ms-flex: 0 0 300px;flex: 0 0 300px;max-width: 300px;width: 300px;">
-                    <img src="{{ image.decode('utf-8') }}" alt="{{ anuncio.titulo }}">
-                </div>
+                    <a href="{{ url_for('anuncios.anuncio', identifier=anuncio.identifier) }}">
+                        <img src="{{ image.decode('utf-8') }}" class="card-img-top" alt="{{ anuncio.titulo }}">
+                    </a>
                 {% endif %}
-                <!-- Post Contetnt -->
-                <div class="post-content">
-                    <a href="{{ url_for('anuncios.anuncio', identifier=anuncio.identifier) }}" class="post-title">{{ anuncio.titulo }}</a>
-                    <p>{{ anuncio.conteudo|striptags|truncate(500) }} <a class="text-dark" href="{{ url_for('anuncios.anuncio', identifier=anuncio.identifier) }}">Veja mais</a></p>
+                <div class="card-body">
+                    <a href="{{ url_for('anuncios.anuncio', identifier=anuncio.identifier) }}"><h5 class="card-title">{{ anuncio.titulo }}</h5></a>
+                    <p class="card-text">{{ anuncio.conteudo|striptags|truncate(150) }}</p>
+                    <a href="{{ url_for('anuncios.anuncio', identifier=anuncio.identifier) }}" class="btn btn-outline-primary btn-sm">Veja mais</a>
                 </div>
             </div>
-            {% endfor %}
-            {% else %}
-                Não temos nenhum anúncio no momento.
-            {% endif %}
+        {% endfor %}
+        {% else %}
+            Não temos nenhum anúncio no momento.
+        {% endif %}
+    </div>
+    <div class="row">
+        <div class="col-12">
             {{ pagination.links }}
         </div>
     </div>

@@ -10,23 +10,30 @@
                 <li class="breadcrumb-item active" aria-current="page">Avisos</li>
             </ol>
         </nav>
-        <div class="card">
-            <div class="card-body">
-                <div class="section-heading">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-heading danger">
                     <h5>Avisos</h5>
                 </div>
-                {% if avisos|length > 0 %}
-                {% for aviso in avisos %}
-                <div class="single-featured-post d-flex">
-                    <div class="post-content">
-                        <a href="{{ url_for('avisos.aviso', identifier=aviso.identifier) }}" class="post-title">{{ aviso.titulo }}</a>
-                        <p>{{ aviso.conteudo|striptags|truncate(350) }} <a class="text-dark" href="{{ url_for('avisos.aviso', identifier=aviso.identifier) }}">Veja mais</a></p>
-                    </div>
+            </div>
+        </div>
+        <div class="card-columns">
+            {% if avisos|length > 0 %}
+            {% for aviso in avisos %}
+            <div class="card">
+                <div class="card-body">
+                    <a href="{{ url_for('avisos.aviso', identifier=aviso.identifier) }}" class="post-title"><h5 class="card-title">{{ aviso.titulo }}</h5></a>
+                    <p class="card-text">{{ aviso.conteudo|striptags|truncate(150) }}</p>
+                    <a href="{{ url_for('avisos.aviso', identifier=aviso.identifier) }}" class="btn btn-outline-danger btn-sm">Veja mais</a>
                 </div>
-                {% endfor %}
-                {% else %}
-                    Não temos nenhum aviso no momento.
-                {% endif %}
+            </div>
+            {% endfor %}
+            {% else %}
+                Não temos nenhum aviso no momento.
+            {% endif %}
+        </div>
+        <div class="row">
+            <div class="col-12">
                 {{ pagination.links }}
             </div>
         </div>

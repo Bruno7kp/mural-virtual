@@ -11,10 +11,16 @@
             <li class="breadcrumb-item active" aria-current="page">{{ aviso.titulo }}</li>
         </ol>
     </nav>
-    <div class="card">
+    <div class="row">
+        <div class="col-12">
+            <div class="section-heading danger">
+                <h5>{{ aviso.titulo }}</h5>
+            </div>
+        </div>
+    </div>
+    <div class="card mb-4">
         <div class="card-body">
             <div class="post-content">
-                <a href="{{ url_for('avisos.aviso', identifier=aviso.identifier) }}"><h1 class="h3">{{ aviso.titulo }}</h1></a>
                 <div class="post-meta justify-content-between">
                     {{ aviso.conteudo|safe }}
                 </div>

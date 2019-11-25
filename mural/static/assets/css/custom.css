@@ -45,7 +45,6 @@ a:focus {
   text-decoration: none;
   outline: 0 solid transparent;
   color: #000000;
-  font-weight: 500;
   font-size: 14px;
   font-family: "Poppins", sans-serif; }
 
@@ -217,7 +216,7 @@ img {
 .section-heading {
   position: relative;
   z-index: 1;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   background-color: #f2f4f5;
   padding: 10px 25px;
   border-left: 4px solid #2e3367; }
@@ -2790,4 +2789,16 @@ header.masthead .page-heading, header.masthead .site-heading {
 .pagination .page-item.disabled .page-link {
   background-color: #f4f4f4;
   color: #acacac;
+}
+
+.section-heading.danger {
+  border-left-color: #dc3545;
+}
+
+.section-heading.primary {
+  border-left-color: #007bff;
+}
+
+.section-heading.success {
+  border-left-color: #28a745;
 }

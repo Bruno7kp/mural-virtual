@@ -13,11 +13,11 @@ bp_home = Blueprint('home', __name__, url_prefix='/', template_folder='templates
 @bp_home.route('/')
 def home():
     aviso = Aviso()
-    avisos = aviso.search('%%', 0, 10, True)
+    avisos = aviso.search('%%', 0, 5, True)
     anuncio = Anuncio()
     anuncios = anuncio.search('%%', 0, 5, 1, 0, True)
     noticia = Noticia()
-    noticias = noticia.search('%%', 0, 10, True)
+    noticias = noticia.search('%%', 0, 5, True)
     banner = Banner()
     banners = banner.all()
     return render_template('home.html', avisos=avisos, anuncios=anuncios, noticias=noticias, banners=banners)
