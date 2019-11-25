@@ -219,19 +219,19 @@ class Usuario(BaseModel):
 
     @staticmethod
     def insert_dummy():
-        db = DataBase()
-        c = db.con.cursor()
-        usuario = Usuario(0, "Administrador", "admin@uniplaclages.edu.br", "(00) 00000-0000", "000.000.000-00",
-                          Usuario.hash("123456"), 1, "2019-01-01", "2019-01-01")
+        usuario = Usuario(identifier=0, nome='Administrador', email='admin@uniplaclages.edu.br', 
+                          telefone='(00) 00000-0000', cpf='000.000.000-00', senha=Usuario.hash('123456'), nivel=1, 
+                          data_cadastro='2019-01-01', data_atualizacao='2019-01-01')
         usuario.insert()
-        usuario = Usuario(0, "Moderador Notícias", "noticias@uniplaclages.edu.br", "(11) 11111-1111", "111.111.111-11",
-                          Usuario.hash("123456"), 2, "2019-01-01", "2019-01-01")
+        usuario = Usuario(identifier=0, nome='Moderador Notícias', email='noticias@uniplaclages.edu.br', 
+                          telefone='(11) 11111-1111', cpf='111.111.111-11', senha=Usuario.hash('123456'), nivel=2, 
+                          data_cadastro='2019-01-01', data_atualizacao='2019-01-01')
         usuario.insert()
-        usuario = Usuario(0, "Moderador Avisos", "avisos@uniplaclages.edu.br", "(22) 22222-2222", "222.222.222-22",
-                          Usuario.hash("123456"), 3, "2019-01-01", "2019-01-01")
+        usuario = Usuario(identifier=0, nome='Moderador Avisos', email='avisos@uniplaclages.edu.br', 
+                          telefone='(22) 22222-2222', cpf='222.222.222-22', senha=Usuario.hash('123456'), nivel=3, 
+                          data_cadastro='2019-01-01', data_atualizacao='2019-01-01')
         usuario.insert()
-        usuario = Usuario(0, "Usuário Padrão", "usuario@uniplaclages.edu.br", "(33) 33333-3333", "333.333.333-33",
-                          Usuario.hash("123456"), 4, "2019-01-01", "2019-01-01")
+        usuario = Usuario(identifier=0, nome='Usuário Padrão', email='usuario@uniplaclages.edu.br', 
+                          telefone='(33) 33333-3333', cpf='333.333.333-33', senha=Usuario.hash('123456'), nivel=4, 
+                          data_cadastro='2019-01-01', data_atualizacao='2019-01-01')
         usuario.insert()
-        db.con.commit()
-        c.close()

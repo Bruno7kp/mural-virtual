@@ -3089,8 +3089,12 @@ header.masthead .page-heading, header.masthead .site-heading {
     -ms-transform: rotate(-130deg);
     -o-transform: rotate(-130deg);
     transform: rotate(-130deg); } }
+
 .card-columns.two-columns {
     -webkit-column-count: 2;
     -moz-column-count: 2;
     column-count: 2;
+}
+.min-h-55 {
+  min-height: 55vh;
 }

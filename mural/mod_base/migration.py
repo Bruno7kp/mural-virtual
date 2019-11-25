@@ -35,3 +35,7 @@ def migrate_database():
     # Adiciona usuários e dados da universidade
     Usuario.insert_dummy()
     Universidade.insert_dummy()
+    Banner.insert_dummy()
+    Aviso.insert_dummy()
+    Noticia.insert_dummy()
+    Anuncio.insert_dummy()

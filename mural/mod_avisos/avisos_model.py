@@ -193,10 +193,37 @@ class Aviso(BaseModel):
 
     @staticmethod
     def insert_dummy():
-        db = DataBase()
-        c = db.con.cursor()
-        # Inserir na tabela
-        db.con.commit()
-        c.close()
-
+        usuario = Usuario()
+        usuario.select_by_login('000.000.000-00')
+        if usuario.identifier > 0:
+            aviso = Aviso(identifier=0, usuario_id=usuario.identifier, titulo='O Novembro Azul',
+                          conteudo="""<p>Em novembro todo mundo se une para conscientização sobre o câncer de próstata: 
+                          <strong>O Novembro Azul</strong></p><p>O Centro Especializado em Reabilitação - CER II 
+                          Uniplac, juntamento com a Comissão Interna de Prevenção de Acidentes - CIPA Uniplac 2019/2020, 
+                          também estão nessa luta.</p><p>E temos a honra de convidar todos os funcionários para o
+                          evento <strong>'Novembro Azul na Prevenção do Câncer de Próstata'</strong>, com o Dr.
+                          Pedro Schurmann.</p>""", data_entrada='2019-11-01', data_saida='2019-12-31',
+                          data_cadastro='2019-11-01', data_atualizacao='2019-11-01')
+            aviso.insert()
+            aviso = Aviso(identifier=0, usuario_id=usuario.identifier, titulo='Aulas canceladas',
+                          conteudo="""<p>Devido ao temporal ocorrido no dia 25/11, informamos que as aulas dos dias 
+                          26/11 e 27/11 estão canceladas.</p>""", data_entrada='2019-11-25', data_saida='2019-12-31',
+                          data_cadastro='2019-11-25', data_atualizacao='2019-11-25')
+            aviso.insert()
+            aviso = Aviso(identifier=0, usuario_id=usuario.identifier, titulo='Provas adiadas',
+                          conteudo="""<p>Devido ao temporal ocorrido no dia 25/11, informamos que as provas marcadas 
+                          para os dias 26/11 e 27/11 serão remarcadas para a próxima semana.</p>""",
+                          data_entrada='2019-11-25', data_saida='2019-12-31', data_cadastro='2019-11-25',
+                          data_atualizacao='2019-11-25')
+            aviso.insert()
+            aviso = Aviso(identifier=0, usuario_id=usuario.identifier, titulo='Palestra de TI',
+                          conteudo="""<p>Informamos que hávera uma palestra dia 03/12 com a presença do 
+                          Bill Gates.</p>""", data_entrada='2019-11-25', data_saida='2019-12-31',
+                          data_cadastro='2019-11-25', data_atualizacao='2019-11-25')
+            aviso.insert()
+            aviso = Aviso(identifier=0, usuario_id=usuario.identifier, titulo='Palestra de Inovação e Empreededorismo',
+                          conteudo="""<p>Informamos que hávera uma palestra dia 04/12 com a presença do 
+                          Elon Musk.</p>""", data_entrada='2019-11-25', data_saida='2019-12-31',
+                          data_cadastro='2019-11-25', data_atualizacao='2019-11-25')
+            aviso.insert()
 
