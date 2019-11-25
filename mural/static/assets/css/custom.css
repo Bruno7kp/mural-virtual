@@ -3090,11 +3090,21 @@ header.masthead .page-heading, header.masthead .site-heading {
     -o-transform: rotate(-130deg);
     transform: rotate(-130deg); } }
 
-.card-columns.two-columns {
+@media screen and (max-width: 767px) {
+  .card-columns.two-columns {
+      -webkit-column-count: 1;
+      -moz-column-count: 1;
+      column-count: 1;
+  }
+}
+@media screen and (min-width: 768px) {
+  .card-columns.two-columns {
     -webkit-column-count: 2;
     -moz-column-count: 2;
     column-count: 2;
+  }
 }
+
 .min-h-55 {
   min-height: 55vh;
 }

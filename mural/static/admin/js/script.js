@@ -6,6 +6,10 @@ const App = {
         App.addTextEditor();
         App.addSort();
         App.loader();
+        if ($(window).width() < 768) {
+            // Fecha menu por padrão no celular
+            $('#sidebarToggleTop').click();
+        }
     },
     loader: () => {
         $(window).on('load', function(event) {
