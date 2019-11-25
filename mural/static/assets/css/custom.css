@@ -533,19 +533,19 @@ input:focus {
   height: 500px; }
   @media only screen and (min-width: 1200px) and (max-width: 1499px) {
     .hero-blog-post {
-      height: 450px; } }
+      height: 350px; } }
   @media only screen and (min-width: 992px) and (max-width: 1199px) {
     .hero-blog-post {
-      height: 400px; } }
+      height: 300px; } }
   @media only screen and (min-width: 768px) and (max-width: 991px) {
     .hero-blog-post {
-      height: 350px; } }
+      height: 275px; } }
   @media only screen and (max-width: 767px) {
     .hero-blog-post {
-      height: 300px; } }
+      height: 225px; } }
   @media only screen and (min-width: 576px) and (max-width: 767px) {
     .hero-blog-post {
-      height: 250px; } }
+      height: 225px; } }
   .hero-blog-post .post-content .post-meta {
     position: relative;
     z-index: 1;
