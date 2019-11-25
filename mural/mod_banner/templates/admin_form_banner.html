@@ -1,4 +1,5 @@
 {% extends "admin_modelo.html" %}
+{% block title %}{{ 'Cadastrar' if banner.identifier == 0 else 'Editar' }} banner - {{super()}}{% endblock %}
 {% block content %}
     <!-- Begin Page Content -->
     <div class="container-fluid">

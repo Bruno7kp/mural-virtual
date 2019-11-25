@@ -1,4 +1,5 @@
 {% extends "admin_modelo.html" %}
+{% block title %}{{ 'Cadastrar' if usuario.identifier == 0 else 'Editar' }} usuário - {{super()}}{% endblock %}
 {% block content %}
     <!-- Begin Page Content -->
     <div class="container-fluid">

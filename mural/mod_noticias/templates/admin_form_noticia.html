@@ -1,4 +1,5 @@
 {% extends "admin_modelo.html" %}
+{% block title %}{{ 'Cadastrar' if noticia.identifier == 0 else 'Editar' }} notícia - {{super()}}{% endblock %}
 {% block content %}
     <!-- Begin Page Content -->
     <div class="container-fluid">
