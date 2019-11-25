@@ -26,4 +26,6 @@ def home():
 @bp_home.route('/admin')
 @logado
 def admin_home():
-    return render_template('admin_home.html')
+    anuncio = Anuncio()
+    pendente = anuncio.count('%%', 0, 0, False)
+    return render_template('admin_home.html', pendente=pendente)
