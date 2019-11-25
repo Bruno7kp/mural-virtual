@@ -7,9 +7,6 @@ from flask import jsonify, render_template
 from settings import DB_HOST, DB_USER, DB_PASSWORD, DB_NAME
 import abc
 
-# Usadas em busca de vários itens da tabela
-SEARCH_LIMIT = 20
-
 
 class DataBase:
     def __init__(self):
