@@ -234,11 +234,61 @@ class Anuncio(BaseModel):
 
     @staticmethod
     def insert_dummy():
-        db = DataBase()
-        c = db.con.cursor()
-        # Inserir na tabela
-        db.con.commit()
-        c.close()
+        from mural.mod_base.migration_images import anuncio_3, anuncio_4
+        usuario = Usuario()
+        usuario.select_by_login('000.000.000-00')
+        if usuario.identifier > 0:
+            anuncio = Anuncio(identifier=0, usuario_id=usuario.identifier, titulo='Vaga para desenvolvedor Python',
+                              conteudo="""Estamos procurando um desenvolvedor Backend que também esteja em busca de 
+                                      transformar a forma com qual os brasileiros lidam com seus investimentos. Desenvolvedor 
+                                      este que participará de toda a criação do produto, podendo ajudar nas discussões e 
+                                      decisões que serão tomadas, assim como tendo a total liberdade para propor inovações e 
+                                      melhores formas de atender nossos clientes.""",
+                              aprovado=True, data_entrada='2019-11-25', data_saida='2019-12-31',
+                              data_cadastro='2019-11-01', data_atualizacao='2019-11-01')
+            anuncio.insert()
+            anuncio = Anuncio(identifier=0, usuario_id=usuario.identifier, titulo='Vaga para desenvolvedor JavaScript',
+                              conteudo="""Estamos procurando um desenvolvedor Frontend que também esteja em busca de 
+                                      transformar a forma com qual os brasileiros lidam com seus investimentos. Desenvolvedor 
+                                      este que participará de toda a criação do produto, podendo ajudar nas discussões e 
+                                      decisões que serão tomadas, assim como tendo a total liberdade para propor inovações e 
+                                      melhores formas de atender nossos clientes.""",
+                              aprovado=True, data_entrada='2019-11-23', data_saida='2019-12-31',
+                              data_cadastro='2019-11-01', data_atualizacao='2019-11-01')
+            anuncio.insert()
+            anuncio = Anuncio(identifier=0, usuario_id=usuario.identifier, titulo='Vaga para desenvolvedor Fullstack',
+                              conteudo="""Estamos procurando um desenvolvedor Fullstack que também esteja em busca de 
+                                      transformar a forma com qual os brasileiros lidam com seus investimentos. Desenvolvedor 
+                                      este que participará de toda a criação do produto, podendo ajudar nas discussões e 
+                                      decisões que serão tomadas, assim como tendo a total liberdade para propor inovações e 
+                                      melhores formas de atender nossos clientes.""",
+                              aprovado=True, data_entrada='2019-11-24', data_saida='2019-12-31',
+                              data_cadastro='2019-11-01', data_atualizacao='2019-11-01')
+            anuncio.insert()
+            imagem = ImagemAnuncio(identifier=0, anuncio_id=anuncio.identifier, legenda='full.jpg', imagem=anuncio_3,
+                                   ordem=0, data_cadastro='2019-11-24', data_atualizacao='2019-11-24')
+            imagem.insert()
+            anuncio = Anuncio(identifier=0, usuario_id=usuario.identifier, titulo='Vaga para desenvolvedor Java',
+                              conteudo="""Estamos procurando um desenvolvedor Backend que também esteja em busca de 
+                                      transformar a forma com qual os brasileiros lidam com seus investimentos. Desenvolvedor 
+                                      este que participará de toda a criação do produto, podendo ajudar nas discussões e 
+                                      decisões que serão tomadas, assim como tendo a total liberdade para propor inovações e 
+                                      melhores formas de atender nossos clientes.""",
+                              aprovado=True, data_entrada='2019-11-24', data_saida='2019-12-31',
+                              data_cadastro='2019-11-01', data_atualizacao='2019-11-01')
+            anuncio.insert()
+            imagem = ImagemAnuncio(identifier=0, anuncio_id=anuncio.identifier, legenda='java.jpg', imagem=anuncio_4,
+                                   ordem=0, data_cadastro='2019-11-24', data_atualizacao='2019-11-24')
+            imagem.insert()
+            anuncio = Anuncio(identifier=0, usuario_id=usuario.identifier, titulo='Vaga para engenheiro de software',
+                              conteudo="""Estamos procurando um engenheiro de software que também esteja em busca de 
+                                      transformar a forma com qual os brasileiros lidam com seus investimentos. Desenvolvedor 
+                                      este que participará de toda a criação do produto, podendo ajudar nas discussões e 
+                                      decisões que serão tomadas, assim como tendo a total liberdade para propor inovações e 
+                                      melhores formas de atender nossos clientes.""",
+                              aprovado=True, data_entrada='2019-11-24', data_saida='2019-12-31',
+                              data_cadastro='2019-11-01', data_atualizacao='2019-11-01')
+            anuncio.insert()
 
 
 class ImagemAnuncio(BaseModel):

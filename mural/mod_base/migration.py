@@ -17,11 +17,13 @@ def create_database():
         c.execute('CREATE database ' + DB_NAME)
         con.commit()
         c.close()
+        print('Banco de dados criado!')
     else:
         print('Nome de banco de dados inválido')
 
 
 def migrate_database():
+    print('Aguarde...')
     # Cria tabelas
     Usuario.create_table()
     Aviso.create_table()
@@ -39,3 +41,4 @@ def migrate_database():
     Aviso.insert_dummy()
     Noticia.insert_dummy()
     Anuncio.insert_dummy()
+    print('Dados inseridos!')

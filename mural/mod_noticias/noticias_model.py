@@ -205,11 +205,55 @@ class Noticia(BaseModel):
 
     @staticmethod
     def insert_dummy():
-        db = DataBase()
-        c = db.con.cursor()
-        # Inserir na tabela
-        db.con.commit()
-        c.close()
+        from mural.mod_base.migration_images import noticia_1, noticia_1_2, noticia_2
+        usuario = Usuario()
+        usuario.select_by_login('000.000.000-00')
+        if usuario.identifier > 0:
+            noticia = Noticia(identifier=0, usuario_id=usuario.identifier, titulo='Uniplac abre o natal lageano',
+                              conteudo="""<p>O espírito de Natal chegou na Uniplac na noite desta quarta, 
+                                      20 de novembro. A Orquestra Soprano encantou a todos com suas canções natalinas. 
+                                      O Papai Noel surgiu em meio às luzes do túnel iluminado sob os aplausos de toda a 
+                                      comunidade acadêmica. “Natal é o momento de refletirmos e agradecermos por todas as 
+                                      conquistas que tivemos neste ano. Que o espírito natalino esteja em cada um de nós desde 
+                                      hoje”, comentou&nbsp;o Pró-reitor de Ensino Alexandre Tripoli Venção. &nbsp; Alunos, 
+                                      funcionários e professores, trouxeram familiares para a abertura do Natal Uniplac. 
+                                      "Temos como objetivo ter sempre as famílias aqui dentro. E estamos felizes pelo start 
+                                      ter sido dado em um evento de Natal", afirmou a Pró-Reitora de Pesquisa, Extensão e 
+                                      Pós- graduação Lilia Kanan. Além das luzes, música e do Papai Noel, &nbsp;a abertura do 
+                                      Natal Uniplac &nbsp;trouxe o lançamento da campanha "Árvore dos Sonhos". "Nossa árvore 
+                                      foi montada com enfeites que trazem o nome de idosos do Asilo Vicentino", conta o 
+                                      Reitor Kaio Amarante. "Cada pessoa pode adotar um idoso e presenteá-lo com seu desejo. 
+                                      Queremos atender a todos eles", concluiu o Reitor ressaltando que a solidariedade é o 
+                                      verdadeiro sentido do Natal.</p>""", data_entrada='2019-11-24',
+                              data_saida='2019-12-31',
+                              data_cadastro='2019-11-23', data_atualizacao='2019-11-23')
+            noticia.insert()
+            imagem = ImagemNoticia(identifier=0, noticia_id=noticia.identifier, legenda='natal.jpg', imagem=noticia_1,
+                                   ordem=0, data_cadastro='2019-11-23', data_atualizacao='2019-11-23')
+            imagem.insert()
+            imagem = ImagemNoticia(identifier=0, noticia_id=noticia.identifier, legenda='nat2.jpg', imagem=noticia_1_2,
+                                   ordem=0, data_cadastro='2019-11-23', data_atualizacao='2019-11-23')
+            imagem.insert()
+
+            noticia = Noticia(identifier=0, usuario_id=usuario.identifier, titulo='Biomedicina festeja 10 anos',
+                              conteudo="""<p>O curso de biomedicina foi criado e, em 2009, quando a primeira turma 
+                                      ingressou na Uniplac. Durante esses dez anos de curso, mais de 100 biomédicos já foram 
+                                      formados e atuam nas mais diversas áreas da biomedicina.&nbsp;</p><p>Atualmente, as 
+                                      áreas de atuação mais comuns e que a Uniplac habilita são as análises clínicas, a 
+                                      acupuntura, a estética e o banco de sangue, além da docência e da pesquisa.&nbsp;</p>
+                                      <p>O curso tem duração de quatro anos, no período noturno, com estágio realizado em 
+                                      ambiente real e com amostras reais. "O aluno sai preparado para o mercado de trabalho", 
+                                      conta o coordenador, Professor&nbsp;Alexandre Lemos de Souza. "Sobre a data de hoje sinto 
+                                      muito orgulho, pois dos dez anos do curso passei sete aqui dentro. Sendo quatro como 
+                                      acadêmico e três como professor/coordenador", conta emocionado. "Portanto, tenho certeza 
+                                      que nosso curso cresceu e se hoje chegamos onde chegamos, com certeza a Biomedicina 
+                                      uniplac foi essencial nesse processo", conclui.</p>""", data_entrada='2019-11-25',
+                              data_saida='2019-12-31',
+                              data_cadastro='2019-11-23', data_atualizacao='2019-11-23')
+            noticia.insert()
+            imagem = ImagemNoticia(identifier=0, noticia_id=noticia.identifier, legenda='bio.jpg', imagem=noticia_2,
+                                   ordem=0, data_cadastro='2019-11-23', data_atualizacao='2019-11-23')
+            imagem.insert()
 
 
 class ImagemNoticia(BaseModel):
