@@ -11,7 +11,7 @@ Bruno, Elias, Érico.
 ### Projeto Integrador - Mural Virtual UNIPLAC
 
 
-#### Requisitos de usuário
+#### Requisitos do sistema
 
 
 <table>

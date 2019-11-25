@@ -15,7 +15,7 @@ def home():
     aviso = Aviso()
     avisos = aviso.search('%%', 0, 5, True)
     anuncio = Anuncio()
-    anuncios = anuncio.search('%%', 0, 5, 1, 0, True)
+    anuncios = anuncio.search('%%', 0, 10, 1, 0, True)
     noticia = Noticia()
     noticias = noticia.search('%%', 0, 5, True)
     banner = Banner()

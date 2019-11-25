@@ -39,32 +39,38 @@
                     Não temos nenhum aviso no momento.
                 {% endif %}
             </div>
-            <div class="col-md-5 col-sm-12 mb-3">
+            <div class="col-md-6 col-sm-12 mb-3">
                 <div class="section-heading primary">
                     <a href="{{ url_for("anuncios.anuncios")}}"><h5>Anúncios</h5></a>
                 </div>
+
                 {% if anuncios|length > 0 %}
-                {% for anuncio in anuncios %}
-                <div class="card mb-3">
-                    {% set image = anuncio.get_cover() %}
-                    {% if image|length > 0 %}
-                        <a href="{{ url_for('anuncios.pagina_anuncio', identifier=anuncio.identifier) }}">
-                            <img src="{{ image.decode('utf-8') }}" class="card-img-top" alt="{{ anuncio.titulo }}">
-                        </a>
-                    {% endif %}
-                    <div class="card-body">
-                        <a href="{{ url_for('anuncios.pagina_anuncio', identifier=anuncio.identifier) }}"><h5 class="card-title">{{ anuncio.titulo }}</h5></a>
-                        <p class="card-text">{{ anuncio.conteudo|striptags|truncate(250) }}</p>
-                        <a href="{{ url_for('anuncios.pagina_anuncio', identifier=anuncio.identifier) }}" class="btn btn-outline-primary btn-sm">Veja mais</a>
-                    </div>
+                    <div class="card-columns two-columns">
+
+                        {% for anuncio in anuncios %}
+                        <div class="card mb-3">
+                            {% set image = anuncio.get_cover() %}
+                            {% if image|length > 0 %}
+                                <a href="{{ url_for('anuncios.pagina_anuncio', identifier=anuncio.identifier) }}">
+                                    <img src="{{ image.decode('utf-8') }}" class="card-img-top" alt="{{ anuncio.titulo }}">
+                                </a>
+                            {% endif %}
+                            <div class="card-body">
+                                <a href="{{ url_for('anuncios.pagina_anuncio', identifier=anuncio.identifier) }}"><h5 class="card-title">{{ anuncio.titulo }}</h5></a>
+                                <p class="card-text">{{ anuncio.conteudo|striptags|truncate(250) }}</p>
+                                <a href="{{ url_for('anuncios.pagina_anuncio', identifier=anuncio.identifier) }}" class="btn btn-outline-primary btn-sm">Veja mais</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+
                 </div>
-                {% endfor %}
+
                     <a href="{{ url_for('anuncios.anuncios') }}" class="btn btn-primary btn-sm text-white mt-3">Ver todos os anúncios</a>
                 {% else %}
                     Não temos nenhum anúncio no momento.
                 {% endif %}
             </div>
-            <div class="col-md-4 col-sm-12 mb-3">
+            <div class="col-md-3 col-sm-12 mb-3">
                 <div class="section-heading success">
                     <a href="{{ url_for("noticias.noticias")}}"><h5>Notícias</h5></a>
                 </div>
