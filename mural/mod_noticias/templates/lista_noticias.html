@@ -4,6 +4,12 @@
 
 {% block content %}
 <div class="container mt-100 mb-5">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('home.home') }}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Notícias</li>
+        </ol>
+    </nav>
     <div class="card">
         <div class="card-body">
             <div class="section-heading">

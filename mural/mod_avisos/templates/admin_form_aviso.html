@@ -2,9 +2,16 @@
 {% block content %}
     <!-- Begin Page Content -->
     <div class="container-fluid">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('home.admin_home') }}">Mural Virtual</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('avisos.admin_lista') }}">Avisos</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ aviso.titulo or 'Cadastrar aviso' }}</li>
+            </ol>
+        </nav>
 
         <!-- Page Heading -->
-        <h1 class="h3 mb-4 text-gray-800">{{ 'Adicionar' if aviso.identifier == 0 else 'Editar' }} aviso</h1>
+        <h1 class="h3 mb-4 text-gray-800">{{ 'Cadastrar' if aviso.identifier == 0 else 'Editar' }} aviso</h1>
         <form autocomplete="off" class="form-data" method="post" action="{{ url_for('avisos.admin_cadastrar') if aviso.identifier == 0 else url_for('avisos.admin_editar', identifier=aviso.identifier) }}">
             <div class="card mb-3">
                 <div class="card-body">

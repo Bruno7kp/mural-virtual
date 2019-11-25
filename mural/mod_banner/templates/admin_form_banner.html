@@ -2,9 +2,16 @@
 {% block content %}
     <!-- Begin Page Content -->
     <div class="container-fluid">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('home.admin_home') }}">Mural Virtual</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('banner.admin_lista') }}">Banners</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ 'Cadastrar' if banner.identifier == 0 else 'Editar' }} banner</li>
+            </ol>
+        </nav>
 
         <!-- Page Heading -->
-        <h1 class="h3 mb-4 text-gray-800">{{ 'Adicionar' if banner.identifier == 0 else 'Editar' }} banner</h1>
+        <h1 class="h3 mb-4 text-gray-800">{{ 'Cadastrar' if banner.identifier == 0 else 'Editar' }} banner</h1>
         <form autocomplete="off" class="form-data" method="post" action="{{ url_for('banner.admin_cadastrar') if banner.identifier == 0 else url_for('banner.admin_editar', identifier=banner.identifier) }}">
             <div class="card mb-3">
                 <div class="card-body">
