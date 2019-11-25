@@ -1,3 +1,8 @@
+import datetime
+
+from flask import url_for
+
+from mural.mod_base.base_model import show_date
 from mural.mod_usuarios import Usuario
 from mural.mod_base import BaseModel, DataBase
 
@@ -14,6 +19,30 @@ class Aviso(BaseModel):
         self.data_saida = data_saida
         self.data_cadastro = data_cadastro
         self.data_atualizacao = data_atualizacao
+
+    def serialize(self):
+        return {
+            'id': self.identifier,
+            'usuario_id': self.usuario_id,
+            'titulo': self.titulo,
+            'conteudo': self.conteudo,
+            'data_entrada': self.data_entrada,
+            'data_saida': self.data_saida,
+            'data_cadastro': self.data_cadastro,
+            'data_atualizacao': self.data_atualizacao,
+        }
+
+    def serialize_array(self):
+        return [
+            self.identifier,
+            self.titulo,
+            show_date(self.data_entrada),
+            show_date(self.data_saida),
+            '<a href="' + url_for('avisos.admin_edicao', identifier=self.identifier) +
+            '" class="btn btn-warning btn-sm"><i class="fa fa-pen fa-fw fa-sm text-white-50"></i> Editar</a> ' +
+            '<button data-delete="' + url_for('avisos.admin_remover', identifier=self.identifier) +
+            '" class="btn btn-danger btn-sm"><i class="fa fa-trash fa-fw fa-sm text-white-50"></i> Remover</button>'
+        ]
 
     def insert(self) -> int:
         c = self.db.con.cursor()
@@ -49,7 +78,8 @@ class Aviso(BaseModel):
 
     def select(self, identifier):
         c = self.db.con.cursor()
-        c.execute("""SELECT id, usuario_id, titulo, conteudo, data_entrada, data_saida, data_cadastro, data_atualizacao 
+        c.execute("""SELECT id, usuario_id, titulo, conteudo, DATE_FORMAT(data_entrada, '%%Y-%%m-%%dT%%H:%%i'), 
+                        DATE_FORMAT(data_saida, '%%Y-%%m-%%dT%%H:%%i'), data_cadastro, data_atualizacao 
                         FROM aviso WHERE id = %s""", identifier)
         for row in c:
             self.identifier = row[0]
@@ -65,21 +95,71 @@ class Aviso(BaseModel):
 
     def all(self):
         c = self.db.con.cursor()
-        c.execute("""SELECT id, usuario_id, titulo, conteudo, data_entrada, data_saida, data_cadastro, data_atualizacao
+        c.execute("""SELECT id, usuario_id, titulo, conteudo, DATE_FORMAT(data_entrada, '%%Y-%%m-%%dT%%H:%%i'), 
+                        DATE_FORMAT(data_saida, '%%Y-%%m-%%dT%%H:%%i'), data_cadastro, data_atualizacao
                         FROM aviso ORDER BY data_entrada DESC""")
         list_all = []
-        for (row, key) in c:
-            list_all[key] = Aviso()
-            list_all[key].identifier = row[0]
-            list_all[key].usuario_id = row[1]
-            list_all[key].titulo = row[2]
-            list_all[key].conteudo = row[3]
-            list_all[key].data_entrada = row[4]
-            list_all[key].data_saida = row[5]
-            list_all[key].data_cadastro = row[6]
-            list_all[key].data_atualizacao = row[7]
+        for row in c:
+            aviso = Aviso()
+            aviso.identifier = row[0]
+            aviso.usuario_id = row[1]
+            aviso.titulo = row[2]
+            aviso.conteudo = row[3]
+            aviso.data_entrada = row[4]
+            aviso.data_saida = row[5]
+            aviso.data_cadastro = row[6]
+            aviso.data_atualizacao = row[7]
+            list_all.append(aviso)
         c.close()
         return list_all
+
+    def search(self, text: str, start: int, limit: int, filter_date: bool = False):
+        c = self.db.con.cursor()
+        if filter_date:
+            now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            c.execute("""SELECT id, usuario_id, titulo, conteudo,DATE_FORMAT(data_entrada, '%%Y-%%m-%%dT%%H:%%i'), 
+                                    DATE_FORMAT(data_saida, '%%Y-%%m-%%dT%%H:%%i'), data_cadastro, data_atualizacao
+                                    FROM aviso WHERE titulo LIKE %s AND %s >= data_entrada AND %s < data_saida 
+                                    ORDER BY data_entrada DESC LIMIT %s, %s""",
+                      (text, now, now, start, limit))
+        else:
+            c.execute("""SELECT id, usuario_id, titulo, conteudo,DATE_FORMAT(data_entrada, '%%Y-%%m-%%dT%%H:%%i'), 
+                        DATE_FORMAT(data_saida, '%%Y-%%m-%%dT%%H:%%i'), data_cadastro, data_atualizacao
+                        FROM aviso WHERE titulo LIKE %s ORDER BY data_entrada DESC LIMIT %s, %s""",
+                      (text, start, limit))
+        list_all = []
+        for row in c:
+            aviso = Aviso()
+            aviso.identifier = row[0]
+            aviso.usuario_id = row[1]
+            aviso.titulo = row[2]
+            aviso.conteudo = row[3]
+            aviso.data_entrada = row[4]
+            aviso.data_saida = row[5]
+            aviso.data_cadastro = row[6]
+            aviso.data_atualizacao = row[7]
+            list_all.append(aviso)
+        c.close()
+        return list_all
+
+    def total(self):
+        c = self.db.con.cursor()
+        c.execute("SELECT COUNT(id) AS total FROM aviso")
+        result = c.fetchone()
+        number_of_rows = result[0]
+        return number_of_rows
+
+    def count(self, text, filter_date: bool = False):
+        c = self.db.con.cursor()
+        if filter_date:
+            now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            c.execute("SELECT COUNT(id) AS total FROM aviso WHERE titulo LIKE %s AND %s >= data_entrada AND %s < data_saida",
+                      (text, now, now))
+        else:
+            c.execute("SELECT COUNT(id) AS total FROM aviso WHERE titulo LIKE %s", text)
+        result = c.fetchone()
+        number_of_rows = result[0]
+        return number_of_rows
 
     @staticmethod
     def has_ownership() -> bool:

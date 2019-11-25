@@ -1,0 +1,77 @@
+{% extends "admin_modelo.html" %}
+{% block content %}
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <h1 class="h3 mb-4 text-gray-800">{{ 'Adicionar' if noticia.identifier == 0 else 'Editar' }} notícia</h1>
+        <form autocomplete="off" class="form-data" method="post" action="{{ url_for('noticias.admin_cadastrar') if noticia.identifier == 0 else url_for('noticias.admin_editar', identifier=noticia.identifier) }}">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <label for="titulo">Título</label>
+                                        <input type="text" name="titulo" id="titulo" class="form-control" placeholder="Título" value="{{ noticia.titulo }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="conteudo">Conteúdo</label>
+                                        <textarea name="conteudo" id="conteudo" class="form-control" placeholder="Conteúdo" rows="4" required>{{ noticia.conteudo }}</textarea>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-12">
+                                            <div class="form-group">
+                                                <label for="data_entrada">Data de entrada do notícia</label>
+                                                <input type="datetime-local" name="data_entrada" id="data_entrada" class="form-control" value="{{ noticia.data_entrada }}" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}" placeholder="Ex: 2000-12-31T20:00">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-sm-12">
+                                            <div class="form-group">
+                                                <label for="data_saida">Data de saída do notícia</label>
+                                                <input type="datetime-local" name="data_saida" id="data_saida" class="form-control" value="{{ noticia.data_saida }}" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}" placeholder="Ex: 2000-12-31T20:00">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <label for="imagens">Imagens</label>
+                                        <input type="file" name="imagens" id="imagens" class="form-control" accept="image/jpeg, image/png" multiple>
+                                        <small class="">Você pode selecionar várias imagens nos formatos .jpg, .jpeg e .png</small>
+                                    </div>
+                                    <div class="form-group">
+                                        {% if imagens is defined and imagens | length > 0 %}
+                                            <label class="d-block">Imagens atuais</label>
+                                            <small class="d-block mb-1"><i class="fa fa-fw fa-fm fa-exclamation-circle"></i> Arraste as imagens para alterar a ordem.</small>
+                                            <div class="row" data-sort="{{ url_for('noticias.admin_imagem_ordem', identifier=noticia.identifier) }}">
+                                                {% for imagem in imagens %}
+                                                    <div class="col-sm-6 col-md-3" data-id="{{ imagem.identifier }}">
+                                                        <div class="card">
+                                                            <div class="card-body p-0">
+                                                                <img src="{{ imagem.imagem.decode('utf-8') }}" class="img-fluid rounded" alt="{{ imagem.legenda }}">
+                                                                <button type="button" class="btn btn-sm btn-outline-danger btn-block mt-1" data-delete="{{ url_for('noticias.admin_imagem_remover', identifier=imagem.identifier) }}"><i class="fa fa-sm fa-trash fa-fw"></i> Remover</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        {% elif imagens is defined %}
+                                            <label class="d-block">Nenhuma imagem adicionada</label>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-success"><i class="fa fa-save fa-sm fa-fw text-white-50"></i> Salvar</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <!-- /.container-fluid -->
+{% endblock %}

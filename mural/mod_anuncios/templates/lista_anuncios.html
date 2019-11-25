@@ -1,0 +1,36 @@
+{% extends "modelo.html" %}
+
+{% block title %}Lista de Anuncios{% endblock %}
+
+{% block content %}
+<div class="container mt-100 mb-5">
+    <div class="card">
+        <div class="card-body">
+            <div class="section-heading">
+                <h5>Anúncios</h5>
+            </div>
+            {% if anuncios|length > 0 %}
+            {% for anuncio in anuncios %}
+                <div class="single-blog-post d-flex">
+                {% set image = anuncio.get_cover() %}
+                {% if image|length > 0 %}
+                <!-- Thumbnail -->
+                <div class="post-thumbnail mb-3" style="-ms-flex: 0 0 300px;flex: 0 0 300px;max-width: 300px;width: 300px;">
+                    <img src="{{ image.decode('utf-8') }}" alt="{{ anuncio.titulo }}">
+                </div>
+                {% endif %}
+                <!-- Post Contetnt -->
+                <div class="post-content">
+                    <a href="{{ url_for('anuncios.anuncio', identifier=anuncio.identifier) }}" class="post-title">{{ anuncio.titulo }}</a>
+                    <p>{{ anuncio.conteudo|striptags|truncate(500) }} <a class="text-dark" href="{{ url_for('anuncios.anuncio', identifier=anuncio.identifier) }}">Veja mais</a></p>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+                Não temos nenhum anúncio no momento.
+            {% endif %}
+            {{ pagination.links }}
+        </div>
+    </div>
+</div>
+{% endblock %}

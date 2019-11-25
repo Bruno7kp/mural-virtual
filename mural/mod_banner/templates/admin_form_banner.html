@@ -1,0 +1,47 @@
+{% extends "admin_modelo.html" %}
+{% block content %}
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <h1 class="h3 mb-4 text-gray-800">{{ 'Adicionar' if banner.identifier == 0 else 'Editar' }} banner</h1>
+        <form autocomplete="off" class="form-data" method="post" action="{{ url_for('banner.admin_cadastrar') if banner.identifier == 0 else url_for('banner.admin_editar', identifier=banner.identifier) }}">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="form-group">
+                                        <label for="redireciona_url">Redirecionamento <small>(página que será acessada ao clicar no banner, ex: https://www.google.com)</small></label>
+                                        <input type="text" name="redireciona_url" id="redireciona_url" class="form-control" placeholder="https://www.google.com" value="{{ banner.redireciona_url }}">
+                                        <small class="d-block my-1"><i class="fa fa-exclamation-circle"></i> Este campo não é obrigatório</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="imagem">Imagem</label>
+                                        <input type="file" name="imagem" id="imagem" accept="image/jpeg, image/png" class="form-control" {% if banner.identifier == 0 %}required{% endif %}>
+                                        {% if banner.identifier > 0 %}
+                                        <small class="">Selecione uma nova imagem para substituir a atual.</small>
+                                        {% endif %}
+                                    </div>
+                                    {% if banner.identifier > 0 %}
+                                    <div class="form-group">
+                                        <label class="d-block">Imagem atual</label>
+                                        <a href="{{ banner.imagem.decode('utf-8') }}" target="_blank">
+                                            <img src="{{ banner.imagem.decode('utf-8') }}" alt="Imagem" class="img-thumbnail" style="max-height: 100px">
+                                        </a>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-success"><i class="fa fa-save fa-sm fa-fw text-white-50"></i> Salvar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- /.container-fluid -->
+{% endblock %}

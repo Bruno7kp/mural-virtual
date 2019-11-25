@@ -1,0 +1,36 @@
+{% extends "modelo.html" %}
+
+{% block title %}Lista de Notícias{% endblock %}
+
+{% block content %}
+<div class="container mt-100 mb-5">
+    <div class="card">
+        <div class="card-body">
+            <div class="section-heading">
+                <h5>Notícias</h5>
+            </div>
+            {% if noticias|length > 0 %}
+            {% for noticia in noticias %}
+            <div class="single-blog-post d-flex">
+                {% set image = noticia.get_cover() %}
+                {% if image|length > 0 %}
+                <div class="post-thumbnail mb-3" style="-ms-flex: 0 0 300px;flex: 0 0 300px;max-width: 300px;width: 300px;">
+                    <img src="{{ image.decode('utf-8') }}" alt="{{ noticia.titulo }}">
+                </div>
+                {% endif %}
+                <div class="post-content">
+                    <a href="{{ url_for('noticias.noticia', identifier=noticia.identifier) }}" class="post-title">{{ noticia.titulo }}</a>
+                    <div class="post-meta d-flex justify-content-between">
+                        <p>{{ noticia.conteudo|striptags|truncate(500) }} <a class="text-dark" href="{{ url_for('noticias.noticia', identifier=noticia.identifier) }}">Veja mais</a></p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+                Não temos nenhuma notícia no momento.
+            {% endif %}
+            {{ pagination.links }}
+        </div>
+    </div>
+</div>
+{% endblock %}

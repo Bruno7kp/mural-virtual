@@ -1,0 +1,56 @@
+{% extends "modelo.html" %}
+{% block content %}
+    <!-- Begin Page Content -->
+    <div class="container mt-5">
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+            <div class="col-lg-7 col-md-9">
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">Bem vindo ao Mural Virtual!</h1>
+                                        <p>Preencha o formulário abaixo para entrar no sistema.</p>
+                                    </div>
+                                    <form method="post" action="{{ url_for('usuarios.cadastrar') }}" class="form-data">
+                                        <div class="form-group">
+                                            <label for="nome">Nome</label>
+                                            <input class="form-control" id="nome" name="nome" placeholder="Insira seu nome completo"
+                                                   type="text" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <input class="form-control" type="email" id="email" name="email" placeholder="email@exemplo.com" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="telefone">Telefone</label>
+                                            <input class="form-control mask-phone" type="tel" id="telefone" name="telefone" placeholder="(49) 00000-0000" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="cpf">CPF</label>
+                                            <input class="form-control mask-cpf" name="cpf" id="cpf" placeholder="000.000.000-00" type="text" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="senha">Senha</label>
+                                            <input class="form-control" name="senha" id="senha" placeholder="Senha" type="password" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-user btn-block">
+                                            Cadastrar
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <!-- /.container-fluid -->
+{% endblock %}

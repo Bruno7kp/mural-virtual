@@ -1,0 +1,18 @@
+{% extends "modelo.html" %}
+
+{% block title %}Aviso{% endblock %}
+
+{% block content %}
+<div class="container mt-100 mb-5">
+    <div class="card">
+        <div class="card-body">
+            <div class="post-content">
+                <a href="{{ url_for('avisos.aviso', identifier=aviso.identifier) }}"><h1 class="h3">{{ aviso.titulo }}</h1></a>
+                <div class="post-meta justify-content-between">
+                    {{ aviso.conteudo|safe }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

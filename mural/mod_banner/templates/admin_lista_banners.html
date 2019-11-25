@@ -1,0 +1,54 @@
+{% extends "admin_modelo.html" %}
+{% block content %}
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Banners</h1>
+            <a href="{{ url_for('banner.admin_cadastro') }}" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i class="fas fa-plus fa-fw fa-sm text-white-50"></i> Cadastrar banner</a>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <small class="mb-2 d-block"><i class="fa fa-exclamation-circle"></i> Arraste os banners para alterar a ordem. Apenas
+                    <strong>10</strong> banners podem ficar disponíveis ao mesmo tempo, caso necessite adicionar um novo e o limite tenha atingido, remova um dos banners atuais.</small>
+                <table class="table default-table">
+                    <thead>
+                        <tr>
+                            <th>Cód.</th>
+                            <th class="w-25">Imagem</th>
+                            <th>Redirecionamento</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody data-sort="{{ url_for('banner.admin_imagem_ordem') }}">
+                        {% if banners | length == 0 %}
+                            <tr>
+                                <td colspan="4">Nenhum registro encontrado</td>
+                            </tr>
+                        {% else %}
+                            {% for banner in banners %}
+                                <tr data-id="{{ banner.identifier }}">
+                                    <td>{{ banner.identifier }}</td>
+                                    <td><img src="{{ banner.imagem.decode('utf-8') }}" alt="Banner" class="img-fluid"></td>
+                                    {% if banner.redireciona_url | length == 0 %}
+                                        <td>Sem redirecionamento</td>
+                                    {% else %}
+                                        <td><a href="{{ banner.redireciona_url }}" target="_blank">{{ banner.redireciona_url }}</a></td>
+                                    {% endif %}
+                                    <td>
+                                        <a href="{{ url_for('banner.admin_edicao', identifier=banner.identifier) }}" class="btn btn-warning btn-sm"><i class="fa fa-pen fa-fw fa-sm text-white-50"></i> Editar</a>
+                                        <button data-delete="{{ url_for('banner.admin_remover', identifier=banner.identifier) }}" class="btn btn-danger btn-sm"><i class="fa fa-trash fa-fw fa-sm text-white-50"></i> Remover</button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    <!-- /.container-fluid -->
+{% endblock %}

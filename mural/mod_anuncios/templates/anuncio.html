@@ -1,0 +1,29 @@
+{% extends "modelo.html" %}
+
+{% block title %}Anúncio{% endblock %}
+
+{% block content %}
+<div class="container mt-100 mb-5">
+    <div class="card">
+        <div class="card-body">
+            <div class="post-content">
+                <a href="{{ url_for('anuncios.anuncio', identifier=anuncio.identifier) }}"><h1 class="h3">{{ anuncio.titulo }}</h1></a>
+                <div class="post-meta justify-content-between">
+                    {{ anuncio.conteudo|safe }}
+                </div>
+            </div>
+            {% set images = anuncio.get_images() %}
+            <hr>
+            <span class="h4 mb-15 d-block">Galeria de imagens</span>
+            {% if images|length > 0 %}
+                <div class="owl-carousel owl-theme hero-area">
+                    {% for image in images %}
+                    <div class="item"><img src="{{ image.imagem.decode('utf-8') }}" alt="{{ image.legenda }}"></div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}

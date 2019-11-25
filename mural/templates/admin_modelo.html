@@ -12,6 +12,7 @@
         <!-- Custom styles for this template-->
         <link href="{{ url_for('static', filename='admin/css/sb-admin-2.min.css') }}" rel="stylesheet">
         <link href="{{ url_for('static', filename='admin/css/custom.css') }}" rel="stylesheet">
+        <link rel="icon" href="{{ universidade.logo.decode('utf-8') }}">
     {% endblock %}
 </head>
 
@@ -20,12 +21,12 @@
 <div id="wrapper">
 
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <ul class="navbar-nav bg-uniplac sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
         <li class="sidebar-brand d-flex align-items-center justify-content-center">
             <a href="{{ url_for('home.admin_home') }}">
-                <img style="height: 50px" src="{{ url_for('static', filename='assets/img/logo-uniplac.png') }}" alt="Logo Uniplac">
+                <img style="height: 50px" src="{{ universidade.logo.decode("utf-8") }}" alt="Logo {{ universidade.nome }}">
             </a>
         </li>
 
@@ -48,25 +49,31 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="charts.html">
+            <a class="nav-link" href="{{ url_for('anuncios.admin_lista') }}">
                 <i class="fas fa-fw fa-bullhorn"></i>
                 <span>Anúncios</span>
             </a>
         </li>
 
+        {% if auth.is_allowed('cadastra.noticia') %}
         <li class="nav-item">
-            <a class="nav-link" href="charts.html">
+            <a class="nav-link" href="{{ url_for('noticias.admin_lista') }}">
                 <i class="fas fa-fw fa-newspaper"></i>
                 <span>Notícias</span>
             </a>
         </li>
+        {% endif %}
 
+        {% if auth.is_allowed('cadastra.aviso') %}
         <li class="nav-item">
-            <a class="nav-link" href="charts.html">
+            <a class="nav-link" href="{{ url_for('avisos.admin_lista') }}">
                 <i class="fa fa-fw fa-exclamation-triangle"></i>
                 <span>Avisos</span>
             </a>
         </li>
+        {% endif %}
+
+        {% if auth.is_allowed('edita.anuncio') %}
 
         <!-- Divider -->
         <li class="dropdown-divider mx-3 mb-3"></li>
@@ -77,11 +84,15 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="charts.html">
+            <a class="nav-link" href="{{ url_for('anuncios.admin_aprovacao') }}">
                 <i class="fas fa-fw fa-bullhorn"></i>
                 <span>Aprovação de anúncios</span>
             </a>
         </li>
+
+        {% endif  %}
+
+        {% if auth.is_allowed('edita.universidade') %}
 
         <!-- Divider -->
         <li class="dropdown-divider mx-3 mb-3"></li>
@@ -92,25 +103,34 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="charts.html">
+            <a class="nav-link" href="{{ url_for('universidade.admin_universidade') }}">
                 <i class="fas fa-fw fa-university"></i>
                 <span>Universidade</span>
             </a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="charts.html">
+            <a class="nav-link" href="{{ url_for('banner.admin_lista') }}">
+                <i class="fas fa-fw fa-images"></i>
+                <span>Banners</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('usuarios.admin_lista') }}">
                 <i class="fas fa-fw fa-users"></i>
                 <span>Usuários</span>
             </a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="charts.html">
+            <a class="nav-link" href="{{ url_for('logs.admin_lista') }}">
                 <i class="fas fa-fw fa-list"></i>
                 <span>Logs de ações</span>
             </a>
         </li>
+
+        {% endif %}
 
         <!-- Divider -->
         <li class="dropdown-divider mx-3 mb-3"></li>
@@ -143,17 +163,17 @@
                     <!-- Nav Item - User Information -->
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ auth.user.nome }}</span>
                             <i class="fa fa-chevron-down"></i>
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Configurações
+                            <a class="dropdown-item" href="{{ url_for('usuarios.admin_editar', identifier=auth.user.identifier) }}">
+                                <i class="fas fa-user-edit fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Editar perfil
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                            <a class="dropdown-item" href="{{ url_for('usuarios.sair') }}">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Sair
                             </a>
@@ -172,7 +192,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2019</span>
+                        <span>{{ universidade.nome }} &copy; Mural Virtual 2019</span>
                     </div>
                 </div>
             </footer>
@@ -196,16 +216,16 @@
 
     <!-- Core plugin JavaScript-->
     <script src="{{ url_for('static', filename='admin/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='admin/vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='admin/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='admin/vendor/ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ url_for('static', filename='admin/vendor/sortable/Sortable.min.js') }}"></script>
 
     <!-- Custom scripts for all pages-->
     <script src="{{ url_for('static', filename='admin/js/sb-admin-2.min.js') }}"></script>
-
-    <!-- Page level plugins -->
-    <script src="{{ url_for('static', filename='admin/vendor/chart.js/Chart.min.js') }}"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="{{ url_for('static', filename='admin/js/demo/chart-area-demo.js') }}"></script>
-    <script src="{{ url_for('static', filename='admin/js/demo/chart-pie-demo.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/imask.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/add-mask.js') }}"></script>
+    <script src="{{ url_for('static', filename='admin/js/script.js') }}"></script>
 {% endblock %}
 </body>
 

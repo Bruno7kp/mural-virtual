@@ -1,3 +1,51 @@
 .dropdown-divider {
     border-color: rgba(255, 255, 255, 0.16);
 }
+
+.bg-uniplac {
+    background: #2e3367;
+}
+
+.default-table tr td:first-child {
+    text-align: left !important;
+}
+
+.default-table tr td:last-child {
+    text-align: right;
+}
+
+.default-table tr td {
+    vertical-align: middle;
+}
+
+.dataTables_filter label {
+    width: 60%;
+    margin-left: 40%;
+}
+
+@media screen and (max-width: 767px) {
+    .dataTables_filter label {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .dataTables_length label select {
+        width: 50%;
+    }
+}
+
+.dataTables_length label {
+    width: 100%;
+}
+
+.dataTables_length label select {
+    width: 25%;
+}
+
+.card-body {
+    overflow: auto;
+}
+
+.form-control::placeholder {
+    opacity: 0.5 !important;
+}

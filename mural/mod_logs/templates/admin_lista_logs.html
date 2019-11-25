@@ -1,0 +1,24 @@
+{% extends "admin_modelo.html" %}
+{% block content %}
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <h1 class="h3 mb-4 text-gray-800">Logs</h1>
+
+        <div class="card">
+            <div class="card-body">
+                <table data-table-url="{{ url_for('logs.admin_busca') }}" class="table">
+                    <thead>
+                        <tr>
+                            <th class="w-75">Ação</th>
+                            <th>Data</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    <!-- /.container-fluid -->
+{% endblock %}

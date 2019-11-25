@@ -1,5 +1,9 @@
+import time
 from enum import Enum
+from functools import wraps
 from typing import Union, List
+
+from flask import session, redirect, url_for
 
 
 class Roles(Enum):
@@ -8,6 +12,19 @@ class Roles(Enum):
     mod_aviso = 3
     usuario = 4
     visitante = 5
+
+
+def role_to_str(role: Roles):
+    if role == Roles.admin:
+        return 'Administrador'
+    elif role == Roles.mod_noticia:
+        return 'Moderador de notícia'
+    elif role == Roles.mod_aviso:
+        return 'Moderador de aviso'
+    elif role == Roles.usuario:
+        return 'Usuário'
+    else:
+        return 'Visitante'
 
 
 class Resource(object):
@@ -29,23 +46,30 @@ class Resource(object):
 permissions = [
     Resource("cadastra.noticia", roles=[Roles.admin, Roles.mod_noticia]),
     Resource("edita.noticia", roles=[Roles.admin, Roles.mod_noticia]),
-    Resource("remove.noticia", roles=[Roles.admin], author=[Roles.mod_noticia]),
+    Resource("remove.noticia", roles=[Roles.admin, Roles.mod_noticia]),
     Resource("cadastra.aviso", roles=[Roles.admin, Roles.mod_aviso]),
     Resource("edita.aviso", roles=[Roles.admin, Roles.mod_aviso]),
-    Resource("remove.aviso", roles=[Roles.admin], author=[Roles.mod_aviso]),
+    Resource("remove.aviso", roles=[Roles.admin, Roles.mod_aviso]),
     Resource("edita.universidade", roles=[Roles.admin]),
     Resource("cadastra.usuario", roles=[Roles.admin, Roles.visitante]),
     Resource("edita.usuario", roles=[Roles.admin], author=[Roles.mod_noticia, Roles.mod_aviso, Roles.usuario]),
     Resource("remove.usuario", roles=[Roles.admin]),
-    Resource("cadastra.anuncio", roles=[Roles.admin, Roles.mod_noticia, Roles.mod_aviso], author=[Roles.usuario]),
+    Resource("cadastra.anuncio", roles=[Roles.admin, Roles.mod_noticia, Roles.mod_aviso, Roles.usuario]),
     Resource("edita.anuncio", roles=[Roles.admin, Roles.mod_noticia, Roles.mod_aviso], author=[Roles.usuario]),
-    Resource("remove.anuncio", roles=[Roles.admin], author=[Roles.mod_noticia, Roles.mod_aviso]),
-    Resource("aprova.anuncio", roles=[Roles.admin, Roles.mod_noticia, Roles.mod_aviso])
+    Resource("remove.anuncio", roles=[Roles.admin, Roles.mod_noticia, Roles.mod_aviso]),
+    Resource("aprova.anuncio", roles=[Roles.admin, Roles.mod_noticia, Roles.mod_aviso]),
 ]
 
 
 class Auth:
     user = None
+
+    def __init__(self):
+        from mural.mod_usuarios import Usuario
+        Auth.user = Usuario()
+        if 'user' in session:
+            userid = session['user']['identifier']
+            Auth.user.select(userid)
 
     @staticmethod
     def in_role(role: Roles) -> bool:
@@ -54,8 +78,8 @@ class Auth:
         :return: Indica se o usuário está no nível de permissão passado por parâmetro
         """
         from mural.mod_usuarios import Usuario
-        if Auth.user is Usuario:
-            return Auth.user.get_role() == role
+        if isinstance(Auth.user, Usuario):
+            return Roles(Auth.user.get_role()) == role
         else:
             return False
 
@@ -92,15 +116,40 @@ class Auth:
         :param relation: Entidade relacionada ao recurso
         :return: Indica se o usuário tem permissão para acessar o recurso
         """
+        from mural.mod_anuncios import Anuncio
         permission = Auth.get_resource(resource)
         from mural.mod_usuarios import Usuario
         from mural.mod_base import BaseModel
         # Se o recurso não for encontrado, ou se não tiver um usuário, retornará falso
-        if permission is not None and Auth.user is Usuario:
-            if Auth.user.get_role() in permission.roles:
+        if permission is not None and isinstance(Auth.user, Usuario):
+            if Roles(Auth.user.get_role()) in permission.roles:
                 # Se o nível do usuário está entre os permitidos
                 return True
-            elif Auth.user.get_role() in permission.author and relation is BaseModel:
+            elif Roles(Auth.user.get_role()) in permission.author and isinstance(relation, BaseModel):
+                if isinstance(relation, Anuncio):
+                    # Exceções
+                    if relation.aprovado and resource == 'edita.anuncio':
+                        # Usuário não pode editar anúncio depois de aprovado
+                        return False
                 # Se é permitido acessar um recurso relacionado ao usuário (Ex: Anúncio cadastrado pelo próprio usuário)
                 return Auth.user.get_owner_id() == relation.get_owner_id()
         return False
+
+
+SESSION_LIMIT = 120
+
+
+def logado(f):
+    """Verifica se usuario esta logado, impede que acesse o site caso tenha atingido o limite de tempo na sessao"""
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user' not in session:
+            return redirect(url_for('usuarios.entrar'))
+        if 'time' in session:
+            now = time.time()
+            diff_seconds = now - session['time']
+            diff_minutes = diff_seconds / 60
+            if diff_minutes >= SESSION_LIMIT:
+                return redirect(url_for('usuarios.entrar', erro=2))
+        return f(*args, **kwargs)
+    return decorated_function

@@ -37,29 +37,32 @@ Caso ainda não tenha criado, você pode criar o banco de dados através do coma
 python run.py create-database
 ```
 
-Após o banco estar criado, execute o seguinte comando para criar as tabelas
+Após o banco estar criado, execute o seguinte comando para criar as tabelas e adicionar usuários ao sistema
 
 ```
-python run.py create-tables
+python run.py migrate-database
 ```
 
-@todo: Execute o seguinte comando para cadastrar um usuário de nível 1 padrão
-
-Dados de acesso do usuário:
-
-cpf: 
-
-senha: 
-
+Os usuários cadastrados tem os seguintes dados de acesso:
 ```
-python run.py insert-default-user
+Administrador
+CPF/Login: 000.000.000-00
+Senha: 123456
 ```
-
-@todo: Caso queira ver a aplicação já com alguns dados cadastrados, execute o comando abaixo para cadastrar algumas notícias, anúncios e etc.
-
-
 ```
-python run.py insert-dummy
+Moderador Notícias
+CPF/Login: 111.111.111-11
+Senha: 123456
+```
+```
+Moderador Avisos
+CPF/Login: 222.222.222-22
+Senha: 123456
+```
+```
+Usuário Padrão
+CPF/Login: 333.333.333-33
+Senha: 123456
 ```
 
 Por fim, execute os comandos abaixo para rodar o projeto
