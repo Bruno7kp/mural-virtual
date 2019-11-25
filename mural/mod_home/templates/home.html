@@ -1,5 +1,5 @@
 {% extends "modelo.html" %}
-{% block title %}Home{% endblock %}
+{% block title %}{{ super() }}{% endblock %}
 {% block content %}
     {% if banners|length > 0 %}
     <!-- ##### Hero Area Start ##### -->

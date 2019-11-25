@@ -1,6 +1,6 @@
 {% extends "modelo.html" %}
 
-{% block title %}Notícia{% endblock %}
+{% block title %}{{ noticia.titulo }} - {{ super() }}{% endblock %}
 
 {% block content %}
 <div class="container mt-100 mb-5">

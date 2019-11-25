@@ -1,6 +1,6 @@
 {% extends "modelo.html" %}
 
-{% block title %}Anúncio{% endblock %}
+{% block title %}{{ anuncio.titulo }} - {{ super() }}{% endblock %}
 
 {% block content %}
 <div class="container mt-100 mb-5">
