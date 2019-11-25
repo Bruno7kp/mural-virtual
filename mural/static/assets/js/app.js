@@ -1,11 +1,6 @@
 const App = {
     startUp: () => {
         App.addFormListener();
-        let fixClick = document.querySelector("[data-toggle=\"dropdown\"]");
-        if (fixClick != null) {
-            // Pra resolver o problema de ter que dar clique duplo pra abrir o menu, já deixamos um clique ao abrir a página
-            fixClick.click();
-        }
         let gal = document.querySelector(".owl-carousel");
         if (gal != null) {
             $(gal).owlCarousel({

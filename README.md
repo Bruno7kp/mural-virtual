@@ -8,6 +8,7 @@ Trabalho integrador da 4ª fase do curso de Sistemas de Informação da UNIPLAC 
 
 - [Instalação](#instalação)
 - [Documentação](#documentação)
+- [Tecnologias utilizadas](#tecnologias)
 
 ### Instalação
 
@@ -80,3 +81,58 @@ python -m flask run
     - [Histórias de usuários](engenharia/Histórias%20de%20usuário.md)
     - [Protótipos](https://xd.adobe.com/view/f1172239-6a23-42ff-67a1-1df87d96ea71-8726/)
     - [Diagrama do Banco de Dados](https://dbdiagram.io/d/5d8befd4ff5115114db4a296)
+    
+    
+### Tecnologias
+
+**Banco de dados**
+
+*MySQL (4.8.4)*: O MySQL é um sistema de gerenciamento de banco de dados, que utiliza a linguagem SQL como interface. É atualmente um dos sistemas de gerenciamento de bancos de dados mais populares da Oracle Corporation, com mais de 10 milhões de instalações pelo mundo.
+
+---
+
+**Backend**
+
+*Python (3.7)*: Python é uma linguagem de programação de alto nível, interpretada, de script, imperativa, orientada a objetos, funcional, de tipagem dinâmica e forte.
+
+**Bibliotecas**
+
+*Flask (1.1.1)*: Flask é um pequeno framework web escrito em Python e baseado na biblioteca WSGI Werkzeug e na biblioteca de Jinja2.
+
+*Jinja2 (2.10.1)*: O Jinja é um mecanismo de templates para a linguagem de programação Python.
+
+*bcrypt (3.1.7)*: bcrypt é um método de criptografia do tipo hash para senhas.
+
+*flask-paginate (0.5.5)*: Cria paginação em HTML para lista de anúncios, notícias e avisos.
+
+*PyMySQL (0.9.3)*: Biblioteca para conectar ao banco de dados MySQL.
+
+*python-dotenv (0.10.3)*: Utilizado para carregar informações dos arquivos '.env'.
+
+---
+
+**Frontend**
+
+*HTML (5)*: HTML é uma linguagem de marcação utilizada na construção de páginas na web.
+
+*CSS (3)*: Cascading Style Sheets é um mecanismo para adicionar estilo a um documento web.
+
+*Javascript (ES6)*: JavaScript é uma linguagem de programação interpretada estruturada, de script em alto nível com tipagem dinâmica fraca e multi-paradigma.
+
+*Bootstrap (4.1.3)*: Bootstrap é um framework web com código-fonte aberto para desenvolvimento de componentes de interface e front-end para sites e aplicações web usando HTML, CSS e JavaScript.
+
+*FontAwesome (4.7.0)*: Conjunto de ícones para aplicações web.
+
+*jQuery (3.4.1)*: jQuery é uma biblioteca de funções JavaScript que interage com o HTML, desenvolvida para simplificar os scripts interpretados no navegador do cliente.
+
+*OwlCarousel (2.2.1)*: Plugin em jQuery que cria galerias de imagens (sliders).
+
+*imaskjs (5.2.1)*: Biblioteca em JavaScript para criação de campos de texto com máscara.
+
+*SB Admin 2 (4.0.7)*: Tema para a área administrativa baseada no Bootstrap.
+
+*DataTables (1.10.19)*: Plugin em jQuery para a criação de tabelas interativas, com busca e páginação automatizadas.
+
+*CKEditor (4)*: Plugin escrito em JavaScript para criação de textos formatados com estilos CSS e HTML.
+
+*Sortable (1.10.1)*: Plugin em JavaScript utilizado para ordenar elementos HTML, como imagens, linhas de uma tabela, etc.
