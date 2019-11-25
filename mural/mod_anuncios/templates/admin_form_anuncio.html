@@ -20,6 +20,12 @@
                         <div class="col-12">
                             <div class="row">
                                 <div class="col-sm-12 col-md-6">
+                                    {% if anuncio.identifier > 0 %}
+                                    <div class="form-group">
+                                        <label class="d-block">Autor</label>
+                                        <a href="{{ url_for('usuarios.admin_edicao', identifier=anuncio.get_owner_id()) }}" target="_blank">{{ anuncio.get_owner().nome }}</a>
+                                    </div>
+                                    {% endif %}
                                     <div class="form-group">
                                         <label for="titulo">Título</label>
                                         <input type="text" name="titulo" id="titulo" class="form-control" placeholder="Título" value="{{ anuncio.titulo }}" required>

@@ -43,9 +43,11 @@ class Anuncio(BaseModel):
             edit = '<a href="' + url_for('anuncios.admin_edicao', identifier=self.identifier) + '" class="btn btn-warning btn-sm"><i class="fa fa-pen fa-fw fa-sm text-white-50"></i> Editar</a> '
         if auth.is_allowed('remove.anuncio', self):
             remove = '<button data-delete="' + url_for('anuncios.admin_remover', identifier=self.identifier) + '" class="btn btn-danger btn-sm"><i class="fa fa-trash fa-fw fa-sm text-white-50"></i> Remover</button>'
+        usuario = self.get_owner()
         return [
             self.identifier,
             self.titulo,
+            usuario.nome + '<small class="d-block">(' + usuario.cpf + ')</small>',
             show_date(self.data_entrada),
             show_date(self.data_saida),
             edit + remove
