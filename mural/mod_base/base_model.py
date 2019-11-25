@@ -109,6 +109,10 @@ def admin_404_response():
     return render_template('admin_404.html'), 404
 
 
+def error_404_response():
+    return render_template('404.html'), 404
+
+
 def show_date(text):
     text = text.__str__()
     return datetime.strptime(text, "%Y-%m-%dT%H:%M").strftime("%d/%m/%Y %H:%M")

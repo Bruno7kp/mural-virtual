@@ -1,0 +1,16 @@
+{% extends "modelo.html" %}
+
+{% block title %}Página não encontrada{% endblock %}
+
+{% block content %}
+<div class="container mt-100 mb-100">
+    <div class="card">
+        <div class="card-body">
+            <div class="post-content">
+                <h1 class="h3">Página não encontrada</h1>
+                <a href="{{ url_for('home.home') }}"><i class="fa fa-chevron-left fa-sm"></i> Voltar para página inicial</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

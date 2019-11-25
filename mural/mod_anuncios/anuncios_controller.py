@@ -7,7 +7,8 @@ from flask import Blueprint, render_template, request, url_for
 
 from mural.mod_anuncios import Anuncio, ImagemAnuncio
 from mural.mod_base.auth import logado, Auth
-from mural.mod_base.base_model import data_tables_response, admin_403_response, json_response, admin_404_response
+from mural.mod_base.base_model import data_tables_response, admin_403_response, json_response, admin_404_response, \
+    error_404_response
 from mural.mod_logs import Logs
 from flask_paginate import Pagination, get_page_args
 
@@ -33,7 +34,13 @@ def anuncios():
 def anuncio(identifier: int):
     busca = Anuncio()
     busca.select(identifier)
-    return render_template("anuncio.html", anuncio=busca)
+    if busca.identifier > 0:
+        entrada = datetime.datetime.strptime(busca.data_entrada, "%Y-%m-%dT%H:%M").timestamp()
+        saida = datetime.datetime.strptime(busca.data_saida, "%Y-%m-%dT%H:%M").timestamp()
+        agora = datetime.datetime.now().timestamp()
+        if agora >= entrada and agora < saida:
+            return render_template("anuncio.html", anuncio=busca)
+    return error_404_response()
 
 # Rotas da área administrativa
 @bp_anuncios.route('/admin/anuncios', methods=['GET'])

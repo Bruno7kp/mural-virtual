@@ -13,9 +13,9 @@
                 </div>
             </div>
             {% set images = anuncio.get_images() %}
-            <hr>
-            <span class="h4 mb-15 d-block">Galeria de imagens</span>
             {% if images|length > 0 %}
+                <hr>
+                <span class="h4 mb-15 d-block">Galeria de imagens</span>
                 <div class="owl-carousel owl-theme hero-area">
                     {% for image in images %}
                     <div class="item"><img src="{{ image.imagem.decode('utf-8') }}" alt="{{ image.legenda }}"></div>
