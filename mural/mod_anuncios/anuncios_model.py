@@ -38,15 +38,24 @@ class Anuncio(BaseModel):
         edit = ''
         remove = ''
         auth = Auth()
-        print(self.aprovado)
         if auth.is_allowed('edita.anuncio', self):
             edit = '<a href="' + url_for('anuncios.admin_edicao', identifier=self.identifier) + '" class="btn btn-warning btn-sm"><i class="fa fa-pen fa-fw fa-sm text-white-50"></i> Editar</a> '
         if auth.is_allowed('remove.anuncio', self):
             remove = '<button data-delete="' + url_for('anuncios.admin_remover', identifier=self.identifier) + '" class="btn btn-danger btn-sm"><i class="fa fa-trash fa-fw fa-sm text-white-50"></i> Remover</button>'
+        status = '<span class="badge badge-warning">Aprovação pendente</span>'
+        if self.aprovado:
+            entrada = datetime.datetime.strptime(self.data_entrada, "%Y-%m-%dT%H:%M").timestamp()
+            saida = datetime.datetime.strptime(self.data_saida, "%Y-%m-%dT%H:%M").timestamp()
+            agora = datetime.datetime.now().timestamp()
+            if agora >= entrada and agora < saida:
+                status = '<span class="badge badge-success">Disponível</span>'
+            else:
+                status = '<span class="badge badge-secondary">Expirado</span>'
         usuario = self.get_owner()
         return [
             self.identifier,
             self.titulo,
+            status,
             usuario.nome + '<small class="d-block">(' + usuario.cpf + ')</small>',
             show_date(self.data_entrada),
             show_date(self.data_saida),
