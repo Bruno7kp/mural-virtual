@@ -31,7 +31,9 @@ def anuncios():
 
 @bp_anuncios.route('/anuncio/<int:identifier>')
 def anuncio(identifier: int):
-    return render_template("anuncio.html")
+    busca = Anuncio()
+    busca.select(identifier)
+    return render_template("anuncio.html", anuncio=busca)
 
 # Rotas da área administrativa
 @bp_anuncios.route('/admin/anuncios', methods=['GET'])

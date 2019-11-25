@@ -29,7 +29,9 @@ def avisos():
 
 @bp_avisos.route('/aviso/<int:identifier>')
 def aviso(identifier: int):
-    return render_template("aviso.html")
+    busca = Aviso()
+    busca.select(identifier)
+    return render_template("aviso.html", aviso=busca)
 
 # Rotas da área administrativa
 @bp_avisos.route('/admin/avisos', methods=['GET'])

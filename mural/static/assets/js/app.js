@@ -6,6 +6,20 @@ const App = {
             // Pra resolver o problema de ter que dar clique duplo pra abrir o menu, já deixamos um clique ao abrir a página
             fixClick.click();
         }
+        let gal = document.querySelector(".owl-carousel");
+        if (gal != null) {
+            $(gal).owlCarousel({
+                loop:true,
+                margin:10,
+                nav:true,
+                navText: ['<i class="ti-angle-left"></i>', '<i class="ti-angle-right"></i>'],
+                responsive:{
+                    0:{
+                        items:1
+                    },
+                }
+            })
+        }
     },
     addFormListener: () => {
         let form = document.querySelector(".form-data");

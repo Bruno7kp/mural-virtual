@@ -185,6 +185,11 @@ class Anuncio(BaseModel):
             return imagens[0].imagem
         return ''
 
+    def get_images(self):
+        imagem = ImagemAnuncio()
+        imagens = imagem.select_by_parent(self.identifier)
+        return imagens
+
     @staticmethod
     def has_ownership() -> bool:
         return True

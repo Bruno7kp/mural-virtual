@@ -31,7 +31,9 @@ def noticias():
 
 @bp_noticias.route('/noticia/<int:identifier>')
 def noticia(identifier: int):
-    return render_template("noticia.html")
+    busca = Noticia()
+    busca.select(identifier)
+    return render_template("noticia.html", noticia=busca)
 
 # Rotas da área administrativa
 @bp_noticias.route('/admin/noticias', methods=['GET'])
