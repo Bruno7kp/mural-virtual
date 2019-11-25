@@ -23,14 +23,15 @@
                                     <div class="form-group">
                                         <label for="redireciona_url">Redirecionamento <small>(página que será acessada ao clicar no banner, ex: https://www.google.com)</small></label>
                                         <input type="text" name="redireciona_url" id="redireciona_url" class="form-control" placeholder="https://www.google.com" value="{{ banner.redireciona_url }}">
-                                        <small class="d-block my-1"><i class="fa fa-exclamation-circle"></i> Este campo não é obrigatório</small>
+                                        <small class="d-block my-1"><i class="fa fa-exclamation-circle"></i> Este campo <strong>não</strong> é obrigatório</small>
                                     </div>
                                     <div class="form-group">
                                         <label for="imagem">Imagem</label>
                                         <input type="file" name="imagem" id="imagem" accept="image/jpeg, image/png" class="form-control" {% if banner.identifier == 0 %}required{% endif %}>
                                         {% if banner.identifier > 0 %}
-                                        <small class="">Selecione uma nova imagem para substituir a atual.</small>
+                                        <small class="mb-2 d-block"><i class="fa fa-exclamation-circle"></i> Selecione uma nova imagem para substituir a atual.</small>
                                         {% endif %}
+                                        <small class="mb-2 d-block"><i class="fa fa-exclamation-circle"></i> A dimensão recomendada para o banner é na proporção 3:1 (Exemplo: 2000px x 660px).</small>
                                     </div>
                                     {% if banner.identifier > 0 %}
                                     <div class="form-group">

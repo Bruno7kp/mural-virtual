@@ -14,13 +14,15 @@
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Banners</h1>
+            {% if banners | length < 10 %}
             <a href="{{ url_for('banner.admin_cadastro') }}" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i class="fas fa-plus fa-fw fa-sm text-white-50"></i> Cadastrar banner</a>
+            {% endif %}
         </div>
 
         <div class="card">
             <div class="card-body">
-                <small class="mb-2 d-block"><i class="fa fa-exclamation-circle"></i> Arraste os banners para alterar a ordem. Apenas
-                    <strong>10</strong> banners podem ficar disponíveis ao mesmo tempo, caso necessite adicionar um novo e o limite tenha atingido, remova um dos banners atuais.</small>
+                    <small class="mb-2 d-block"><i class="fa fa-exclamation-circle"></i> Arraste os banners para alterar a ordem.</small>
+                 <small class="mb-2 d-block"><i class="fa fa-exclamation-circle"></i> Apenas <strong>10</strong> banners podem ficar disponíveis ao mesmo tempo, caso necessite adicionar um novo e o limite tenha sido atingido, remova um dos banners atuais.</small>
                 <table class="table default-table">
                     <thead>
                         <tr>
