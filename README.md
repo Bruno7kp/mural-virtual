@@ -87,6 +87,17 @@ python -m flask run
     - [Diagrama de Caso de Uso - Cadastro de anúncio pelo usuário padrão (nível 4)](engenharia/Diagrama%20de%20Caso%20de%20Uso%20-%20Cadastro%20de%20anúncio%20por%20usuário%20padrão.pdf)
     - [Diagrama de Caso de Uso - Gerenciamento de avisos, anúncios e notícias](engenharia/Diagrama%20%20de%20Caso%20de%20Uso%20-%20Gerenciamento%20de%20avisos,%20anúncios%20e%20notícias.pdf)
 
+- [UX](ux)
+    - [360 View](ux/360%20View.pptx)
+    - [Cadastro](ux/Cadastro.jpeg)
+    - [Home](ux/Home.jpeg)
+    - [Avisos](ux/Avisos.jpeg)
+    - [Noticias](ux/Noticias.jpeg)
+    - [Jornada do usuário - Cadastro de notícias](ux/Jornada%20do%20usuário%20-%20Cadastro%20de%20notícias.xlsx)
+    - [Jornada do usuário - Visualizar Anúncios](ux/Jornada%20do%20usuário%20-%20Visualizar%20Anúncios.xlsx)
+    - [Jornada do usuário - Visualizar notícias](ux/Jornada%20do%20usuário%20-%20Visualizar%20notícias.xlsx)
+    - [UI - Visual Design](ux/https://xd.adobe.com/view/f1172239-6a23-42ff-67a1-1df87d96ea71-8726/)
+    - [Wireframes](ux/Wireframes.pdf)
     
     
 ### Tecnologias
