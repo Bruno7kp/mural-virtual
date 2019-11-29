@@ -59,6 +59,7 @@ def cadastrar():
         return json_response(message='O CPF já está em uso, utilize outro', data=[]), 400
 
     usuario.senha = Usuario.hash(request.form['senha'])
+    usuario.data_cadastro = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     identifier = usuario.insert()
     if identifier > 0:
         Logs(0, usuario.identifier,
