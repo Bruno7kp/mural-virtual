@@ -9,7 +9,7 @@ from mural.mod_base import BaseModel, DataBase, Auth
 
 class Anuncio(BaseModel):
     def __init__(self, identifier=0, usuario_id=0, titulo="", conteudo="", aprovado=False, data_entrada="",
-                 data_saida="", data_cadastro="", data_atualizacao=""):
+                 data_saida="", data_cadastro="", data_atualizacao=None):
         super().__init__()
         self.identifier = identifier
         self.usuario_id = usuario_id
@@ -293,7 +293,7 @@ class Anuncio(BaseModel):
 
 class ImagemAnuncio(BaseModel):
     def __init__(self, identifier=0, anuncio_id=0, legenda="", imagem="", ordem=0, data_cadastro="",
-                 data_atualizacao=""):
+                 data_atualizacao=None):
         super().__init__()
         self.identifier = identifier
         self.anuncio_id = anuncio_id
