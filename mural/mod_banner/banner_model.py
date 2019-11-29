@@ -4,7 +4,7 @@ from mural.mod_base import BaseModel, DataBase
 
 class Banner(BaseModel):
     def __init__(self, identifier=0, usuario_id=0, redireciona_url="", imagem="", ordem=0, data_cadastro="",
-                 data_atualizacao=""):
+                 data_atualizacao=None):
         super().__init__()
         self.identifier = identifier
         self.usuario_id = usuario_id

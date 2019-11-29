@@ -21,7 +21,7 @@ class Universidade(BaseModel):
             self.email
         ]
 
-    def __init__(self, identifier=0, nome="", telefone="", email="", logo="", data_cadastro="", data_atualizacao=""):
+    def __init__(self, identifier=0, nome="", telefone="", email="", logo="", data_cadastro="", data_atualizacao=None):
         super().__init__()
         self.identifier = identifier
         self.nome = nome
