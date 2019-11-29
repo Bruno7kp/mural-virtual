@@ -7,7 +7,7 @@ from mural.mod_base.auth import role_to_str, Roles
 
 class Usuario(BaseModel):
     def __init__(self, identifier=0, nome="", email="", telefone="", cpf="", senha="", nivel=5,
-                 data_cadastro="", data_atualizacao=""):
+                 data_cadastro="", data_atualizacao=None):
         super().__init__()
         self.identifier = identifier
         self.nome = nome
