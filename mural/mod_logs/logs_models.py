@@ -1,3 +1,5 @@
+import datetime
+
 from mural.mod_base.base_model import show_date
 from mural.mod_usuarios import Usuario
 from mural.mod_base import BaseModel, DataBase
@@ -5,7 +7,7 @@ from mural.mod_base import BaseModel, DataBase
 
 class Logs(BaseModel):
     def __init__(self, identifier=0, usuario_id=0, acao="", tabela_relacionada="", id_relacionado=0, data_cadastro="",
-                 data_atualizacao=""):
+                 data_atualizacao=None):
         super().__init__()
         self.identifier = identifier
         self.usuario_id = usuario_id
